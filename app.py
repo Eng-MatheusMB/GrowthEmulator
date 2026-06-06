@@ -2008,7 +2008,7 @@ def tab_data():
                                    label_visibility="collapsed", key="uploader_unico")
         with col_hr:
             hr = st.number_input(t("dt_header_row"), min_value=1, max_value=50, value=1,
-                                  key="header_row_num")
+                                  key="header_row_num0")
             st.caption(t("dt_header_note"))
 
         if uf is not None:
