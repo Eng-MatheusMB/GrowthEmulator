@@ -2818,7 +2818,7 @@ def tab_tools():
     lp_ready = (df_src3 is not None and t_col3 and x_col3 and p_col3
                 and x_col3 in df_src3.columns and p_col3 in df_src3.columns)
 
-    with st.expander("⚙️ Configurar análise de formação de produto", expanded=lp_ready):
+    with st.expander("⚙️ Configurar análise de formação de produto", expanded=bool(lp_ready)):
         if lp_ready:
             t_lp  = pd.to_numeric(df_src3[t_col3], errors="coerce").dropna().values
             X_lp  = pd.to_numeric(df_src3[x_col3], errors="coerce").dropna().values
