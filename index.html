@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="GrowthEmulator v1.2 — Simulador de crescimento celular microbiano. 30+ modelos cinéticos, visualização interativa, exportação PDF/Excel."/>
+  <meta name="keywords" content="crescimento microbiano, cinética, Monod, Gompertz, bioreator, modelagem, simulador"/>
+  <meta property="og:title" content="GrowthEmulator v1.2 — Simulador de Crescimento Celular Microbiano"/>
+  <meta property="og:description" content="Ajuste, analise e visualize modelos cinéticos microbianos com 30+ modelos, 4 idiomas e exportação profissional."/>
+  <title>GrowthEmulator v1.2 — Simulador de Crescimento Celular Microbiano</title>
+
+  <!-- ═══════════════════════════════════════════════════
+       PRODUCTION CSS — self-contained, no CDN required.
+       Covers every utility used in this file.
+       Generated from Tailwind v3 specification.
+  ════════════════════════════════════════════════════ -->
+  <style>
+  /* ── Reset & base ────────────────────────────────── */
+  *,::before,::after{box-sizing:border-box;border:0 solid}
+  html{line-height:1.5;-webkit-text-size-adjust:100%;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif}
+  body{margin:0;line-height:inherit}
+  img,svg{display:block;vertical-align:middle}
+  img{max-width:100%;height:auto}
+  a{color:inherit;text-decoration:inherit}
+  button{cursor:pointer;font-family:inherit;font-size:100%;line-height:inherit;color:inherit}
+
+  /* ── scroll-smooth ───────────────────────────────── */
+  .scroll-smooth{scroll-behavior:smooth}
+
+  /* ── Display ─────────────────────────────────────── */
+  .hidden{display:none}
+  .block{display:block}
+  .flex{display:flex}
+  .inline-flex{display:inline-flex}
+  .grid{display:grid}
+  .inline-block{display:inline-block}
+
+  /* ── Flex ────────────────────────────────────────── */
+  .flex-col{flex-direction:column}
+  .flex-row{flex-direction:row}
+  .flex-wrap{flex-wrap:wrap}
+  .items-center{align-items:center}
+  .items-start{align-items:flex-start}
+  .justify-center{justify-content:center}
+  .justify-between{justify-content:space-between}
+  .justify-around{justify-content:space-around}
+  .flex-1{flex:1 1 0%}
+  .flex-2{flex:2 2 0%}
+  .shrink-0{flex-shrink:0}
+  .grow{flex-grow:1}
+
+  /* ── Grid ────────────────────────────────────────── */
+  .grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
+  .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .gap-1{gap:0.25rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}
+  .gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-6{gap:1.5rem}
+  .gap-8{gap:2rem}.gap-10{gap:2.5rem}.gap-12{gap:3rem}
+
+  /* ── Position ────────────────────────────────────── */
+  .relative{position:relative}
+  .absolute{position:absolute}
+  .fixed{position:fixed}
+  .inset-0{inset:0}
+  .top-0{top:0}.left-0{left:0}.right-0{right:0}.bottom-0{bottom:0}
+  .top-20{top:5rem}.bottom-20{bottom:5rem}
+  .left-10{left:2.5rem}.right-10{right:2.5rem}
+  .z-10{z-index:10}.z-50{z-index:50}
+
+  /* ── Sizing ──────────────────────────────────────── */
+  .w-4{width:1rem}.w-5{width:1.25rem}.w-6{width:1.5rem}
+  .w-9{width:2.25rem}.w-10{width:2.5rem}.w-12{width:3rem}
+  .w-14{width:3.5rem}.w-28{width:7rem}.w-72{width:18rem}
+  .w-96{width:24rem}.w-full{width:100%}
+  .h-4{height:1rem}.h-5{height:1.25rem}.h-6{height:1.5rem}
+  .h-9{height:2.25rem}.h-10{height:2.5rem}.h-12{height:3rem}
+  .h-14{height:3.5rem}.h-28{height:7rem}.h-90{height:90px}
+  .min-h-screen{min-height:100vh}
+  .max-w-md{max-width:28rem}.max-w-xl{max-width:36rem}
+  .max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}
+  .max-w-4xl{max-width:56rem}.max-w-5xl{max-width:64rem}
+  .max-w-6xl{max-width:72rem}.max-w-7xl{max-width:80rem}
+  .mx-auto{margin-left:auto;margin-right:auto}
+
+  /* ── Spacing — padding ───────────────────────────── */
+  .p-2{padding:0.5rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}
+  .px-4{padding-left:1rem;padding-right:1rem}
+  .px-5{padding-left:1.25rem;padding-right:1.25rem}
+  .px-6{padding-left:1.5rem;padding-right:1.5rem}
+  .px-8{padding-left:2rem;padding-right:2rem}
+  .py-2{padding-top:0.5rem;padding-bottom:0.5rem}
+  .py-3{padding-top:0.75rem;padding-bottom:0.75rem}
+  .py-4{padding-top:1rem;padding-bottom:1rem}
+  .py-6{padding-top:1.5rem;padding-bottom:1.5rem}
+  .py-7{padding-top:1.75rem;padding-bottom:1.75rem}
+  .py-8{padding-top:2rem;padding-bottom:2rem}
+  .py-12{padding-top:3rem;padding-bottom:3rem}
+  .py-14{padding-top:3.5rem;padding-bottom:3.5rem}
+  .py-24{padding-top:6rem;padding-bottom:6rem}
+  .py-28{padding-top:7rem;padding-bottom:7rem}
+  .py-32{padding-top:8rem;padding-bottom:8rem}
+  .pb-4{padding-bottom:1rem}.pt-6{padding-top:1.5rem}
+
+  /* ── Spacing — margin ────────────────────────────── */
+  .-mt-0\.5{margin-top:-0.125rem}
+  .mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}
+  .mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}
+  .mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}
+  .mt-10{margin-top:2.5rem}.mt-12{margin-top:3rem}
+  .mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}
+  .mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}
+  .mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}
+  .mb-10{margin-bottom:2.5rem}.mb-12{margin-bottom:3rem}
+  .mb-14{margin-bottom:3.5rem}.mb-16{margin-bottom:4rem}
+  .mb-20{margin-bottom:5rem}.mb-24{margin-bottom:6rem}
+  .ml-4{margin-left:1rem}.mr-2{margin-right:0.5rem}
+  .space-y-2>*+*{margin-top:0.5rem}
+  .space-y-3>*+*{margin-top:0.75rem}
+
+  /* ── Typography ──────────────────────────────────── */
+  .text-xs{font-size:.75rem;line-height:1rem}
+  .text-sm{font-size:.875rem;line-height:1.25rem}
+  .text-base{font-size:1rem;line-height:1.5rem}
+  .text-lg{font-size:1.125rem;line-height:1.75rem}
+  .text-xl{font-size:1.25rem;line-height:1.75rem}
+  .text-2xl{font-size:1.5rem;line-height:2rem}
+  .text-3xl{font-size:1.875rem;line-height:2.25rem}
+  .text-4xl{font-size:2.25rem;line-height:2.5rem}
+  .text-5xl{font-size:3rem;line-height:1}
+  .text-7xl{font-size:4.5rem;line-height:1}
+  .font-light{font-weight:300}
+  .font-normal{font-weight:400}
+  .font-semibold{font-weight:600}
+  .font-bold{font-weight:700}
+  .font-extrabold{font-weight:800}
+  .font-black{font-weight:900}
+  .uppercase{text-transform:uppercase}
+  .tracking-widest{letter-spacing:0.1em}
+  .leading-tight{line-height:1.25}
+  .leading-relaxed{line-height:1.625}
+  .text-center{text-align:center}
+  .text-right{text-align:right}
+  .whitespace-nowrap{white-space:nowrap}
+  .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+  /* ── Colors — custom palette ─────────────────────── */
+  .text-gray-300{color:#d1d5db}
+  .text-gray-400{color:#9ca3af}
+  .text-gray-500{color:#6b7280}
+  .text-gray-600{color:#4b5563}
+  .text-blue-400{color:#60a5fa}
+  .text-green-400{color:#4ade80}
+  .text-orange-400{color:#fb923c}
+  .bg-navy-card{background:#0d1a2e}
+  .bg-teal-DEFAULT{background:#00c8b4}
+  .text-navy-DEFAULT{color:#030a14}
+  .text-teal-DEFAULT{color:#00c8b4}
+  .text-teal-light{color:#4dd9cc}
+  .text-purple-light{color:#a78bfa}
+  .border-teal-DEFAULT{border-color:#00c8b4}
+  .border-teal-light{border-color:#4dd9cc}
+  .bg-teal-light{background:#4dd9cc}
+  .hover\:bg-teal-light:hover{background:#4dd9cc}
+  .hover\:text-teal-DEFAULT:hover{color:#00c8b4}
+  .hover\:border-teal-DEFAULT:hover{border-color:#00c8b4}
+
+  /* ── Borders ─────────────────────────────────────── */
+  .border{border-width:1px;border-style:solid}
+  .border-t{border-top-width:1px;border-top-style:solid}
+  .border-y{border-top-width:1px;border-top-style:solid;
+             border-bottom-width:1px;border-bottom-style:solid}
+  .border-gray-600{border-color:#4b5563}
+  .border-gray-700{border-color:#374151}
+  .border-gray-800{border-color:#1f2937}
+  .rounded{border-radius:0.25rem}
+  .rounded-lg{border-radius:0.5rem}
+  .rounded-xl{border-radius:0.75rem}
+  .rounded-2xl{border-radius:1rem}
+  .rounded-full{border-radius:9999px}
+
+  /* ── Effects ─────────────────────────────────────── */
+  .opacity-5{opacity:0.05}.opacity-30{opacity:0.3}
+  .opacity-40{opacity:0.4}.opacity-60{opacity:0.6}
+  .blur-xl{filter:blur(24px)}
+  .overflow-hidden{overflow:hidden}
+  .overflow-x-auto{overflow-x:auto}
+  .pointer-events-none{pointer-events:none}
+  .select-none{user-select:none}
+  .cursor-default{cursor:default}
+  .object-cover{object-fit:cover}
+
+  /* ── Transition / animation ──────────────────────── */
+  .transition-all{transition:all 150ms cubic-bezier(0.4,0,0.2,1)}
+  .transition-colors{transition:color 150ms,background-color 150ms,border-color 150ms}
+  .transition-transform{transition:transform 150ms}
+  .duration-300{transition-duration:300ms}
+  .group:hover .group-hover\:translate-x-1{transform:translateX(0.25rem)}
+
+  /* ── Font families (from Google Fonts) ──────────── */
+  .font-heading{font-family:'Exo 2',sans-serif}
+  .font-body{font-family:'Nunito',sans-serif}
+  .font-mono{font-family:'JetBrains Mono','Fira Code',monospace}
+
+  /* ── Custom animations ───────────────────────────── */
+  @keyframes floatSlow{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+  @keyframes floatMed {0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes pulseGlow{0%,100%{opacity:.6}50%{opacity:1}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes bounce{0%,100%{transform:translateY(-25%);animation-timing-function:cubic-bezier(0.8,0,1,1)}50%{transform:translateY(0);animation-timing-function:cubic-bezier(0,0,0.2,1)}}
+  .animate-float-slow{animation:floatSlow 8s ease-in-out infinite}
+  .animate-float-med {animation:floatMed  5s ease-in-out infinite}
+  .animate-pulse-glow{animation:pulseGlow 3s ease-in-out infinite}
+  .animate-fade-up   {animation:fadeUp  .6s ease-out both}
+  .animate-bounce    {animation:bounce  1s infinite}
+
+  /* ── Responsive breakpoints ──────────────────────── */
+  @media (min-width:640px){
+    .sm\:flex-row{flex-direction:row}
+    .sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media (min-width:768px){
+    .md\:hidden{display:none}
+    .md\:block{display:block}
+    .md\:flex{display:flex}
+    .md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .md\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .md\:text-2xl{font-size:1.5rem;line-height:2rem}
+    .md\:text-5xl{font-size:3rem;line-height:1}
+    .md\:text-7xl{font-size:4.5rem;line-height:1}
+  }
+  @media (min-width:1024px){
+    .lg\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+  @media (min-width:1280px){
+    .xl\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800;900&family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --teal:   #00c8b4;
+      --purple: #7c3aed;
+      --navy:   #030a14;
+      --card:   #0d1a2e;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--navy); }
+    body { font-family: 'Nunito', sans-serif; color: #e6edf3; background: var(--navy); overflow-x: hidden; }
+    h1,h2,h3,h4,h5 { font-family: 'Exo 2', sans-serif; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #030a14; }
+    ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
+
+    /* ── Canvas ── */
+    #cell-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+    /* ── Glow utilities ── */
+    .glow-teal   { box-shadow: 0 0 28px rgba(0,200,180,.35); }
+    .glow-purple { box-shadow: 0 0 28px rgba(124,58,237,.35); }
+    .text-glow   { text-shadow: 0 0 30px rgba(0,200,180,.55); }
+
+    /* ── Glass card ── */
+    .glass {
+      background: rgba(13,26,46,.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(0,200,180,.14);
+      border-radius: 14px;
+    }
+    .glass:hover {
+      border-color: rgba(0,200,180,.38);
+      box-shadow: 0 0 22px rgba(0,200,180,.18);
+      transform: translateY(-3px);
+      transition: all .25s;
+    }
+
+    /* ── Nav link ── */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: ''; position: absolute; left: 0; bottom: -3px;
+      width: 0; height: 2px; background: var(--teal);
+      transition: width .25s;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ── Step connector ── */
+    .step-line {
+      position: absolute; top: 26px; left: calc(50% + 32px);
+      width: calc(100% - 64px); height: 2px;
+      background: linear-gradient(90deg, #00c8b4, #7c3aed);
+    }
+
+    /* ── Code block ── */
+    .code-block {
+      background: #020810;
+      border: 1px solid rgba(0,200,180,.22);
+      border-radius: 10px;
+      position: relative;
+    }
+    .code-block .copy-btn {
+      position: absolute; top: 10px; right: 12px;
+      background: rgba(0,200,180,.18); border: 1px solid rgba(0,200,180,.3);
+      color: #00c8b4; border-radius: 6px; padding: 3px 10px;
+      font-size: .72rem; cursor: pointer; transition: .2s;
+    }
+    .code-block .copy-btn:hover { background: rgba(0,200,180,.35); }
+
+    /* ── Section fade-in ── */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s, transform .6s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    /* ── Gradient text ── */
+    .grad-text {
+      background: linear-gradient(135deg, #00c8b4 0%, #7c3aed 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Hero gradient overlay ── */
+    .hero-grad {
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,200,180,.07) 0%, transparent 70%),
+                  radial-gradient(ellipse 40% 40% at 80% 20%, rgba(124,58,237,.06) 0%, transparent 60%);
+    }
+
+    /* ── Mobile nav ── */
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(0,200,180,.12); border: 1px solid rgba(0,200,180,.3);
+      color: #00c8b4; border-radius: 20px; padding: 3px 12px; font-size: .75rem; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+     style="background:rgba(3,10,20,.0);backdrop-filter:blur(0px)">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <!-- Logo + name -->
+    <a href="#" class="flex items-center gap-3">
+      <img src="./assets/logo.png" alt="GrowthEmulator logo"
+           class="w-10 h-10 rounded-lg object-cover"
+           onerror="this.style.display='none'"/>
+      <div>
+        <div class="font-heading font-extrabold text-teal text-lg leading-tight">GrowthEmulator</div>
+        <div class="text-[10px] text-gray-500 -mt-0.5">v 1.2</div>
+      </div>
+    </a>
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-gray-300">
+      <a href="#features" class="nav-link hover:text-teal-DEFAULT transition-colors">Recursos</a>
+      <a href="#models"   class="nav-link hover:text-teal-DEFAULT transition-colors">Modelos</a>
+      <a href="#howto"    class="nav-link hover:text-teal-DEFAULT transition-colors">Como usar</a>
+      <a href="#install"  class="nav-link hover:text-teal-DEFAULT transition-colors">Instalação</a>
+    </div>
+    <!-- CTA -->
+    <div class="hidden md:flex items-center gap-3">
+      <a href="#install"
+         class="text-sm font-semibold text-gray-300 border border-gray-700 rounded-lg px-4 py-2 hover:border-teal-DEFAULT hover:text-teal-DEFAULT transition-all">
+        Rodar localmente
+      </a>
+      <a href="http://localhost:8501" target="_blank"
+         class="text-sm font-bold bg-teal-DEFAULT text-navy-DEFAULT rounded-lg px-5 py-2 hover:bg-teal-light transition-all glow-teal">
+        Abrir simulador ↗
+      </a>
+    </div>
+    <!-- Mobile hamburger -->
+    <button id="hamburger" class="md:hidden text-gray-400 hover:text-teal-DEFAULT p-2">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="flex-col gap-2 px-6 pb-4 md:hidden bg-navy-card border-t border-gray-800">
+    <a href="#features" class="py-2 text-sm text-gray-300 hover:text-teal-DEFAULT">Recursos</a>
+    <a href="#models"   class="py-2 text-sm text-gray-300 hover:text-teal-DEFAULT">Modelos</a>
+    <a href="#howto"    class="py-2 text-sm text-gray-300 hover:text-teal-DEFAULT">Como usar</a>
+    <a href="#install"  class="py-2 text-sm text-gray-300 hover:text-teal-DEFAULT">Instalação</a>
+    <a href="http://localhost:8501" target="_blank"
+       class="mt-2 text-center text-sm font-bold bg-teal-DEFAULT text-navy-DEFAULT rounded-lg px-4 py-2">
+      Abrir simulador ↗
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════ -->
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden hero-grad">
+  <canvas id="cell-canvas"></canvas>
+
+  <!-- Decorative blobs -->
+  <div class="absolute top-20 left-10 w-72 h-72 rounded-full opacity-5"
+       style="background:radial-gradient(circle, #00c8b4, transparent 70%)"></div>
+  <div class="absolute bottom-20 right-10 w-96 h-96 rounded-full opacity-5"
+       style="background:radial-gradient(circle, #7c3aed, transparent 70%)"></div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-6 text-center py-32">
+    <!-- Logo badge -->
+    <div class="flex justify-center mb-8 animate-float-slow">
+      <div class="relative">
+        <div class="absolute inset-0 rounded-2xl blur-xl opacity-40"
+             style="background:radial-gradient(circle, #00c8b4, #7c3aed)"></div>
+        <img src="./assets/logo.png" alt="GrowthEmulator"
+             class="relative w-28 h-28 rounded-2xl object-cover glow-teal"
+             onerror="this.outerHTML='<div class=\'relative w-28 h-28 rounded-2xl flex items-center justify-center text-5xl glow-teal\' style=\'background:linear-gradient(135deg,#00c8b4,#7c3aed)\'>🧫</div>'"/>
+      </div>
+    </div>
+
+    <!-- Headline -->
+    <div class="badge mb-6">🧬 Engenharia de Bioprocessos · Microbiologia Preditiva</div>
+    <h1 class="text-5xl md:text-7xl font-heading font-black mb-4 text-glow">
+      <span class="grad-text">GrowthEmulator</span>
+    </h1>
+    <p class="text-xl md:text-2xl font-heading font-light text-gray-300 mb-3">
+      Simulador de Crescimento Celular Microbiano
+    </p>
+    <p class="text-base text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
+      Carregue dados experimentais, ajuste mais de <strong class="text-teal-DEFAULT">30 modelos cinéticos</strong>
+      validados, analise métricas estatísticas e exporte resultados prontos para publicação — em uma
+      interface interativa, multilíngue e acessível.
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+      <a href="http://localhost:8501" target="_blank"
+         class="group flex items-center justify-center gap-2 bg-teal-DEFAULT text-navy-DEFAULT font-bold text-base rounded-xl px-8 py-4 hover:bg-teal-light transition-all glow-teal">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        Acessar Simulador Online
+        <span class="group-hover:translate-x-1 transition-transform">→</span>
+      </a>
+      <a href="#install"
+         class="flex items-center justify-center gap-2 border border-gray-600 text-gray-300 font-semibold text-base rounded-xl px-8 py-4 hover:border-teal-DEFAULT hover:text-teal-DEFAULT transition-all">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        Executar Localmente
+      </a>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="flex flex-col items-center gap-2 opacity-40 animate-bounce">
+      <span class="text-xs text-gray-500">Explore</span>
+      <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     STATS STRIP
+═══════════════════════════════════════════════════════ -->
+<section class="border-y py-6" style="border-color:rgba(0,200,180,.12);background:rgba(13,26,46,.5)">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="text-center">
+        <div class="text-3xl font-heading font-black grad-text">30+</div>
+        <div class="text-xs text-gray-400 mt-1">Modelos Cinéticos</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-heading font-black grad-text">4</div>
+        <div class="text-xs text-gray-400 mt-1">Idiomas</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-heading font-black grad-text">CC</div>
+        <div class="text-xs text-gray-400 mt-1">Licença Aberta</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-heading font-black grad-text">∞</div>
+        <div class="text-xs text-gray-400 mt-1">Exportações ilimitadas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     FEATURES
+═══════════════════════════════════════════════════════ -->
+<section id="features" class="py-28 max-w-7xl mx-auto px-6">
+  <div class="text-center mb-16 reveal">
+    <div class="badge mb-4">⭐ Recursos</div>
+    <h2 class="text-4xl md:text-5xl font-heading font-black mb-4">Por que <span class="grad-text">GrowthEmulator</span>?</h2>
+    <p class="text-gray-400 max-w-xl mx-auto text-base">
+      Uma ferramenta completa para pesquisadores, engenheiros e estudantes de bioprocessos.
+    </p>
+  </div>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Feature 1 -->
+    <div class="glass p-6 reveal reveal-delay-1">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
+           style="background:rgba(0,200,180,.15)">🔬</div>
+      <h3 class="text-lg font-heading font-bold text-teal-DEFAULT mb-2">30+ Modelos Cinéticos</h3>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        Exponenciais, logísticos, mecanísticos, sigmoides, enzimáticos e empíricos. De Malthus (1798) a Baranyi-Roberts (1994).
+      </p>
+    </div>
+    <!-- Feature 2 -->
+    <div class="glass p-6 reveal reveal-delay-2">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
+           style="background:rgba(124,58,237,.15)">📈</div>
+      <h3 class="text-lg font-heading font-bold text-purple-light mb-2">Visualização Interativa</h3>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        Gráficos Plotly com zoom, pan e hover. Curva ajustada em grade fina com banda de confiança ±1σ e análise de resíduos.
+      </p>
+    </div>
+    <!-- Feature 3 -->
+    <div class="glass p-6 reveal reveal-delay-3">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
+           style="background:rgba(59,130,246,.15)">📁</div>
+      <h3 class="text-lg font-heading font-bold text-blue-400 mb-2">Importação Inteligente</h3>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        Suporte a .csv, .xlsx e .txt com detecção automática de delimitadores BR (;,) e EN (,,.). Entrada manual com Ctrl+V.
+      </p>
+    </div>
+    <!-- Feature 4 -->
+    <div class="glass p-6 reveal reveal-delay-1">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
+           style="background:rgba(249,115,22,.15)">📐</div>
+      <h3 class="text-lg font-heading font-bold text-orange-400 mb-2">Métricas Estatísticas</h3>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        RMSE, R² Ajustado, AIC, BIC corrigido. Teste de Shapiro-Wilk / D'Agostino nos resíduos. Indicador de qualidade automático.
+      </p>
+    </div>
+    <!-- Feature 5 -->
+    <div class="glass p-6 reveal reveal-delay-2">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
+           style="background:rgba(34,197,94,.15)">📄</div>
+      <h3 class="text-lg font-heading font-bold text-green-400 mb-2">Exportação Completa</h3>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        Resultados em PDF (relatório de análise) e Excel (5 abas: Dados, Parâmetros, Métricas, Ajuste, Fases) prontos para publicação.
+      </p>
+    </div>
+    <!-- Feature 6 -->
+    <div class="glass p-6 reveal reveal-delay-3">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
+           style="background:rgba(0,200,180,.15)">♿</div>
+      <h3 class="text-lg font-heading font-bold text-teal-DEFAULT mb-2">Acessibilidade Total</h3>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        Modo escuro/claro, alto contraste e paletas para daltonismo (deuteranopia, protanopia). Interface em PT, EN, ES e 中文.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     MODEL CATEGORIES
+═══════════════════════════════════════════════════════ -->
+<section id="models" class="py-24 px-6" style="background:rgba(13,26,46,.4)">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <div class="badge mb-4">🔬 Biblioteca</div>
+      <h2 class="text-4xl md:text-5xl font-heading font-black mb-4">
+        <span class="grad-text">11 famílias</span> de modelos
+      </h2>
+      <p class="text-gray-400 max-w-xl mx-auto">
+        Cada família cobre uma classe de comportamento microbiano específico, com referências históricas e literatura validada.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="model-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     HOW IT WORKS
+═══════════════════════════════════════════════════════ -->
+<section id="howto" class="py-28 max-w-7xl mx-auto px-6">
+  <div class="text-center mb-20 reveal">
+    <div class="badge mb-4">🚀 Fluxo</div>
+    <h2 class="text-4xl md:text-5xl font-heading font-black mb-4">Como funciona</h2>
+    <p class="text-gray-400 max-w-md mx-auto">Quatro passos simples do dado bruto ao resultado publicável.</p>
+  </div>
+
+  <div class="grid md:grid-cols-4 gap-6">
+    <!-- Step 1 -->
+    <div class="relative reveal reveal-delay-1">
+      <div class="hidden md:block step-line opacity-30"></div>
+      <div class="text-center">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 glow-teal"
+             style="background:linear-gradient(135deg,#00c8b4,#009688);color:#030a14">1</div>
+        <h4 class="font-heading font-bold text-teal-DEFAULT mb-2">📁 Carregar dados</h4>
+        <p class="text-xs text-gray-400 leading-relaxed">
+          Faça upload de .csv, .xlsx ou .txt, ou insira dados manualmente. Delimitadores BR/EN detectados automaticamente.
+        </p>
+      </div>
+    </div>
+    <!-- Step 2 -->
+    <div class="relative reveal reveal-delay-2">
+      <div class="hidden md:block step-line opacity-30"></div>
+      <div class="text-center">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 glow-purple"
+             style="background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff">2</div>
+        <h4 class="font-heading font-bold text-purple-light mb-2">🔬 Escolher modelo</h4>
+        <p class="text-xs text-gray-400 leading-relaxed">
+          Explore os 11 boxes de modelos. Apenas os compatíveis com seus dados ficam ativos. Use o Guia de Seleção para ajuda.
+        </p>
+      </div>
+    </div>
+    <!-- Step 3 -->
+    <div class="relative reveal reveal-delay-3">
+      <div class="hidden md:block step-line opacity-30"></div>
+      <div class="text-center">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4"
+             style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff">3</div>
+        <h4 class="font-heading font-bold text-blue-400 mb-2">⚙️ Ajustar & analisar</h4>
+        <p class="text-xs text-gray-400 leading-relaxed">
+          Configure tolerância, iterações e modo de restart. Execute o ajuste e visualize parâmetros, métricas, fases de crescimento.
+        </p>
+      </div>
+    </div>
+    <!-- Step 4 -->
+    <div class="reveal reveal-delay-4">
+      <div class="text-center">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4"
+             style="background:linear-gradient(135deg,#22c55e,#15803d);color:#fff">4</div>
+        <h4 class="font-heading font-bold text-green-400 mb-2">📤 Exportar</h4>
+        <p class="text-xs text-gray-400 leading-relaxed">
+          Baixe PDF com relatório completo ou Excel com 5 abas de resultados. Pronto para periódicos e relatórios técnicos.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     INSTALLATION
+═══════════════════════════════════════════════════════ -->
+<section id="install" class="py-24 px-6" style="background:rgba(13,26,46,.5)">
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <div class="badge mb-4">💻 Instalação local</div>
+      <h2 class="text-4xl md:text-5xl font-heading font-black mb-4">Rodar <span class="grad-text">localmente</span></h2>
+      <p class="text-gray-400">Três comandos. Sem configuração adicional.</p>
+    </div>
+
+    <!-- Step 1: Clone -->
+    <div class="mb-6 reveal reveal-delay-1">
+      <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">1 — Clonar o repositório</p>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+        <pre class="p-5 text-sm overflow-x-auto"><code><span class="text-gray-500"># via Git</span>
+<span class="text-teal-DEFAULT">git</span> clone https://github.com/matheusmonteirobatista/growthemulator.git
+<span class="text-teal-DEFAULT">cd</span> growthemulator</code></pre>
+      </div>
+    </div>
+
+    <!-- Step 2: Install -->
+    <div class="mb-6 reveal reveal-delay-2">
+      <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">2 — Instalar dependências</p>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+        <pre class="p-5 text-sm overflow-x-auto"><code><span class="text-teal-DEFAULT">pip</span> install -r requirements.txt</code></pre>
+      </div>
+    </div>
+
+    <!-- Step 3: Run -->
+    <div class="mb-8 reveal reveal-delay-3">
+      <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">3 — Executar o simulador</p>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">copiar</button>
+        <pre class="p-5 text-sm overflow-x-auto"><code><span class="text-teal-DEFAULT">streamlit</span> run app.py</code></pre>
+      </div>
+      <p class="text-xs text-gray-600 mt-2">O simulador abrirá automaticamente em <code class="text-teal-DEFAULT">http://localhost:8501</code></p>
+    </div>
+
+    <!-- Requirements -->
+    <div class="glass p-6 reveal reveal-delay-4">
+      <h4 class="font-heading font-bold text-sm mb-3 text-gray-300">📦 Requisitos mínimos</h4>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div class="text-xs text-gray-400 flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal-DEFAULT inline-block"></span>Python ≥ 3.9
+        </div>
+        <div class="text-xs text-gray-400 flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal-DEFAULT inline-block"></span>Streamlit ≥ 1.32
+        </div>
+        <div class="text-xs text-gray-400 flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal-DEFAULT inline-block"></span>Pandas ≥ 2.0
+        </div>
+        <div class="text-xs text-gray-400 flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal-DEFAULT inline-block"></span>SciPy ≥ 1.11
+        </div>
+        <div class="text-xs text-gray-400 flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal-DEFAULT inline-block"></span>Plotly ≥ 5.18
+        </div>
+        <div class="text-xs text-gray-400 flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal-DEFAULT inline-block"></span>openpyxl + fpdf2
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════ -->
+<footer class="py-14 px-6 border-t" style="border-color:rgba(0,200,180,.1)">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-3 gap-10 mb-10">
+      <!-- Brand -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <img src="./assets/logo.png" alt="GrowthEmulator" class="w-9 h-9 rounded-lg object-cover"
+               onerror="this.style.display='none'"/>
+          <span class="font-heading font-extrabold text-teal-DEFAULT text-lg">GrowthEmulator v1.2</span>
+        </div>
+        <p class="text-xs text-gray-500 leading-relaxed">
+          Simulador de crescimento celular microbiano para pesquisa, engenharia de bioprocessos e ensino.
+        </p>
+        <!-- CC License icons -->
+        <div class="flex items-center gap-2 mt-4">
+          <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank"
+             class="flex items-center gap-1 text-xs text-gray-500 hover:text-teal-DEFAULT transition-colors">
+            <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg"  class="w-4 h-4 opacity-60"/>
+            <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg"  class="w-4 h-4 opacity-60"/>
+            <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg"  class="w-4 h-4 opacity-60"/>
+            <img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg"  class="w-4 h-4 opacity-60"/>
+            <span>CC BY-NC-ND 4.0</span>
+          </a>
+        </div>
+      </div>
+      <!-- Links -->
+      <div>
+        <h5 class="font-heading font-bold text-sm text-gray-300 mb-4">Navegação</h5>
+        <ul class="space-y-2 text-xs text-gray-500">
+          <li><a href="#features" class="hover:text-teal-DEFAULT transition-colors">Recursos</a></li>
+          <li><a href="#models"   class="hover:text-teal-DEFAULT transition-colors">Biblioteca de Modelos</a></li>
+          <li><a href="#howto"    class="hover:text-teal-DEFAULT transition-colors">Como funciona</a></li>
+          <li><a href="#install"  class="hover:text-teal-DEFAULT transition-colors">Instalação local</a></li>
+        </ul>
+      </div>
+      <!-- Author -->
+      <div>
+        <h5 class="font-heading font-bold text-sm text-gray-300 mb-4">Autor</h5>
+        <p class="text-xs text-gray-500 mb-3">
+          Desenvolvido por <span class="text-teal-DEFAULT font-semibold">Matheus Monteiro Batista</span>
+        </p>
+        <div class="flex gap-3">
+          <a href="mailto:eng.matheusmbatista@gmail.com"
+             class="w-9 h-9 rounded-lg flex items-center justify-center border border-gray-700 hover:border-teal-DEFAULT text-gray-400 hover:text-teal-DEFAULT transition-all">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </a>
+          <a href="https://www.linkedin.com/in/matheusmonteirobatista/" target="_blank"
+             class="w-9 h-9 rounded-lg flex items-center justify-center border border-gray-700 hover:border-teal-DEFAULT text-gray-400 hover:text-teal-DEFAULT transition-all">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a href="https://github.com/matheusmonteirobatista/growthemulator" target="_blank"
+             class="w-9 h-9 rounded-lg flex items-center justify-center border border-gray-700 hover:border-teal-DEFAULT text-gray-400 hover:text-teal-DEFAULT transition-all">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t pt-6 text-center text-xs text-gray-600"
+         style="border-color:rgba(255,255,255,.06)">
+      © 2026 Matheus Monteiro Batista. GrowthEmulator é licenciado sob
+      <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="text-teal-DEFAULT hover:underline">CC BY-NC-ND 4.0</a>.
+      Para uso comercial, entre em contato.
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════ -->
+<script>
+/* ── Cell particle system ── */
+const canvas = document.getElementById('cell-canvas');
+const ctx    = canvas.getContext('2d');
+let W, H;
+
+const COLORS = ['#00c8b4','#7c3aed','#3b82f6','#06b6d4','#a855f7'];
+
+function resize() {
+  W = canvas.width  = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+
+class Cell {
+  constructor() { this.init(); }
+  init() {
+    this.x  = Math.random() * W;
+    this.y  = Math.random() * H;
+    this.r  = Math.random() * 22 + 6;
+    this.vx = (Math.random() - .5) * .25;
+    this.vy = (Math.random() - .5) * .25;
+    this.c  = COLORS[Math.floor(Math.random() * COLORS.length)];
+    this.a  = Math.random() * .25 + .05;
+    this.ph = Math.random() * Math.PI * 2;
+    this.ps = (Math.random() * .008 + .005) * (Math.random() > .5 ? 1 : -1);
+    // organelle
+    this.org = Math.random() > .4 ? {
+      dx: (Math.random() - .5) * this.r * .5,
+      dy: (Math.random() - .5) * this.r * .5,
+      r:  this.r * (Math.random() * .2 + .15),
+    } : null;
+  }
+  update() {
+    this.x  += this.vx; this.y += this.vy; this.ph += this.ps;
+    const margin = this.r * 3;
+    if (this.x < -margin)   this.x = W + margin;
+    if (this.x > W + margin) this.x = -margin;
+    if (this.y < -margin)   this.y = H + margin;
+    if (this.y > H + margin) this.y = -margin;
+  }
+  draw() {
+    const alpha = this.a + Math.sin(this.ph) * 0.04;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    // glow halo
+    const g = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r * 3);
+    g.addColorStop(0, this.c + '30');
+    g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r * 3, 0, Math.PI * 2);
+    ctx.fill();
+    // membrane
+    ctx.strokeStyle = this.c + 'aa';
+    ctx.lineWidth   = 1;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.stroke();
+    // cytoplasm fill (subtle)
+    ctx.fillStyle = this.c + '12';
+    ctx.fill();
+    // nucleus
+    ctx.fillStyle = this.c + 'bb';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r * .32, 0, Math.PI * 2);
+    ctx.fill();
+    // organelle
+    if (this.org) {
+      ctx.fillStyle = this.c + '55';
+      ctx.beginPath();
+      ctx.arc(this.x + this.org.dx, this.y + this.org.dy, this.org.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+}
+
+const cells = [];
+function initCells() {
+  cells.length = 0;
+  const count = Math.min(50, Math.floor((W * H) / 18000));
+  for (let i = 0; i < count; i++) cells.push(new Cell());
+}
+
+function loop() {
+  ctx.clearRect(0, 0, W, H);
+  cells.forEach(c => { c.update(); c.draw(); });
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize', () => { resize(); initCells(); });
+resize(); initCells(); loop();
+
+/* ── Navbar scroll effect ── */
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) {
+    nav.style.background    = 'rgba(3,10,20,.92)';
+    nav.style.backdropFilter = 'blur(16px)';
+    nav.style.borderBottom  = '1px solid rgba(0,200,180,.1)';
+  } else {
+    nav.style.background    = 'rgba(3,10,20,.0)';
+    nav.style.backdropFilter = 'blur(0px)';
+    nav.style.borderBottom  = 'none';
+  }
+});
+
+/* ── Mobile menu ── */
+document.getElementById('hamburger').addEventListener('click', () => {
+  const m = document.getElementById('mobile-menu');
+  m.classList.toggle('open');
+});
+
+/* ── Intersection Observer (reveal) ── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ── Model grid ── */
+const MODELS_DATA = [
+  { n: 1,  name: 'Exponenciais & Lineares',   count: 2, icon: '📈', desc: 'Malthus, Linear',                                    color: '#00c8b4' },
+  { n: 2,  name: 'Logísticos',                count: 3, icon: '〽️', desc: 'Verhulst, Gompertz Mod., Logístico Mod.',             color: '#7c3aed' },
+  { n: 3,  name: 'Mecanísticos',              count: 3, icon: '⚙️', desc: 'Baranyi-Roberts, Contois, Herbert-Pirt',              color: '#3b82f6' },
+  { n: 4,  name: 'Sigmoides (curva completa)',count: 2, icon: '📊', desc: 'Richards, Von Bertalanffy',                           color: '#ec4899' },
+  { n: 5,  name: 'Cinética Homogênea',        count: 2, icon: '🔬', desc: 'Michaelis-Menten, Inibição Competitiva',              color: '#f97316' },
+  { n: 6,  name: 'Cinética Heterogênea',      count: 1, icon: '⚗️', desc: 'Pirt — Rendimento Variável',                         color: '#14b8a6' },
+  { n: 7,  name: 'Turn-over Celular',         count: 2, icon: '🔄', desc: 'Luedeking-Piret, Chick',                             color: '#a855f7' },
+  { n: 8,  name: 'Clássicos (S-dep.)',         count: 5, icon: '🧪', desc: 'Monod, Tessier, Moser, Haldane/Andrews, Aiba',       color: '#22c55e' },
+  { n: 9,  name: 'Empíricos',                 count: 1, icon: '📉', desc: 'Buchanan Trifásico',                                  color: '#eab308' },
+  { n: 10, name: 'Ajuste Linear de Curva',    count: 2, icon: '📏', desc: 'Regressão Polinomial, Log-linear',                   color: '#06b6d4' },
+  { n: 11, name: 'Ajuste Não Linear',         count: 2, icon: '〰️', desc: 'Gaussiana, Lei de Potência',                         color: '#f43f5e' },
+];
+
+const grid = document.getElementById('model-grid');
+MODELS_DATA.forEach((m, i) => {
+  const delay = (i % 4) * 0.1;
+  grid.innerHTML += `
+<div class="glass p-5 reveal" style="transition-delay:${delay}s;cursor:default">
+  <div class="flex items-start justify-between mb-3">
+    <div class="w-10 h-10 rounded-lg flex items-center justify-center text-xl"
+         style="background:${m.color}22">${m.icon}</div>
+    <span class="text-xs font-mono font-bold px-2 py-0.5 rounded-full"
+          style="background:${m.color}20;color:${m.color}">
+      ${m.count} mod.
+    </span>
+  </div>
+  <div class="font-heading font-bold text-sm mb-1" style="color:${m.color}">
+    Box ${m.n} — ${m.name}
+  </div>
+  <div class="text-xs text-gray-500 leading-relaxed">${m.desc}</div>
+</div>`;
+});
+
+// Re-observe the new cards
+setTimeout(() => {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+}, 100);
+
+/* ── Copy to clipboard ── */
+function copyCode(btn) {
+  const pre  = btn.nextElementSibling;
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ copiado';
+    setTimeout(() => btn.textContent = 'copiar', 2000);
+  });
+}
+
+/* ── Smooth scroll for internal links ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>
