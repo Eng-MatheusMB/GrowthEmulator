@@ -2615,7 +2615,17 @@ def tab_tools():
 
         S_enz = v_enz = None
         if ek_mode == "Usar dados carregados (aba Dados)":
-            df_src = st.session_state.df_clean or st.session_state.df
+            #df_src = st.session_state.df_clean or st.session_state.df
+            df_clean_0 = st.session_state.get("df_clean_0") #Nova implementação
+            df = st.session_state.get("df")#Nova implementação
+
+            df_src = df_clean_0 if df_clean_0 is not None else df
+            """
+            df_clean = st.session_state.get("df_clean") #Nova implementação
+            df = st.session_state.get("df")#Nova implementação
+
+            df_src3 = df_clean if df_clean is not None else df#Nova implementação
+            """
             s_col  = st.session_state.headers.get("substrate")
             t_col2 = st.session_state.headers.get("time")
             if df_src is not None and s_col and t_col2 and s_col in df_src.columns:
@@ -2658,7 +2668,11 @@ def tab_tools():
 
                 # Try competitive inhibition if product column exists
                 p_col = st.session_state.headers.get("product")
-                df_src2 = st.session_state.df_clean or st.session_state.df
+                #df_src2 = st.session_state.df_clean or st.session_state.df
+                df_clean_2 = st.session_state.get("df_clean_2") #Nova implementação
+                df = st.session_state.get("df")#Nova implementação
+
+                df_src2 = df_clean_2 if df_clean_2 is not None else df
                 popt_ci = None
                 if p_col and df_src2 is not None and p_col in df_src2.columns:
                     I_arr = pd.to_numeric(df_src2[p_col], errors="coerce").dropna().values
