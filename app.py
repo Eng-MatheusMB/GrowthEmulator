@@ -1775,11 +1775,22 @@ def tab_data():
                 st.session_state.df = st.session_state.df_raw.drop(
                     columns=[c for c in excl if c in st.session_state.df_raw.columns], errors="ignore")
 
-        # ── Manual data toggle ────────────────────────────────
+        # ── Manual data toggle  (Original, retornar se a alteração não for bem sucedida)────────────────────────────────
+        #st.markdown("---")
+        #prev_manual = st.session_state.use_manual
+        #st.session_state.use_manual = st.checkbox(t("dt_manual_title"),
+                                                    #value=st.session_state.use_manual)
+
+        # — Manual data toggle (nova implementação)——————————————————
         st.markdown("---")
-        prev_manual = st.session_state.use_manual
-        st.session_state.use_manual = st.checkbox(t("dt_manual_title"),
-                                                    value=st.session_state.use_manual)
+        prev_manual = st.session_state.get("use_manual", False) # Pega o valor atual com segurança
+
+        # Adicionamos a key="use_manual_multiplo" e lemos o valor atual
+        st.session_state.use_manual = st.checkbox(
+        t("dt_manual_title"), 
+        value=st.session_state.get("use_manual", False),
+        key="use_manual_multiplo"
+)                                            
         # Clear file data when manual is activated
         if st.session_state.use_manual and not prev_manual:
             st.session_state.df = None
@@ -2017,10 +2028,20 @@ def tab_data():
                 st.session_state.df = df
                 st.success(f"✅ {uf.name} — {df.shape[0]} linhas × {df.shape[1]} colunas")
 
-        # Manual toggle
+        # Manual toggle (implementação original, usar caso a nova não seja favorável)
+        #st.markdown("---")
+        #st.session_state.use_manual = st.checkbox(t("dt_manual_title"),
+                                                    #value=st.session_state.use_manual)
+        # — Manual data toggle ——————————————————
         st.markdown("---")
-        st.session_state.use_manual = st.checkbox(t("dt_manual_title"),
-                                                    value=st.session_state.use_manual)
+        prev_manual = st.session_state.get("use_manual", False) # Pega o valor atual com segurança
+
+        # Adicionamos a key="use_manual_unico" e lemos o valor atual
+        st.session_state.use_manual = st.checkbox(
+        t("dt_manual_title"), 
+        value=st.session_state.get("use_manual", False),
+        key="use_manual_unico"
+)                                            
         if st.session_state.use_manual:
             st.caption(t("dt_manual_note"))
             col_mc = st.columns(5)
