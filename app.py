@@ -2530,17 +2530,25 @@ def tab_results():
                 if st.button(t("rs_export_pdf"), use_container_width=True, type="secondary"):
                     pdf = FPDF()
                     pdf.add_page()
-                    pdf.set_font("Helvetica", "B", 16)
+                    # --- Família DejaVu Sans (Sem serifa) ---
+                    pdf.add_font("DejaVu", "", "fonts/DejaVuSans.ttf")
+                    pdf.add_font("DejaVu", "B", "fonts/DejaVuSans-Bold.ttf")
+
+                    # --- Família DejaVu Serif (Com serifa) ---
+                    pdf.add_font("DejaVuSerif", "", "fonts/DejaVuSerif.ttf")
+                    pdf.add_font("DejaVuSerif", "B", "fonts/DejaVuSerif-Bold.ttf")
+                    
+                    pdf.set_font("DejaVu", "B", 16)
                     pdf.cell(0, 10, "GrowthEmulator v1.2 - Relatorio de Analise", ln=True)
-                    pdf.set_font("Helvetica", "", 9)
+                    pdf.set_font("DejaVu", "", 9)
                     pdf.cell(0, 5, f"Modelos analisados: {len(all_export_data)}", ln=True)
                     pdf.ln(3)
                     for mk, ed in all_export_data.items():
                         fr = ed["fr"]
                         m_name = ALL_MODELS.get(mk,{}).get("name",mk)
-                        pdf.set_font("Helvetica","B",12)
+                        pdf.set_font("DejaVu","B",12)
                         pdf.cell(0, 8, f"Modelo: {m_name}", ln=True)
-                        pdf.set_font("Helvetica","",10)
+                        pdf.set_font("DejaVu","",10)
                         pdf.cell(0, 5, f"  Autor: {ALL_MODELS.get(mk,{}).get('author','')}", ln=True)
                         for label, val in [
                             (t("rs_rmse"), fr["rmse"]), (t("rs_r2adj"), fr["r2adj"]),
