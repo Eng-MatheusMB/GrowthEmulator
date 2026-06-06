@@ -1,10 +1,10 @@
-# 🧫 BioGrowth v1.1 — Simulador de Crescimento Celular Microbiano
+# 🧫 GrowthEmulator v1.2 — Simulador de Crescimento Celular Microbiano
 
 [![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.32+-red.svg)](https://streamlit.io/)
 
-**BioGrowth** é uma plataforma interativa de modelagem cinética microbiana desenvolvida para
+**GrowthEmulator** é uma plataforma interativa de modelagem cinética microbiana desenvolvida para
 pesquisadores, engenheiros de bioprocessos e estudantes.
 
 ---
@@ -32,8 +32,8 @@ pesquisadores, engenheiros de bioprocessos e estudantes.
 
 ### 1. Clonar o repositório
 ```bash
-git clone https://github.com/matheusmonteirobatista/biogrowth.git
-cd biogrowth
+git clone https://github.com/matheusmonteirobatista/GrowthEmulator.git
+cd GrowthEmulator
 ```
 
 ### 2. Instalar dependências
@@ -67,7 +67,7 @@ fpdf2>=2.7.0
 ## 🗂️ Estrutura do projeto
 
 ```
-biogrowth/
+GrowthEmulator/
 ├── app.py                   ← Aplicação Streamlit principal
 ├── requirements.txt         ← Dependências Python
 ├── index.html               ← Landing page (HTML5 + Tailwind CSS)
@@ -125,7 +125,7 @@ Lista completa de referências disponível na aba **📖 Guia & Referências** d
 
 ## ⚖️ Licença
 
-**BioGrowth v1.1** © 2026 by **Matheus Monteiro Batista** is licensed under
+**GrowthEmulator v1.1** © 2026 by **Matheus Monteiro Batista** is licensed under
 [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 Uso acadêmico e pessoal permitido com atribuição.
@@ -137,4 +137,4 @@ Para uso comercial, entre em contato: matheus@example.com
 
 - **E-mail**: matheus@example.com
 - **LinkedIn**: [linkedin.com/in/matheusmonteirobatista](https://www.linkedin.com/in/matheusmonteirobatista/)
-- **GitHub**: [github.com/matheusmonteirobatista/biogrowth](https://github.com/matheusmonteirobatista/biogrowth)
+- **GitHub**: [github.com/matheusmonteirobatista/GrowthEmulator](https://github.com/matheusmonteirobatista/GrowthEmulator)
