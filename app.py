@@ -1744,7 +1744,7 @@ def tab_data():
                 type=["csv", "xlsx", "xls", "txt"],
                 accept_multiple_files=True,
                 label_visibility="collapsed",
-                key="uploader",
+                key="uploader_multiplo",
             )
         with col_hr:
             hr = st.number_input(t("dt_header_row"), min_value=1, max_value=50, value=1,
@@ -2005,7 +2005,7 @@ def tab_data():
         col_up, col_hr = st.columns([3, 1])
         with col_up:
             uf = st.file_uploader(t("dt_upload_label"), type=["csv", "xlsx", "xls", "txt"],
-                                   label_visibility="collapsed", key="uploader")
+                                   label_visibility="collapsed", key="uploader_unico")
         with col_hr:
             hr = st.number_input(t("dt_header_row"), min_value=1, max_value=50, value=1,
                                   key="header_row_num")
