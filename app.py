@@ -2792,7 +2792,11 @@ def tab_tools():
     st.markdown(f"### 🔄 {t('tl_turnover_title')}")
     st.caption(t("tl_turnover_note"))
 
-    df_src3  = st.session_state.df_clean or st.session_state.df
+    #df_src3  = st.session_state.df_clean or st.session_state.df (erro associado a verificação no pandas - código)
+    df_clean = st.session_state.get("df_clean") #Nova implementação
+    df = st.session_state.get("df")#Nova implementação
+
+    df_src3 = df_clean if df_clean is not None else df#Nova implementação
     t_col3   = st.session_state.headers.get("time")
     x_col3   = st.session_state.headers.get("biomass")
     p_col3   = st.session_state.headers.get("product")
