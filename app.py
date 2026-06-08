@@ -925,13 +925,18 @@ def m_logistic_mod(t, A, mu_max, lam):
 
 def m_baranyi(t_eval, X0, Xm, mu_max, q0, v=None):
     if v is None: v = mu_max
+    # solve_ivp requires t_eval sorted ascending, unique, within integration span
+    t_eval = np.asarray(t_eval, dtype=float)
+    t_eval = np.unique(t_eval)          # sort + remove duplicates in one step
+    if len(t_eval) < 2:
+        return np.full(max(len(t_eval), 1), X0, dtype=float)
     def odes(t, y):
-        X, q = y[0], y[1]
+        X, q = max(y[0], 0.0), max(y[1], 0.0)
         alpha = q / (1 + q)
-        dX = mu_max * alpha * (1 - X / Xm) * X
+        dX = mu_max * alpha * (1 - X / max(Xm, 1e-9)) * X
         dq = v * q
         return [dX, dq]
-    sol = solve_ivp(odes, [t_eval[0], t_eval[-1]], [X0, q0],
+    sol = solve_ivp(odes, [t_eval[0], t_eval[-1]], [max(X0, 1e-9), max(q0, 1e-9)],
                     t_eval=t_eval, method="RK45", rtol=1e-6, atol=1e-9, dense_output=False)
     if sol.success: return sol.y[0]
     return np.full_like(t_eval, X0, dtype=float)
@@ -976,11 +981,16 @@ def _haldane_mu(S, mu_max, Ks, Ki): return mu_max * S / (Ks + S + S**2 / Ki + 1e
 def _aiba_mu(S, mu_max, Ks, Ki): return mu_max * S * np.exp(-S / Ki) / (Ks + S + 1e-12)
 
 def _ode_substrate_model(t_eval, X0, S0, Y, mu_func):
+    # Guarantee t_eval is sorted and has no duplicates (solve_ivp requirement)
+    t_eval = np.unique(np.asarray(t_eval, dtype=float))
+    if len(t_eval) < 2:
+        return (np.full(max(len(t_eval), 1), X0, dtype=float),
+                np.full(max(len(t_eval), 1), S0, dtype=float))
     def odes(t, y):
-        X, S = max(y[0], 0), max(y[1], 0)
+        X, S = max(y[0], 0.0), max(y[1], 0.0)
         mu = mu_func(S)
-        return [mu * X, -mu * X / Y]
-    sol = solve_ivp(odes, [t_eval[0], t_eval[-1]], [X0, S0],
+        return [mu * X, -mu * X / max(Y, 1e-12)]
+    sol = solve_ivp(odes, [t_eval[0], t_eval[-1]], [max(X0, 1e-9), max(S0, 0.0)],
                     t_eval=t_eval, method="LSODA", rtol=1e-6, atol=1e-9)
     if sol.success: return sol.y[0], sol.y[1]
     return np.full_like(t_eval, X0, dtype=float), np.full_like(t_eval, S0, dtype=float)
@@ -1752,28 +1762,99 @@ def tab_data():
             st.caption(t("dt_header_note"))
 
         if ufs:
-            dfs = []
-            names = []
+            dfs, names = [], []
             for uf in ufs:
                 df_i = load_file(uf.read(), uf.name, header_row=int(hr) - 1)
                 if df_i is not None:
                     dfs.append(df_i)
                     names.append(uf.name)
+
             if dfs:
+                # ── Bug 7: detect new uploads and reset analysis ──────
+                current_sig = frozenset(names)
+                prev_sig    = st.session_state.get("_uploaded_file_sig", frozenset())
+                if current_sig != prev_sig:
+                    st.session_state.selected_models  = []
+                    st.session_state.fit_results       = {}
+                    st.session_state.headers           = {}
+                    st.session_state.df_clean          = None
+                    st.session_state.excluded_cols     = []
+                    st.session_state._uploaded_file_sig = current_sig
+
                 if len(dfs) == 1:
+                    # Single file — use directly
                     st.session_state.df_raw = dfs[0]
                     st.success(f"✅ {names[0]} — {dfs[0].shape[0]} × {dfs[0].shape[1]}")
+
                 else:
-                    try:
+                    # ── Multiple files: merge all ─────────────────────
+                    col_sets     = [frozenset(df.columns.astype(str)) for df in dfs]
+                    all_identical = len(set(col_sets)) == 1
+
+                    if all_identical:
+                        # Same structure → stack vertically
                         combined = pd.concat(dfs, ignore_index=True)
-                    except Exception:
-                        combined = dfs[0]
-                    st.session_state.df_raw = combined
-                    st.info(f"📂 {len(dfs)} arquivos · {combined.shape[0]} × {combined.shape[1]}  —  {t('dt_multi_file')}")
-                # Apply exclusions
-                excl = st.session_state.excluded_cols
-                st.session_state.df = st.session_state.df_raw.drop(
-                    columns=[c for c in excl if c in st.session_state.df_raw.columns], errors="ignore")
+                        st.session_state.df_raw = combined
+                        st.success(
+                            f"✅ {len(dfs)} arquivos com colunas idênticas "
+                            f"→ empilhados: {combined.shape[0]} × {combined.shape[1]} linhas")
+                    else:
+                        # Different columns → outer merge on first column (time)
+                        # Use the file with the widest time range as the base
+                        ranges = []
+                        for df_i in dfs:
+                            try:
+                                t_vals = pd.to_numeric(
+                                    df_i.iloc[:, 0], errors="coerce").dropna()
+                                ranges.append(float(t_vals.max() - t_vals.min())
+                                              if len(t_vals) > 1 else 0.0)
+                            except Exception:
+                                ranges.append(0.0)
+
+                        order     = sorted(range(len(dfs)), key=lambda i: -ranges[i])
+                        base_df   = dfs[order[0]].copy()
+                        base_t    = str(base_df.columns[0])   # time column name
+                        result    = base_df
+
+                        for idx in order[1:]:
+                            df_other = dfs[idx].copy()
+                            short    = (names[idx]
+                                        .replace(".csv","").replace(".xlsx","")
+                                        .replace(".xls","").replace(".txt",""))[:10]
+                            t_other  = str(df_other.columns[0])
+
+                            # Rename non-time columns with filename prefix
+                            rmap = {c: f"{c}_{short}"
+                                    for c in df_other.columns if c != t_other}
+                            df_other = df_other.rename(columns=rmap)
+                            # Align time column name to base
+                            if t_other != base_t:
+                                df_other = df_other.rename(
+                                    columns={t_other: base_t})
+
+                            # Outer merge on the time column
+                            result = pd.merge(result, df_other,
+                                              on=base_t, how="outer")
+                            result = (result.sort_values(base_t)
+                                            .reset_index(drop=True))
+
+                        st.session_state.df_raw = result
+                        st.info(
+                            f"📂 {len(dfs)} arquivos mesclados (outer join no eixo do tempo) "
+                            f"→ {result.shape[0]} × {result.shape[1]}")
+                        # Show column mapping per file
+                        for i, (nm, df_i) in enumerate(zip(names, dfs)):
+                            icon  = "🏆" if i == order[0] else "📄"
+                            cols_ = list(df_i.columns.astype(str))
+                            st.caption(f"{icon} {nm}: {cols_}")
+
+                # Apply any active column exclusions
+                if st.session_state.df_raw is not None:
+                    excl = st.session_state.excluded_cols
+                    st.session_state.df = st.session_state.df_raw.drop(
+                        columns=[c for c in excl
+                                 if c in st.session_state.df_raw.columns],
+                        errors="ignore")
 
         # ── Manual data toggle  (Original, retornar se a alteração não for bem sucedida)────────────────────────────────
         #st.markdown("---")
@@ -1905,13 +1986,20 @@ def tab_data():
                 if t_s.dropna().duplicated().any():
                     st.warning(t("dt_dup_time"))
 
-            # Column exclusion
+            # Column exclusion — filter stale defaults first
             all_cols = list(df.columns.astype(str))
             if all_cols:
+                # Only keep previously-excluded cols that still exist in this df
+                valid_defaults = [c for c in st.session_state.excluded_cols
+                                  if c in all_cols]
+                # Sync session state if stale items were removed
+                if set(valid_defaults) != set(st.session_state.excluded_cols):
+                    st.session_state.excluded_cols = valid_defaults
+
                 excl_sel = st.multiselect(
                     t("dt_excl_cols"),
                     all_cols,
-                    default=st.session_state.excluded_cols,
+                    default=valid_defaults,
                     help=t("dt_excl_note"),
                     key="excl_cols_sel",
                 )
@@ -1955,27 +2043,60 @@ def tab_data():
 
             with st.expander(f"📉 {t('dt_preview_title')}", expanded=True):
                 use_log = st.checkbox(t("dt_preview_log"), value=True, key="prev_log")
+
+                CHART_COLORS = [
+                    "#00c8b4","#f97316","#a855f7","#22c55e","#f43f5e",
+                    "#38bdf8","#fbbf24","#e879f9","#4ade80","#fb7185",
+                    "#34d399","#c084fc","#fdba74","#67e8f9","#fde68a",
+                ]
                 fig = go.Figure()
+
+                # Primary biomass series
                 fig.add_trace(go.Scatter(
                     x=t_s, y=x_s, mode="markers+lines",
-                    marker=dict(color="#00c8b4", size=7),
-                    line=dict(color="#00c8b4", width=1.2, dash="dot"),
+                    marker=dict(color=CHART_COLORS[0], size=7),
+                    line=dict(color=CHART_COLORS[0], width=1.5, dash="dot"),
                     name=str(x_col)))
+
+                # Additional merged-file biomass columns
+                # (same base name as mapped biomass column, but with filename suffix)
+                base_x = str(x_col).rsplit("_", 1)[0] if "_" in str(x_col) else str(x_col)
+                extra_x_cols = [
+                    c for c in df.columns
+                    if c != x_col
+                    and str(c).startswith(base_x + "_")
+                    and c != t_col
+                ]
+                for ci, exc in enumerate(extra_x_cols, 1):
+                    ex_vals = pd.to_numeric(df[exc], errors="coerce")
+                    ex_mask = ex_vals.notna() & (ex_vals > 0)
+                    if ex_mask.any():
+                        fig.add_trace(go.Scatter(
+                            x=pd.to_numeric(df[t_col], errors="coerce")[ex_mask].values,
+                            y=ex_vals[ex_mask].values,
+                            mode="markers+lines",
+                            marker=dict(color=CHART_COLORS[ci % len(CHART_COLORS)], size=6),
+                            line=dict(color=CHART_COLORS[ci % len(CHART_COLORS)],
+                                      width=1.2, dash="dot"),
+                            name=str(exc)))
+
+                # Substrate axis
                 s_col = st.session_state.headers.get("substrate")
                 if s_col and s_col in df.columns:
-                    s_arr = pd.to_numeric(df[s_col], errors="coerce")[mask].values
+                    s_arr_p = pd.to_numeric(df[s_col], errors="coerce")[mask].values
                     fig.add_trace(go.Scatter(
-                        x=t_s, y=s_arr, mode="markers+lines", yaxis="y2",
+                        x=t_s, y=s_arr_p, mode="markers+lines", yaxis="y2",
                         marker=dict(color="#f97316", size=6),
                         line=dict(color="#f97316", width=1, dash="dot"),
                         name=str(s_col)))
-                    fig.update_layout(yaxis2=dict(overlaying="y", side="right",
-                                                   showgrid=False, color="#f97316"))
+                    fig.update_layout(
+                        yaxis2=dict(overlaying="y", side="right",
+                                    showgrid=False, color="#f97316"))
+
                 fig.update_layout(
                     yaxis_type="log" if use_log else "linear",
                     yaxis=dict(
                         color="#8b949e", gridcolor="#30363d", title=str(x_col),
-                        # Fix: always show full decimal, never scientific notation
                         tickformat=".4g" if not use_log else None,
                         exponentformat="none",
                     ),
@@ -1984,7 +2105,8 @@ def tab_data():
                     legend=dict(bgcolor="rgba(0,0,0,0)"),
                     margin=dict(l=40, r=40, t=20, b=40), height=320,
                 )
-                st.plotly_chart(fig, use_container_width=True, config={"scrollZoom": True})
+                st.plotly_chart(fig, use_container_width=True,
+                                config={"scrollZoom": True})
         except Exception as e:
             st.error(f"Erro no gráfico: {e}")
 
@@ -2010,71 +2132,6 @@ def tab_data():
         else:
             st.info(t("dt_select_disabled"))
 
-    # ── Box 1: Upload + header row ────────────────────────────
-    with st.expander("📂 " + t("dt_upload_label"), expanded=True):
-        st.caption(t("dt_upload_types"))
-        col_up, col_hr = st.columns([3, 1])
-        with col_up:
-            uf = st.file_uploader(t("dt_upload_label"), type=["csv", "xlsx", "xls", "txt"],
-                                   label_visibility="collapsed", key="uploader_unico")
-        with col_hr:
-            hr = st.number_input(t("dt_header_row"), min_value=1, max_value=50, value=1,
-                                  key="header_row_num0")
-            st.caption(t("dt_header_note"))
-
-        if uf is not None:
-            df = load_file(uf.read(), uf.name, header_row=int(hr) - 1)
-            if df is not None:
-                st.session_state.df = df
-                st.success(f"✅ {uf.name} — {df.shape[0]} linhas × {df.shape[1]} colunas")
-
-        # Manual toggle (implementação original, usar caso a nova não seja favorável)
-        #st.markdown("---")
-        #st.session_state.use_manual = st.checkbox(t("dt_manual_title"),
-                                                    #value=st.session_state.use_manual)
-        # — Manual data toggle ——————————————————
-        st.markdown("---")
-        prev_manual = st.session_state.get("use_manual", False) # Pega o valor atual com segurança
-
-        # Adicionamos a key="use_manual_unico" e lemos o valor atual
-        st.session_state.use_manual = st.checkbox(
-        t("dt_manual_title"), 
-        value=st.session_state.get("use_manual", False),
-        key="use_manual_unico"
-)                                            
-        if st.session_state.use_manual:
-            st.caption(t("dt_manual_note"))
-            col_mc = st.columns(5)
-            if col_mc[0].button(t("dt_manual_add_col")):
-                st.session_state.manual_cols.append(f"Col{len(st.session_state.manual_cols)}")
-                st.rerun()
-            if col_mc[1].button(t("dt_manual_rem_col")) and len(st.session_state.manual_cols) > 2:
-                st.session_state.manual_cols.pop()
-                st.rerun()
-            if col_mc[2].button(t("dt_manual_add_row")):
-                st.session_state.manual_rows.append([""] * len(st.session_state.manual_cols))
-                st.rerun()
-            if col_mc[3].button(t("dt_manual_rem_row")) and len(st.session_state.manual_rows) > 1:
-                st.session_state.manual_rows.pop()
-                st.rerun()
-            if col_mc[4].button(t("dt_manual_clear")):
-                st.session_state.manual_rows = [[""] * len(st.session_state.manual_cols)] * 3
-                st.rerun()
-
-            man_df = pd.DataFrame(st.session_state.manual_rows,
-                                   columns=st.session_state.manual_cols)
-            edited = st.data_editor(man_df, use_container_width=True, num_rows="dynamic",
-                                    key="manual_editor")
-            for c in edited.columns:
-                try:
-                    edited[c] = pd.to_numeric(edited[c].astype(str).str.replace(",", "."), errors="coerce")
-                except Exception:
-                    pass
-            if st.button("Aplicar dados manuais"):
-                st.session_state.df = edited
-                st.rerun()
-
-
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 18. TAB: MODELS
@@ -2093,7 +2150,8 @@ def tab_models():
             f'<div style="padding:7px 0;font-size:.82rem;color:var(--acc)">'
             f'✅ {n_sel} {t("md_selected_count")}</div>',
             unsafe_allow_html=True)
-        if ab3.button(t("md_go_results"), type="primary", use_container_width=True):
+        if ab3.button(t("md_go_results"), type="primary",
+                      use_container_width=True, key="go_results_top"):
             st.session_state.tab = "results"; st.rerun()
 
     st.markdown("---")
@@ -2145,18 +2203,16 @@ def tab_models():
                                 sms.append(model["key"])
                             # clear cached fits when selection changes
                             st.session_state.fit_results = {}
-                            # auto-redirect to results after first model selection
-                            if len(sms) > 0:
-                                st.session_state.tab = "results"
+                            # ── Bug 3: no auto-redirect; user navigates manually ──
                             st.rerun()
                     else:
                         col.caption(f"⚠️ {t('md_disabled_tip')}" +
                                     ", ".join(model["requires"]))
 
     st.markdown("---")
-    # Bottom CTA
     if st.session_state.selected_models:
-        if st.button(t("md_go_results"), type="primary", use_container_width=True):
+        if st.button(t("md_go_results"), type="primary",
+                     use_container_width=True, key="go_results_bottom"):
             st.session_state.tab = "results"; st.rerun()
 
 
@@ -2347,9 +2403,19 @@ def tab_results():
     x_arr = pd.to_numeric(df_src[x_col], errors="coerce").dropna().values
     n     = min(len(t_arr), len(x_arr))
     t_arr, x_arr = t_arr[:n], x_arr[:n]
+
+    # Sort by time and remove duplicate time points (required by solve_ivp)
+    sort_idx      = np.argsort(t_arr, kind="stable")
+    t_arr, x_arr  = t_arr[sort_idx], x_arr[sort_idx]
+    _, unique_idx = np.unique(t_arr, return_index=True)
+    t_arr, x_arr  = t_arr[unique_idx], x_arr[unique_idx]
+
     s_arr = None
     if s_col and s_col in df_src.columns:
-        s_arr = pd.to_numeric(df_src[s_col], errors="coerce").values[:n]
+        s_raw = pd.to_numeric(df_src[s_col], errors="coerce").values
+        # Align to the same sort+unique indices used for t/X
+        s_raw_n   = s_raw[:n][sort_idx][unique_idx]
+        s_arr     = s_raw_n.astype(float)
 
     # Optimization settings
     with st.expander(f"⚙️ {t('rs_opt_title')}", expanded=True):
@@ -2369,14 +2435,40 @@ def tab_results():
         tol, max_it = speed_map[speed]
 
         if len(st.session_state.selected_models) > 1:
-            with st.expander("🔧 Tolerância por modelo", expanded=False):
+            with st.expander("🔧 Tolerância por modelo (avançado)", expanded=False):
+                st.caption("Defina uma tolerância individual para cada modelo. "
+                           "Modelos mais complexos (ODE) geralmente precisam de "
+                           "tolerâncias menores (1e-8) para convergência adequada.")
                 per_tol = {}
-                ptcols = st.columns(min(len(st.session_state.selected_models), 4))
+                # 2 colunas com nomes completos + quebra de linha no label
+                n_models = len(st.session_state.selected_models)
+                ptcols   = st.columns(2)
                 for idx, mk in enumerate(st.session_state.selected_models):
-                    mn = ALL_MODELS.get(mk, {}).get("name", mk)
-                    per_tol[mk] = ptcols[idx % 4].number_input(
-                        mn[:25], value=tol, format="%.2e",
-                        key=f"ptol_{mk}", min_value=1e-12, max_value=1e-1)
+                    m_info  = ALL_MODELS.get(mk, {})
+                    # Full name: "Modelo (Autor)"
+                    full_name = m_info.get("name", mk)
+                    author    = m_info.get("author", "")
+                    col = ptcols[idx % 2]
+                    col.markdown(
+                        f'<div style="font-size:.78rem;color:var(--acc);'
+                        f'font-weight:600;margin-bottom:2px">{full_name}</div>'
+                        f'<div style="font-size:.7rem;color:var(--fg2);'
+                        f'margin-bottom:6px">{author}</div>',
+                        unsafe_allow_html=True)
+                    per_tol[mk] = col.number_input(
+                        "Tolerância",
+                        value=tol,
+                        format="%.2e",
+                        key=f"ptol_{mk}",
+                        min_value=1e-12,
+                        max_value=1e-1,
+                        label_visibility="collapsed",
+                    )
+                    # Visual separator inside column
+                    col.markdown(
+                        '<div style="height:1px;background:var(--brd);'
+                        'margin:8px 0 10px"></div>',
+                        unsafe_allow_html=True)
                 st.session_state.opt["per_model_tol"] = per_tol
 
         if est_mode == t("rs_est_manual"):
@@ -2434,7 +2526,29 @@ def tab_results():
         if comp_rows:
             st.dataframe(pd.DataFrame(comp_rows), use_container_width=True, hide_index=True)
 
-        COLORS_CMP = ["#00c8b4","#7c3aed","#f97316","#3b82f6","#22c55e","#f43f5e"]
+        # 20 perceptually distinct colors — colorblind-aware, no repeats up to 20 models
+        COLORS_CMP = [
+            "#00c8b4",  # teal
+            "#f97316",  # orange
+            "#a855f7",  # purple
+            "#22c55e",  # green
+            "#f43f5e",  # rose-red
+            "#38bdf8",  # sky blue
+            "#fbbf24",  # amber
+            "#e879f9",  # fuchsia
+            "#4ade80",  # light green
+            "#fb7185",  # light rose
+            "#34d399",  # emerald
+            "#c084fc",  # light purple
+            "#fdba74",  # peach
+            "#67e8f9",  # light cyan
+            "#86efac",  # mint
+            "#fde68a",  # light yellow
+            "#f9a8d4",  # light pink
+            "#6ee7b7",  # turquoise
+            "#a5b4fc",  # lavender
+            "#fca5a5",  # light coral
+        ]
         fig_cmp = go.Figure()
         first_fr = None
         for i, mk in enumerate(st.session_state.selected_models):
@@ -2623,17 +2737,10 @@ def tab_tools():
 
         S_enz = v_enz = None
         if ek_mode == "Usar dados carregados (aba Dados)":
-            #df_src = st.session_state.df_clean or st.session_state.df
-            df_clean_0 = st.session_state.get("df_clean_0") #Nova implementação
-            df = st.session_state.get("df")#Nova implementação
-
-            df_src = df_clean_0 if df_clean_0 is not None else df
-            """
-            df_clean = st.session_state.get("df_clean") #Nova implementação
-            df = st.session_state.get("df")#Nova implementação
-
-            df_src3 = df_clean if df_clean is not None else df#Nova implementação
-            """
+            # Use the correct session state keys — df_clean and df
+            _dc  = st.session_state.get("df_clean")
+            _df  = st.session_state.get("df")
+            df_src = _dc if _dc is not None else _df
             s_col  = st.session_state.headers.get("substrate")
             t_col2 = st.session_state.headers.get("time")
             if df_src is not None and s_col and t_col2 and s_col in df_src.columns:
@@ -2675,12 +2782,10 @@ def tab_tools():
                 r2_mm = r2_adj(v_enz, v_pred_mm, 2)
 
                 # Try competitive inhibition if product column exists
-                p_col = st.session_state.headers.get("product")
-                #df_src2 = st.session_state.df_clean or st.session_state.df
-                df_clean_2 = st.session_state.get("df_clean_2") #Nova implementação
-                df = st.session_state.get("df")#Nova implementação
-
-                df_src2 = df_clean_2 if df_clean_2 is not None else df
+                p_col   = st.session_state.headers.get("product")
+                _dc2    = st.session_state.get("df_clean")
+                _df2    = st.session_state.get("df")
+                df_src2 = _dc2 if _dc2 is not None else _df2
                 popt_ci = None
                 if p_col and df_src2 is not None and p_col in df_src2.columns:
                     I_arr = pd.to_numeric(df_src2[p_col], errors="coerce").dropna().values
@@ -2814,11 +2919,10 @@ def tab_tools():
     st.markdown(f"### 🔄 {t('tl_turnover_title')}")
     st.caption(t("tl_turnover_note"))
 
-    #df_src3  = st.session_state.df_clean or st.session_state.df (erro associado a verificação no pandas - código)
-    df_clean = st.session_state.get("df_clean") #Nova implementação
-    df = st.session_state.get("df")#Nova implementação
-
-    df_src3 = df_clean if df_clean is not None else df#Nova implementação
+    # Correct: use df_clean if available, otherwise fall back to df
+    _dc3   = st.session_state.get("df_clean")
+    _df3   = st.session_state.get("df")
+    df_src3 = _dc3 if _dc3 is not None else _df3
     t_col3   = st.session_state.headers.get("time")
     x_col3   = st.session_state.headers.get("biomass")
     p_col3   = st.session_state.headers.get("product")
