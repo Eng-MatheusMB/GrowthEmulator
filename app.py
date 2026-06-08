@@ -4,7 +4,7 @@ GrowthEmulator v1.2 — Simulador de Crescimento Celular Microbiano
 © 2026 Matheus Monteiro Batista | CC BY-NC-ND 4.0
 """
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# 1. IMPORTS 
+# 1. IMPORTS
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 import streamlit as st
 import pandas as pd
