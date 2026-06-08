@@ -1692,7 +1692,8 @@ def render_footer():
     font-size:.7rem; color:rgba(139,148,158,.4); letter-spacing:.06em;
     user-select:none;">
   <!-- ADSENSE SLOT — substitua este bloco pelo código AdSense do Google -->
-  ESPAÇO PARA ANÚNCIO (728 × 90)
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9709593825202768"
+     crossorigin="anonymous"></script>
 </div>
 """, unsafe_allow_html=True)
     st.markdown("""
