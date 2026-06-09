@@ -7,6 +7,7 @@ GrowthEmulator v1.2 — Simulador de Crescimento Celular Microbiano
 # 1. IMPORTS
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
@@ -1682,20 +1683,21 @@ def render_header():
 # 15. FOOTER
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 def render_footer():
-    # ── AdSense / Banner placeholder (non-intrusive, footer) ─────────────
-    # To activate: replace the comment below with your AdSense snippet.
-    st.markdown("""
-<div id="ge-ad-footer" style="
-    max-width:728px; height:90px; margin:18px auto 0;
-    background:rgba(30,50,80,.18); border:1px dashed rgba(0,200,180,.18);
-    border-radius:8px; display:flex; align-items:center; justify-content:center;
-    font-size:.7rem; color:rgba(139,148,158,.4); letter-spacing:.06em;
-    user-select:none;">
-  <!-- ADSENSE SLOT — substitua este bloco pelo código AdSense do Google -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9709593825202768"
-     crossorigin="anonymous"></script>
+    # ── AdSense leaderboard (728×90) — non-intrusive, centrado no rodapé ──
+    components.html("""
+<div style="display:flex;justify-content:center;margin:14px 0 4px">
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9709593825202768"
+    crossorigin="anonymous"></script>
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:728px;height:90px"
+       data-ad-client="ca-pub-9709593825202768"
+       data-ad-slot="1603232023"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
 </div>
-""", unsafe_allow_html=True)
+""", height=110, scrolling=False)
     st.markdown("""
 <div id="bio-footer">
   <a href="https://github.com/matheusmonteirobatista/growthemulator">GrowthEmulator</a> © 2026 by
@@ -1719,14 +1721,31 @@ def render_footer():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 16. HELPERS — available model count
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-def _mapped_vars():
+# ── Header access helpers ─────────────────────────────────────
+def _hdr_list(var_key: str) -> list:
+    """Return mapped column(s) for var_key as a clean list (handles str or list)."""
+    val = st.session_state.headers.get(var_key)
+    if val is None:
+        return []
+    if isinstance(val, list):
+        return [v for v in val if v]
+    return [val] if val else []
+
+
+def _hdr_primary(var_key: str):
+    """Return the first mapped column for var_key, or None."""
+    lst = _hdr_list(var_key)
+    return lst[0] if lst else None
+
+
+def _mapped_vars() -> set:
     h = st.session_state.headers
     mapped = set()
-    if h.get("time"):     mapped.add("time")
-    if h.get("biomass"):  mapped.add("biomass")
-    if h.get("substrate"): mapped.add("substrate")
-    if h.get("ph"):       mapped.add("ph")
-    if h.get("product"):  mapped.add("product")
+    if h.get("time"):           mapped.add("time")
+    if _hdr_list("biomass"):    mapped.add("biomass")
+    if _hdr_list("substrate"):  mapped.add("substrate")
+    if h.get("ph"):             mapped.add("ph")
+    if _hdr_list("product"):    mapped.add("product")
     return mapped
 
 
@@ -1737,6 +1756,33 @@ def _count_available_models():
 
 def _model_available(m):
     return set(m["requires"]).issubset(_mapped_vars())
+
+
+def _extract_sorted_series(df_src, t_col: str, x_col: str, s_col=None):
+    """
+    Extract time, biomass (and optional substrate) from df_src,
+    drop NaNs, sort by time, remove duplicate time points.
+    Returns (t_arr, x_arr, s_arr | None) as float64 numpy arrays.
+    """
+    t_raw = pd.to_numeric(df_src[t_col], errors="coerce")
+    x_raw = pd.to_numeric(df_src[x_col], errors="coerce")
+    mask  = t_raw.notna() & x_raw.notna()
+    t_a   = t_raw[mask].values.astype(float)
+    x_a   = x_raw[mask].values.astype(float)
+    n     = min(len(t_a), len(x_a))
+    t_a, x_a  = t_a[:n], x_a[:n]
+
+    sort_idx          = np.argsort(t_a, kind="stable")
+    t_a, x_a          = t_a[sort_idx], x_a[sort_idx]
+    _, uni_idx         = np.unique(t_a, return_index=True)
+    t_a, x_a           = t_a[uni_idx], x_a[uni_idx]
+
+    s_a = None
+    if s_col and s_col in df_src.columns:
+        s_raw   = pd.to_numeric(df_src[s_col], errors="coerce")
+        s_aligned = s_raw[mask].values.astype(float)[:n][sort_idx][uni_idx]
+        s_a     = np.nan_to_num(s_aligned, nan=0.0)
+    return t_a, x_a, s_a
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1925,7 +1971,6 @@ def tab_data():
 
         with st.expander(f"🏷️ {t('dt_mapping_title')}", expanded=True):
             st.caption(t("dt_mapping_note"))
-            # CSS for compact tag-grid layout
             st.markdown("""
 <style>
 .tag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin-bottom:6px}
@@ -1934,48 +1979,76 @@ def tab_data():
   font-size:.78rem;font-weight:600;color:var(--fg);white-space:nowrap}
 .tag-label.mapped{border-color:var(--acc);color:var(--acc);background:rgba(0,200,180,.08)}
 </style>
-<div class="tag-grid" id="tag-grid-hint">
 """, unsafe_allow_html=True)
+
+            # (key, icon, label, required, multi)
+            # multi=True → st.multiselect (can map multiple columns of same type)
+            # multi=False → st.selectbox  (single reference column)
             var_defs = [
-                ("time",      "⏱",  t("dt_time_lbl"),    True),
-                ("biomass",   "🦠",  t("dt_biomass_lbl"), True),
-                ("substrate", "🍬",  t("dt_substrate_lbl"), False),
-                ("ph",        "⚗️",   t("dt_ph_lbl"),      False),
-                ("product",   "🧪",  t("dt_product_lbl"), False),
-                ("drymass",   "⚖️",   t("dt_drymass_lbl"), False),
+                ("time",      "⏱",  t("dt_time_lbl"),      True,  False),
+                ("biomass",   "🦠",  t("dt_biomass_lbl"),   True,  True),
+                ("substrate", "🍬",  t("dt_substrate_lbl"), False, True),
+                ("ph",        "⚗️",  t("dt_ph_lbl"),         False, False),
+                ("product",   "🧪",  t("dt_product_lbl"),   False, True),
+                ("drymass",   "⚖️",  t("dt_drymass_lbl"),   False, False),
             ]
-            # 3-column compact grid
+
+            # All available column names
+            col_opts   = list(df.columns.astype(str))
+            # Column list with a "not mapped" placeholder (for selectbox)
+            cols_none  = [none_label] + col_opts
+
             grid_cols = st.columns(3)
-            for idx, (var_key, icon, var_label, required) in enumerate(var_defs):
-                col = grid_cols[idx % 3]
-                with col:
-                    current = st.session_state.headers.get(var_key, none_label)
-                    if current not in cols:
-                        current = none_label
-                    mapped    = current != none_label
-                    badge_cls = "mapped" if mapped else ""
-                    bold_open  = "<b>" if required else ""
-                    bold_close = "</b>" if required else ""
-                    req_star   = "&nbsp;<span style='color:var(--acc)'>*</span>" if required else ""
-                    col.markdown(
-                        f'<div class="tag-label {badge_cls}">'
+            for idx, (var_key, icon, var_label, required, multi) in enumerate(var_defs):
+                gcol = grid_cols[idx % 3]
+                req_star   = "&nbsp;<span style='color:var(--acc)'>*</span>" if required else ""
+                bold_open  = "<b>" if required else ""
+                bold_close = "</b>" if required else ""
+
+                if multi:
+                    # ── Multiselect: allows mapping several columns to the same role
+                    curr_multi = _hdr_list(var_key)
+                    curr_multi = [c for c in curr_multi if c in col_opts]  # drop stale
+                    mapped     = len(curr_multi) > 0
+                    gcol.markdown(
+                        f'<div class="tag-label {"mapped" if mapped else ""}">'
                         f'{icon} {bold_open}{var_label}{bold_close}{req_star}'
                         f'</div>',
                         unsafe_allow_html=True)
-                    sel = col.selectbox(
-                        var_label, cols,
-                        index=cols.index(current),
+                    sel = gcol.multiselect(
+                        var_label, col_opts,
+                        default=curr_multi,
+                        key=f"hdr_{var_key}",
+                        label_visibility="collapsed",
+                        placeholder=t("dt_none"),
+                    )
+                    st.session_state.headers[var_key] = sel if sel else None
+                else:
+                    # ── Selectbox: single reference column (time, pH, dry mass)
+                    current = st.session_state.headers.get(var_key, none_label)
+                    if isinstance(current, list):       # handle legacy list value
+                        current = current[0] if current else none_label
+                    if current not in cols_none:
+                        current = none_label
+                    mapped = current != none_label
+                    gcol.markdown(
+                        f'<div class="tag-label {"mapped" if mapped else ""}">'
+                        f'{icon} {bold_open}{var_label}{bold_close}{req_star}'
+                        f'</div>',
+                        unsafe_allow_html=True)
+                    sel = gcol.selectbox(
+                        var_label, cols_none,
+                        index=cols_none.index(current),
                         key=f"hdr_{var_key}",
                         label_visibility="collapsed",
                     )
                     st.session_state.headers[var_key] = sel if sel != none_label else None
-            st.markdown("</div>", unsafe_allow_html=True)
 
     # ── Box 2: Data Summary ───────────────────────────────────
     if st.session_state.df is not None:
-        df = st.session_state.df
+        df    = st.session_state.df
         t_col = st.session_state.headers.get("time")
-        x_col = st.session_state.headers.get("biomass")
+        x_col = _hdr_primary("biomass")   # primary biomass for validation checks
 
         with st.expander(f"📋 {t('dt_summary_title')}", expanded=True):
             if df.isnull().any().any():
@@ -2031,16 +2104,12 @@ def tab_data():
             m4.metric("Modelos disp.", _count_available_models())
 
     # ── Box 3: Scatter preview ────────────────────────────────
-    t_col = st.session_state.headers.get("time")
-    x_col = st.session_state.headers.get("biomass")
-    if st.session_state.df is not None and t_col and x_col:
+    t_col_p  = st.session_state.headers.get("time")
+    x_cols_p = _hdr_list("biomass")
+    if st.session_state.df is not None and t_col_p and x_cols_p:
         df = st.session_state.df
         try:
-            t_arr = pd.to_numeric(df[t_col], errors="coerce")
-            x_arr = pd.to_numeric(df[x_col], errors="coerce")
-            mask  = t_arr.notna() & x_arr.notna() & (t_arr >= 0) & (x_arr > 0)
-            t_s, x_s = t_arr[mask].values, x_arr[mask].values
-            st.session_state.df_clean = df[mask].reset_index(drop=True)
+            t_arr_full = pd.to_numeric(df[t_col_p], errors="coerce")
 
             with st.expander(f"📉 {t('dt_preview_title')}", expanded=True):
                 use_log = st.checkbox(t("dt_preview_log"), value=True, key="prev_log")
@@ -2052,59 +2121,62 @@ def tab_data():
                 ]
                 fig = go.Figure()
 
-                # Primary biomass series
-                fig.add_trace(go.Scatter(
-                    x=t_s, y=x_s, mode="markers+lines",
-                    marker=dict(color=CHART_COLORS[0], size=7),
-                    line=dict(color=CHART_COLORS[0], width=1.5, dash="dot"),
-                    name=str(x_col)))
-
-                # Additional merged-file biomass columns
-                # (same base name as mapped biomass column, but with filename suffix)
-                base_x = str(x_col).rsplit("_", 1)[0] if "_" in str(x_col) else str(x_col)
-                extra_x_cols = [
-                    c for c in df.columns
-                    if c != x_col
-                    and str(c).startswith(base_x + "_")
-                    and c != t_col
-                ]
-                for ci, exc in enumerate(extra_x_cols, 1):
-                    ex_vals = pd.to_numeric(df[exc], errors="coerce")
-                    ex_mask = ex_vals.notna() & (ex_vals > 0)
-                    if ex_mask.any():
-                        fig.add_trace(go.Scatter(
-                            x=pd.to_numeric(df[t_col], errors="coerce")[ex_mask].values,
-                            y=ex_vals[ex_mask].values,
-                            mode="markers+lines",
-                            marker=dict(color=CHART_COLORS[ci % len(CHART_COLORS)], size=6),
-                            line=dict(color=CHART_COLORS[ci % len(CHART_COLORS)],
-                                      width=1.2, dash="dot"),
-                            name=str(exc)))
-
-                # Substrate axis
-                s_col = st.session_state.headers.get("substrate")
-                if s_col and s_col in df.columns:
-                    s_arr_p = pd.to_numeric(df[s_col], errors="coerce")[mask].values
+                # Plot every mapped biomass column as a separate series
+                for bi, b_col in enumerate(x_cols_p):
+                    if b_col not in df.columns:
+                        continue
+                    b_vals = pd.to_numeric(df[b_col], errors="coerce")
+                    mask_b = t_arr_full.notna() & b_vals.notna() & (b_vals > 0)
+                    if not mask_b.any():
+                        continue
+                    color = CHART_COLORS[bi % len(CHART_COLORS)]
                     fig.add_trace(go.Scatter(
-                        x=t_s, y=s_arr_p, mode="markers+lines", yaxis="y2",
-                        marker=dict(color="#f97316", size=6),
-                        line=dict(color="#f97316", width=1, dash="dot"),
-                        name=str(s_col)))
-                    fig.update_layout(
-                        yaxis2=dict(overlaying="y", side="right",
-                                    showgrid=False, color="#f97316"))
+                        x=t_arr_full[mask_b].values,
+                        y=b_vals[mask_b].values,
+                        mode="markers+lines",
+                        marker=dict(color=color, size=7),
+                        line=dict(color=color, width=1.5, dash="dot"),
+                        name=str(b_col)))
+
+                # Substrate on secondary Y axis
+                s_col_p = _hdr_primary("substrate")
+                if s_col_p and s_col_p in df.columns:
+                    s_vals  = pd.to_numeric(df[s_col_p], errors="coerce")
+                    mask_s  = t_arr_full.notna() & s_vals.notna()
+                    if mask_s.any():
+                        fig.add_trace(go.Scatter(
+                            x=t_arr_full[mask_s].values,
+                            y=s_vals[mask_s].values,
+                            mode="markers+lines", yaxis="y2",
+                            marker=dict(color="#f97316", size=6, symbol="diamond"),
+                            line=dict(color="#f97316", width=1, dash="dot"),
+                            name=str(s_col_p)))
+                        fig.update_layout(
+                            yaxis2=dict(overlaying="y", side="right",
+                                        showgrid=False, color="#f97316",
+                                        tickformat=".4g", exponentformat="none"))
+
+                # Build df_clean from the first valid biomass mask
+                if x_cols_p:
+                    x0_vals = pd.to_numeric(df[x_cols_p[0]], errors="coerce")
+                    clean_mask = (t_arr_full.notna() & x0_vals.notna()
+                                  & (t_arr_full >= 0) & (x0_vals > 0))
+                    st.session_state.df_clean = df[clean_mask].reset_index(drop=True)
 
                 fig.update_layout(
                     yaxis_type="log" if use_log else "linear",
                     yaxis=dict(
-                        color="#8b949e", gridcolor="#30363d", title=str(x_col),
+                        color="#8b949e", gridcolor="#30363d",
+                        title=" / ".join(x_cols_p[:3]),
                         tickformat=".4g" if not use_log else None,
                         exponentformat="none",
                     ),
                     paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-                    xaxis=dict(color="#8b949e", gridcolor="#30363d", title=str(t_col)),
+                    xaxis=dict(color="#8b949e", gridcolor="#30363d",
+                               title=str(t_col_p)),
                     legend=dict(bgcolor="rgba(0,0,0,0)"),
-                    margin=dict(l=40, r=40, t=20, b=40), height=320,
+                    uirevision="scatter_preview",   # keeps zoom on rerun
+                    margin=dict(l=40, r=40, t=20, b=40), height=340,
                 )
                 st.plotly_chart(fig, use_container_width=True,
                                 config={"scrollZoom": True})
@@ -2309,6 +2381,7 @@ def _render_single_result(fr, model_key, t_col, x_col):
         yaxis=dict(color="#8b949e", gridcolor="#30363d", title=str(x_col),
                    tickformat=".4g", exponentformat="none"),
         legend=dict(bgcolor="rgba(0,0,0,0)", orientation="h", y=1.08),
+        uirevision="fit_chart",
         margin=dict(l=40, r=20, t=30, b=40), height=340,
     )
     st.plotly_chart(fig_fit, use_container_width=True, config={"scrollZoom": True})
@@ -2345,6 +2418,7 @@ def _render_single_result(fr, model_key, t_col, x_col):
     except Exception:
         pass
     fig_res.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+                           uirevision="residuals",
                            showlegend=False, margin=dict(l=40, r=20, t=40, b=40), height=260)
     st.plotly_chart(fig_res, use_container_width=True)
     if norm_msg:
@@ -2394,29 +2468,23 @@ def tab_results():
     if df_src is None:
         st.info(t("rs_no_data")); return
 
-    h = st.session_state.headers
-    t_col, x_col = h.get("time"), h.get("biomass")
-    s_col = h.get("substrate")
-    if not t_col or not x_col:
+    h      = st.session_state.headers
+    t_col  = h.get("time")
+    x_cols = _hdr_list("biomass")          # may be multiple after merge
+    s_col  = _hdr_primary("substrate")     # use primary substrate for all fits
+
+    if not t_col or not x_cols:
         st.info(t("rs_no_data")); return
 
-    t_arr = pd.to_numeric(df_src[t_col], errors="coerce").dropna().values
-    x_arr = pd.to_numeric(df_src[x_col], errors="coerce").dropna().values
-    n     = min(len(t_arr), len(x_arr))
-    t_arr, x_arr = t_arr[:n], x_arr[:n]
+    # Validate columns exist in the source df
+    x_cols = [c for c in x_cols if c in df_src.columns]
+    if not x_cols:
+        st.info(t("rs_no_data")); return
 
-    # Sort by time and remove duplicate time points (required by solve_ivp)
-    sort_idx      = np.argsort(t_arr, kind="stable")
-    t_arr, x_arr  = t_arr[sort_idx], x_arr[sort_idx]
-    _, unique_idx = np.unique(t_arr, return_index=True)
-    t_arr, x_arr  = t_arr[unique_idx], x_arr[unique_idx]
-
-    s_arr = None
-    if s_col and s_col in df_src.columns:
-        s_raw = pd.to_numeric(df_src[s_col], errors="coerce").values
-        # Align to the same sort+unique indices used for t/X
-        s_raw_n   = s_raw[:n][sort_idx][unique_idx]
-        s_arr     = s_raw_n.astype(float)
+    # Use the first biomass column for the optimization settings UI
+    x_col_primary = x_cols[0]
+    t_arr_ui, x_arr_ui, s_arr_ui = _extract_sorted_series(
+        df_src, t_col, x_col_primary, s_col)
 
     # Optimization settings
     with st.expander(f"⚙️ {t('rs_opt_title')}", expanded=True):
@@ -2474,7 +2542,7 @@ def tab_results():
 
         if est_mode == t("rs_est_manual"):
             for mk in st.session_state.selected_models:
-                p0 = _auto_p0(mk, t_arr, x_arr, s_arr)
+                p0 = _auto_p0(mk, t_arr_ui, x_arr_ui, s_arr_ui)
                 pn = ALL_MODELS.get(mk, {}).get("params", [])
                 st.caption(f"**{mk}**")
                 mg_cols = st.columns(min(len(p0), 4))
@@ -2489,12 +2557,19 @@ def tab_results():
     if st.button(t("rs_run_btn"), type="primary", use_container_width=True):
         results = {}
         with st.spinner(t("rs_running")):
-            for mk in st.session_state.selected_models:
-                mk_opt = dict(st.session_state.opt)
-                per_tol = st.session_state.opt.get("per_model_tol", {})
-                if mk in per_tol:
-                    mk_opt["tolerance"] = per_tol[mk]
-                results[mk] = _run_fit_for(mk, t_arr, x_arr, s_arr, mk_opt)
+            for x_col_i in x_cols:
+                t_a, x_a, s_a = _extract_sorted_series(
+                    df_src, t_col, x_col_i, s_col)
+                for mk in st.session_state.selected_models:
+                    mk_opt = dict(st.session_state.opt)
+                    per_tol = st.session_state.opt.get("per_model_tol", {})
+                    if mk in per_tol:
+                        mk_opt["tolerance"] = per_tol[mk]
+                    # Key encodes both model and biomass series
+                    rkey = f"{mk}__{x_col_i}" if len(x_cols) > 1 else mk
+                    res  = _run_fit_for(mk, t_a, x_a, s_a, mk_opt)
+                    res["series"] = x_col_i
+                    results[rkey] = res
         st.session_state.fit_results = results
 
     if not st.session_state.fit_results:
@@ -2503,21 +2578,26 @@ def tab_results():
 
     fit_results = st.session_state.fit_results
 
-    # Multi-model comparison table + overlay
-    if len(st.session_state.selected_models) > 1:
+    # ── Comparison table (multi-model × multi-series) ─────────
+    valid_keys = [k for k, v in fit_results.items() if "error" not in v and v]
+    if len(valid_keys) > 1:
         st.markdown(f"### 📊 {t('rs_compare_title')}")
         st.caption(t("rs_compare_note"))
         comp_rows = []
-        for mk in st.session_state.selected_models:
-            fr = fit_results.get(mk, {})
+        for rkey, fr in fit_results.items():
+            mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
+            series  = fr.get("series", "")
+            suffix  = f"  [{series}]" if len(x_cols) > 1 and series else ""
+            label   = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)[:35] + suffix
             if "error" in fr:
-                comp_rows.append({"Modelo": ALL_MODELS.get(mk,{}).get("name",mk),
+                comp_rows.append({"Modelo / Série": label,
                                    "Status": "❌ " + fr["error"][:40],
-                                   "RMSE":"—","R²adj":"—","AIC":"—","BIC":"—"})
+                                   "RMSE": "—", "R²adj": "—",
+                                   "AIC": "—",  "BIC": "—"})
             elif fr:
-                fl, fc, fi = fitness_label(fr["r2adj"])
+                fl, _, fi = fitness_label(fr["r2adj"])
                 comp_rows.append({
-                    "Modelo": ALL_MODELS.get(mk,{}).get("name",mk)[:35],
+                    "Modelo / Série": label,
                     "Status": f"{fi} {fl}",
                     "RMSE":   f"{fr['rmse']:.5f}",
                     "R²adj":  f"{fr['r2adj']:.5f}",
@@ -2525,81 +2605,82 @@ def tab_results():
                     "BIC":    f"{fr['bic']:.2f}",
                 })
         if comp_rows:
-            st.dataframe(pd.DataFrame(comp_rows), use_container_width=True, hide_index=True)
+            st.dataframe(pd.DataFrame(comp_rows),
+                         use_container_width=True, hide_index=True)
 
-        # 20 perceptually distinct colors — colorblind-aware, no repeats up to 20 models
+        # Overlay comparison chart
         COLORS_CMP = [
-            "#00c8b4",  # teal
-            "#f97316",  # orange
-            "#a855f7",  # purple
-            "#22c55e",  # green
-            "#f43f5e",  # rose-red
-            "#38bdf8",  # sky blue
-            "#fbbf24",  # amber
-            "#e879f9",  # fuchsia
-            "#4ade80",  # light green
-            "#fb7185",  # light rose
-            "#34d399",  # emerald
-            "#c084fc",  # light purple
-            "#fdba74",  # peach
-            "#67e8f9",  # light cyan
-            "#86efac",  # mint
-            "#fde68a",  # light yellow
-            "#f9a8d4",  # light pink
-            "#6ee7b7",  # turquoise
-            "#a5b4fc",  # lavender
-            "#fca5a5",  # light coral
+            "#00c8b4","#f97316","#a855f7","#22c55e","#f43f5e",
+            "#38bdf8","#fbbf24","#e879f9","#4ade80","#fb7185",
+            "#34d399","#c084fc","#fdba74","#67e8f9","#86efac",
+            "#fde68a","#f9a8d4","#6ee7b7","#a5b4fc","#fca5a5",
         ]
-        fig_cmp = go.Figure()
+        fig_cmp  = go.Figure()
         first_fr = None
-        for i, mk in enumerate(st.session_state.selected_models):
-            fr = fit_results.get(mk, {})
+        plotted_series: set = set()
+        for ci, (rkey, fr) in enumerate(fit_results.items()):
             if "error" in fr or not fr:
                 continue
             if first_fr is None:
                 first_fr = fr
-            t_fine = np.linspace(fr["t"][0], fr["t"][-1], 400)
-            y_fine = predict_for_plot(mk, fr["popt"], t_fine,
-                                      X0_data=fr.get("X0_fit"), S0=fr.get("S0_fit"))
+            mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
+            series  = fr.get("series", "")
+            suffix  = f" [{series}]" if len(x_cols) > 1 and series else ""
+            name    = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)[:28] + suffix
+            t_fine  = np.linspace(fr["t"][0], fr["t"][-1], 400)
+            y_fine  = predict_for_plot(mk_disp, fr["popt"], t_fine,
+                                       X0_data=fr.get("X0_fit"),
+                                       S0=fr.get("S0_fit"))
             fig_cmp.add_trace(go.Scatter(
-                x=t_fine, y=y_fine, mode="lines",
-                name=ALL_MODELS.get(mk,{}).get("name",mk)[:30],
-                line=dict(color=COLORS_CMP[i % len(COLORS_CMP)], width=2.2)))
-        if first_fr is not None:
-            fig_cmp.add_trace(go.Scatter(
-                x=first_fr["t"], y=first_fr["X"], mode="markers", name="Dados",
-                marker=dict(color="#f97316", size=8, symbol="circle",
-                             line=dict(color="#fff", width=1))))
+                x=t_fine, y=y_fine, mode="lines", name=name,
+                line=dict(color=COLORS_CMP[ci % len(COLORS_CMP)], width=2.2)))
+            # Observed data — one scatter per unique series
+            if series not in plotted_series and fr.get("X") is not None:
+                plotted_series.add(series)
+                data_name = f"Dados [{series}]" if series else "Dados"
+                fig_cmp.add_trace(go.Scatter(
+                    x=fr["t"], y=fr["X"], mode="markers", name=data_name,
+                    marker=dict(size=8, symbol="circle",
+                                line=dict(color="#fff", width=1))))
+
         fig_cmp.update_layout(
             paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
             xaxis=dict(color="#8b949e", gridcolor="#30363d", title=str(t_col)),
-            yaxis=dict(color="#8b949e", gridcolor="#30363d", title=str(x_col),
+            yaxis=dict(color="#8b949e", gridcolor="#30363d",
+                       title=" / ".join(x_cols[:3]),
                        tickformat=".4g", exponentformat="none"),
             legend=dict(bgcolor="rgba(0,0,0,0)", orientation="h", y=1.1),
-            margin=dict(l=40, r=20, t=40, b=40), height=380,
+            uirevision="comparison_chart",
+            margin=dict(l=40, r=20, t=40, b=40), height=400,
         )
-        st.plotly_chart(fig_cmp, use_container_width=True, config={"scrollZoom": True})
+        st.plotly_chart(fig_cmp, use_container_width=True,
+                        config={"scrollZoom": True})
         st.divider()
-        st.markdown("### 🔍 Resultados individuais por modelo")
+        st.markdown("### 🔍 Resultados individuais")
 
+    # ── Individual results ────────────────────────────────────
     all_export_data = {}
-    for mk in st.session_state.selected_models:
-        fr = fit_results.get(mk, {})
-        m_name = ALL_MODELS.get(mk, {}).get("name", mk)
+    for rkey, fr in fit_results.items():
+        mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
+        series  = fr.get("series", "")
+        m_name  = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)
+        suffix  = f"  [{series}]" if len(x_cols) > 1 and series else ""
         if "error" in fr:
-            st.error(f"**{m_name}**: {fr['error']}"); continue
+            st.error(f"**{m_name}{suffix}**: {fr['error']}"); continue
         if not fr:
             continue
-        if len(st.session_state.selected_models) > 1:
-            with st.expander(
-                    f"**{m_name}**  ·  R²={fr['r2adj']:.4f}  ·  RMSE={fr['rmse']:.4f}",
-                    expanded=False):
-                extras = _render_single_result(fr, mk, t_col, x_col)
+        exp_label = (f"**{m_name}**{suffix}  ·  "
+                     f"R²={fr['r2adj']:.4f}  ·  RMSE={fr['rmse']:.4f}")
+        if len(valid_keys) > 1:
+            with st.expander(exp_label, expanded=False):
+                extras = _render_single_result(fr, mk_disp, t_col, series or x_cols[0])
         else:
-            st.markdown(f"**Modelo:** `{m_name}`  —  *{ALL_MODELS.get(mk,{}).get('author','')}*")
+            st.markdown(
+                f"**Modelo:** `{m_name}`  —  "
+                f"*{ALL_MODELS.get(mk_disp,{}).get('author','')}*")
             st.divider()
-            extras = _render_single_result(fr, mk, t_col, x_col)
-        all_export_data[mk] = {"fr": fr, **extras}
+            extras = _render_single_result(fr, mk_disp, t_col, series or x_cols[0])
+        all_export_data[rkey] = {"fr": fr, **extras}
 
     # Export — bottom, full-width
     if all_export_data:
@@ -2612,31 +2693,37 @@ def tab_results():
                 buf = BytesIO()
                 with pd.ExcelWriter(buf, engine="openpyxl") as writer:
                     df_src.to_excel(writer, sheet_name="Dados", index=False)
-                    for mk, ed in all_export_data.items():
-                        fr = ed["fr"]
-                        m_short = mk[:12]
+                    for rkey, ed in all_export_data.items():
+                        fr      = ed["fr"]
+                        mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
+                        series  = fr.get("series", "")
+                        # Compose a safe sheet-name prefix (≤31 chars)
+                        pfx = (mk_disp[:8] + ("_" + series[:6] if series else ""))[:12]
                         pd.DataFrame({
                             "Parâmetro": [t("rs_mu_max"), t("rs_mu_avg"), t("rs_td"),
                                           t("rs_x0"), t("rs_xm")],
                             "Valor": [ed["mu_max"], ed["mu_avg"], ed["td"],
                                       ed["X0"], ed["Xm"]],
                             "Unidade": ["h⁻¹","h⁻¹","h","g/L","g/L"],
-                        }).to_excel(writer, sheet_name=f"Params_{m_short}", index=False)
+                        }).to_excel(writer, sheet_name=f"Params_{pfx}", index=False)
                         pd.DataFrame({
-                            "Métrica": [t("rs_rmse"), t("rs_r2adj"), t("rs_aic"), t("rs_bic")],
-                            "Valor": [fr["rmse"], fr["r2adj"], fr["aic"], fr["bic"]],
-                        }).to_excel(writer, sheet_name=f"Metrics_{m_short}", index=False)
+                            "Métrica": [t("rs_rmse"), t("rs_r2adj"),
+                                        t("rs_aic"),  t("rs_bic")],
+                            "Valor":   [fr["rmse"], fr["r2adj"],
+                                        fr["aic"],  fr["bic"]],
+                        }).to_excel(writer, sheet_name=f"Metrics_{pfx}", index=False)
                         pd.DataFrame({
                             "t": ed["t_d"], "X_obs": ed["X_d"],
                             "X_pred": ed["y_p"], "Residual": ed["resid"],
-                        }).to_excel(writer, sheet_name=f"Fit_{m_short}", index=False)
-                        if ed["phase_rows"]:
+                        }).to_excel(writer, sheet_name=f"Fit_{pfx}", index=False)
+                        if ed.get("phase_rows"):
                             pd.DataFrame(ed["phase_rows"]).to_excel(
-                                writer, sheet_name=f"Fases_{m_short}", index=False)
+                                writer, sheet_name=f"Fases_{pfx}", index=False)
                 st.download_button(
                     "⬇ Baixar Excel", data=buf.getvalue(),
                     file_name="GrowthEmulator_results.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    mime=("application/vnd.openxmlformats-officedocument"
+                          ".spreadsheetml.sheet"),
                     use_container_width=True)
 
         with exp_col2:
@@ -2645,36 +2732,37 @@ def tab_results():
                 if st.button(t("rs_export_pdf"), use_container_width=True, type="secondary"):
                     pdf = FPDF()
                     pdf.add_page()
-                    # --- Família DejaVu Sans (Sem serifa) ---
-                    pdf.add_font("DejaVu", "", "fonts/DejaVuSans.ttf")
-                    pdf.add_font("DejaVu", "B", "fonts/DejaVuSans-Bold.ttf")
-
-                    # --- Família DejaVu Serif (Com serifa) ---
-                    pdf.add_font("DejaVuSerif", "", "fonts/DejaVuSerif.ttf")
-                    pdf.add_font("DejaVuSerif", "B", "fonts/DejaVuSerif-Bold.ttf")
-                    
-                    pdf.set_font("DejaVu", "B", 16)
+                    pdf.set_font("Helvetica", "B", 16)
                     pdf.cell(0, 10, "GrowthEmulator v1.2 - Relatorio de Analise", ln=True)
-                    pdf.set_font("DejaVu", "", 9)
-                    pdf.cell(0, 5, f"Modelos analisados: {len(all_export_data)}", ln=True)
+                    pdf.set_font("Helvetica", "", 9)
+                    pdf.cell(0, 5, f"Series analisadas: {len(all_export_data)}", ln=True)
                     pdf.ln(3)
-                    for mk, ed in all_export_data.items():
-                        fr = ed["fr"]
-                        m_name = ALL_MODELS.get(mk,{}).get("name",mk)
-                        pdf.set_font("DejaVu","B",12)
-                        pdf.cell(0, 8, f"Modelo: {m_name}", ln=True)
-                        pdf.set_font("DejaVu","",10)
-                        pdf.cell(0, 5, f"  Autor: {ALL_MODELS.get(mk,{}).get('author','')}", ln=True)
+                    for rkey, ed in all_export_data.items():
+                        fr      = ed["fr"]
+                        mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
+                        series  = fr.get("series", "")
+                        m_name  = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)
+                        suffix  = f" [{series}]" if series else ""
+                        pdf.set_font("Helvetica","B",12)
+                        pdf.cell(0, 8, f"Modelo: {m_name}{suffix}", ln=True)
+                        pdf.set_font("Helvetica","",10)
+                        pdf.cell(0, 5,
+                                 f"  Autor: {ALL_MODELS.get(mk_disp,{}).get('author','')}",
+                                 ln=True)
                         for label, val in [
-                            (t("rs_rmse"), fr["rmse"]), (t("rs_r2adj"), fr["r2adj"]),
-                            (t("rs_aic"),  fr["aic"]),  (t("rs_bic"),  fr["bic"]),
-                            (t("rs_mu_max"), ed["mu_max"]), (t("rs_mu_avg"), ed["mu_avg"]),
+                            (t("rs_rmse"),   fr["rmse"]),
+                            (t("rs_r2adj"),  fr["r2adj"]),
+                            (t("rs_aic"),    fr["aic"]),
+                            (t("rs_bic"),    fr["bic"]),
+                            (t("rs_mu_max"), ed["mu_max"]),
+                            (t("rs_mu_avg"), ed["mu_avg"]),
                             (t("rs_td"),     ed["td"]),
                         ]:
-                            v_str = (f"{val:.5f}" if isinstance(val, float)
-                                     and not np.isnan(val) else "N/A")
+                            v_str = (f"{val:.5f}"
+                                     if isinstance(val, float) and not np.isnan(val)
+                                     else "N/A")
                             pdf.cell(0, 5, f"  {label}: {v_str}", ln=True)
-                        pnames = ALL_MODELS.get(mk,{}).get("params",[])
+                        pnames = ALL_MODELS.get(mk_disp, {}).get("params", [])
                         for pn, pv in zip(pnames, fr["popt"]):
                             pdf.cell(0, 5, f"  {pn}: {pv:.5g}", ln=True)
                         pdf.ln(3)
@@ -2682,9 +2770,27 @@ def tab_results():
                     st.download_button(
                         "⬇ Baixar PDF", data=buf_pdf.getvalue(),
                         file_name="GrowthEmulator_results.pdf",
-                        mime="application/pdf", use_container_width=True)
+                        mime="application/pdf",
+                        use_container_width=True)
             except ImportError:
                 st.caption("Instale fpdf2 para exportar PDF.")
+
+        # ── AdSense — after export, non-intrusive ─────────────
+        st.markdown("<br>", unsafe_allow_html=True)
+        components.html("""
+<div style="display:flex;justify-content:center;margin:10px 0 4px">
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9709593825202768"
+    crossorigin="anonymous"></script>
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:728px;height:90px"
+       data-ad-client="ca-pub-9709593825202768"
+       data-ad-slot="1603232023"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+""", height=110, scrolling=False)
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2854,6 +2960,7 @@ def tab_tools():
                                   yaxis=dict(color="#8b949e", gridcolor="#30363d", title="v",
                                              tickformat=".4g", exponentformat="none"),
                                   legend=dict(bgcolor="rgba(0,0,0,0)"),
+                                  uirevision="mm_chart",
                                   margin=dict(l=40, r=20, t=20, b=40), height=300)
             st.plotly_chart(fig_mm, use_container_width=True, config={"scrollZoom": True})
 
@@ -2879,6 +2986,7 @@ def tab_tools():
                 yaxis=dict(color="#8b949e", gridcolor="#30363d", title="1/v",
                            tickformat=".4g", exponentformat="none"),
                 legend=dict(bgcolor="rgba(0,0,0,0)"),
+                uirevision="lb_chart",
                 margin=dict(l=40, r=20, t=20, b=40), height=280)
             st.plotly_chart(fig_lb, use_container_width=True)
             if lr:
@@ -2907,6 +3015,7 @@ def tab_tools():
                 yaxis=dict(color="#8b949e", gridcolor="#30363d", title="v",
                            tickformat=".4g", exponentformat="none"),
                 legend=dict(bgcolor="rgba(0,0,0,0)"),
+                uirevision="ef_chart",
                 margin=dict(l=40, r=20, t=20, b=40), height=280)
             st.plotly_chart(fig_ef, use_container_width=True)
             if lr2:
@@ -3015,6 +3124,7 @@ def tab_tools():
                                      name="dP/dt pred", line=dict(color="#7c3aed", width=2)), row=1, col=2)
         fig_lp.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
                                showlegend=True, legend=dict(bgcolor="rgba(0,0,0,0)"),
+                               uirevision="lp_chart",
                                margin=dict(l=40, r=20, t=40, b=40), height=300)
         st.plotly_chart(fig_lp, use_container_width=True)
 
@@ -3041,6 +3151,7 @@ def tab_tools():
             yaxis=dict(color="#8b949e", gridcolor="#30363d", title="X (g/L)",
                        tickformat=".4g", exponentformat="none"),
             legend=dict(bgcolor="rgba(0,0,0,0)"),
+            uirevision="ck_chart",
             margin=dict(l=40, r=20, t=20, b=40), height=280)
         st.plotly_chart(fig_ck, use_container_width=True)
 
@@ -3108,6 +3219,7 @@ def tab_tools():
             yaxis=dict(color="#8b949e", gridcolor="#30363d", title="Y (g/g)",
                        tickformat=".4g", exponentformat="none"),
             legend=dict(bgcolor="rgba(0,0,0,0)"),
+            uirevision="pt_chart",
             margin=dict(l=40, r=20, t=20, b=40), height=280)
         st.plotly_chart(fig_pt, use_container_width=True)
 

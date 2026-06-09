@@ -1254,6 +1254,9 @@
       font-weight: 600;
     }
   </style>
+  <!-- Google AdSense — global async loader -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9709593825202768"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -1286,7 +1289,7 @@
           class="text-sm font-semibold text-gray-300 border border-gray-700 rounded-lg px-4 py-2 hover:border-teal-DEFAULT hover:text-teal-DEFAULT transition-all">
           Rodar localmente
         </a>
-        <a href="https://growthemulator.streamlit.app/" target="_blank"
+        <a href="http://localhost:8501" target="_blank"
           class="text-sm font-bold bg-teal-DEFAULT text-navy-DEFAULT rounded-lg px-5 py-2 hover:bg-teal-light transition-all glow-teal">
           Abrir simulador ↗
         </a>
@@ -1304,7 +1307,7 @@
       <a href="#models" class="py-2 text-sm text-gray-300 hover:text-teal-DEFAULT">Modelos</a>
       <a href="#howto" class="py-2 text-sm text-gray-300 hover:text-teal-DEFAULT">Como usar</a>
       <a href="#install" class="py-2 text-sm text-gray-300 hover:text-teal-DEFAULT">Instalação</a>
-      <a href="https://growthemulator.streamlit.app/" target="_blank"
+      <a href="http://localhost:8501" target="_blank"
         class="mt-2 text-center text-sm font-bold bg-teal-DEFAULT text-navy-DEFAULT rounded-lg px-4 py-2">
         Abrir simulador ↗
       </a>
@@ -1351,7 +1354,7 @@
 
       <!-- CTAs -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-        <a href="https://growthemulator.streamlit.app/" target="_blank"
+        <a href="http://localhost:8501" target="_blank"
           class="group flex items-center justify-center gap-2 bg-teal-DEFAULT text-navy-DEFAULT font-bold text-base rounded-xl px-8 py-4 hover:bg-teal-light transition-all glow-teal">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -1645,6 +1648,21 @@
   <!-- ═══════════════════════════════════════════════════════
      FOOTER
 ═══════════════════════════════════════════════════════ -->
+  <!-- ═══════════════════════════════════════════════════════
+     ADSENSE LEADERBOARD (728×90)
+═══════════════════════════════════════════════════════ -->
+  <div style="display:flex;justify-content:center;align-items:center;
+            padding:20px 16px 8px;background:rgba(13,26,46,.4)">
+    <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px"
+      data-ad-client="ca-pub-9709593825202768" data-ad-slot="1603232023"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════ -->
   <footer class="py-14 px-6 border-t" style="border-color:rgba(0,200,180,.1)">
     <div class="max-w-6xl mx-auto">
       <div class="grid md:grid-cols-3 gap-10 mb-10">
@@ -1873,8 +1891,7 @@
     </span>
   </div>
   <div class="font-heading font-bold text-sm mb-1" style="color:${m.color}">
-    ${m.name}
-  
+    Box ${m.n} — ${m.name}
   </div>
   <div class="text-xs text-gray-500 leading-relaxed">${m.desc}</div>
 </div>`;
