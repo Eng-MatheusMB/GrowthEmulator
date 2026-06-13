@@ -1,11 +1,11 @@
 @echo off
 REM ──────────────────────────────────────────────────────────────
-REM  BioGrowth v1.1 — Script de inicialização (Windows)
+REM  BioGrowth v1.2 — Script de inicialização (Windows)
 REM  Uso: duplo-clique em run.bat  OU  execute no terminal
 REM ──────────────────────────────────────────────────────────────
 
 echo.
-echo   [*]  BioGrowth v1.1 — Microbial Growth Simulator
+echo   [*]  BioGrowth v1.2 — Microbial Growth Simulator
 echo   ──────────────────────────────────────────────────
 echo.
 

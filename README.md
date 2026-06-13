@@ -125,7 +125,7 @@ Lista completa de referências disponível na aba **📖 Guia & Referências** d
 
 ## ⚖️ Licença
 
-**GrowthEmulator v1.1** © 2026 by **Matheus Monteiro Batista** is licensed under
+**GrowthEmulator v1.2** © 2026 by **Matheus Monteiro Batista** is licensed under
 [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 Uso acadêmico e pessoal permitido com atribuição.

@@ -7,7 +7,8 @@ GrowthEmulator v1.2 — Simulador de Crescimento Celular Microbiano
 # 1. IMPORTS
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 import streamlit as st
-import streamlit.components.v1 as components
+# components.html kept for AdSense (st.html strips scripts)
+from streamlit.components.v1 import html as _components_html
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
@@ -175,7 +176,7 @@ _T = {
         "gd_title": "Guia & Referências",
         "gd_intro_title": "O que é o GrowthEmulator?",
         "gd_intro_body": (
-            "GrowthEmulator v1.1 é uma plataforma interativa de modelagem cinética microbiana "
+            "GrowthEmulator v1.2 é uma plataforma interativa de modelagem cinética microbiana "
             "construída para pesquisadores, engenheiros de bioprocessos e estudantes. "
             "Permite carregar dados experimentais de crescimento celular, selecionar e ajustar "
             "modelos matemáticos, analisar métricas estatísticas e exportar resultados prontos "
@@ -191,6 +192,73 @@ _T = {
         "ct_email": "E-mail",
         "ct_linkedin": "LinkedIn",
         "ct_close": "Fechar",
+        # ── Fitness labels ─────────────────────────────────────
+        "fit_excellent":       "Excelente",
+        "fit_good":            "Bom",
+        "fit_acceptable":      "Aceitável",
+        "fit_insufficient":    "Insuficiente",
+        "fit_quality":         t("fit_quality"),
+        # ── Comparison chart ───────────────────────────────────
+        "rs_individual_results": "Resultados individuais",
+        "rs_top_n_label":      "Curvas no gráfico overlay",
+        "rs_top_n_omitted":    "modelo(s) omitido(s). Ajuste o slider para ver mais.",
+        "rs_params_adjusted":  "Parâmetros ajustados",
+        "rs_residuals_normal": "Resíduos normais",
+        "rs_residuals_abnormal": "Resíduos não-normais",
+        "rs_run_hint":         "Clique em **▶ Executar análise** para ajustar o(s) modelo(s).",
+        "rs_tol_per_model":    t("rs_tol_per_model"),
+        "rs_tol_hint":         "Defina tolerâncias individuais. Modelos ODE precisam de valores menores (1e-8).",
+        "rs_model_series_col": t("rs_model_series_col"),
+        # ── Data tab ───────────────────────────────────────────
+        "dt_files_identical":  "arquivos com colunas idênticas → empilhados",
+        "dt_files_merged":     "arquivos mesclados (outer join no tempo)",
+        "dt_col_rename_hint":  t("dt_col_rename_hint"),
+        "dt_data_applied":     t("dt_data_applied"),
+        "dt_chart_error":      t("dt_chart_error"),
+        "dt_estimated_mu":     "μ estimado (h⁻¹)",
+        "dt_estimated_td":     "td estimado (h)",
+        # ── Tools tab (static UI) ──────────────────────────────
+        "tl_enzyme_config":    t("tl_enzyme_config"),
+        "tl_data_source_lbl":  t("tl_data_source_lbl"),
+        "tl_use_loaded_data":  t("tl_use_loaded_data"),
+        "tl_enter_manually":   t("tl_enter_manually"),
+        "tl_enzyme_conc_lbl":  t("tl_enzyme_conc_lbl"),
+        "tl_enzyme_conc_help": t("tl_enzyme_conc_help"),
+        "tl_enzyme_results":   "Resultados — Cinética Enzimática",
+        "tl_ci_result":        "Inibição Competitiva ajustada",
+        "tl_pts_extracted":    "pontos de [S] vs v extraídos dos dados",
+        "tl_map_sub_time":     "Mapeie Substrato e Tempo na aba Dados para usar esta opção",
+        "tl_enter_sv_pairs":   "Insira pares [S] (µM ou mM) e v (µM/s ou mM/h) separados por ';'",
+        "tl_format_invalid":   t("tl_format_invalid"),
+        "tl_mm_run_btn":       "▶ Calcular — Michaelis-Menten",
+        "tl_lp_config":        "Configurar análise de formação de produto",
+        "tl_chick_section":    t("tl_chick_section"),
+        "tl_min_pts":          "pontos — mínimo 4 necessário",
+        "tl_lp_run_btn":       t("tl_lp_run_btn"),
+        "tl_chick_run_btn":    t("tl_chick_run_btn"),
+        "tl_prod_primary":     t("tl_prod_primary"),
+        "tl_prod_secondary":   "Produto secundário (não-associado ao crescimento)",
+        "tl_prod_mixed":       "Produto misto (α e β ambos significativos)",
+        "tl_classification":   "Classificação:",
+        "tl_lp_results":       "Resultados — Luedeking-Piret",
+        "tl_ck_results":       "Resultados — Chick (Inativação)",
+        "tl_halflife":         t("tl_halflife"),
+        "tl_pirt_config":      "Configurar análise de rendimento",
+        "tl_pirt_run_btn":     t("tl_pirt_run_btn"),
+        "tl_pirt_results":     "Resultados — Pirt (Rendimento Variável)",
+        "tl_maintenance_coef": t("tl_maintenance_coef"),
+        "tl_calc_quick":       "Calculadora rápida",
+        "tl_td_gen_section":   "⏱ Tempo de duplicação e taxa de geração",
+        "tl_mu_from_pts":      "📈 Estimativa de μ a partir de dois pontos",
+        "tl_yield_coef_sect":  "⚗️ Coeficiente de rendimento observado",
+        "tl_chick_const_sect": "📐 Constante de inativação (Chick)",
+        "tl_s_values_lbl":     t("tl_s_values_lbl"),
+        "tl_v_values_lbl":     t("tl_v_values_lbl"),
+        # ── About tab ─────────────────────────────────────────
+        "ab_stack":            "Stack tecnológico",
+        "ab_algorithms":       "Algoritmos",
+        "tl_subtitle": "Modelos especializados de cinética enzimática, rendimento e turn-over celular",
+
     },
     "en": {
         "app_name": "GrowthEmulator v1.2",
@@ -331,7 +399,7 @@ _T = {
         "gd_title": "Guide & References",
         "gd_intro_title": "What is GrowthEmulator?",
         "gd_intro_body": (
-            "GrowthEmulator v1.1 is an interactive microbial kinetic modeling platform built for "
+            "GrowthEmulator v1.2 is an interactive microbial kinetic modeling platform built for "
             "researchers, bioprocess engineers and students. Load experimental growth data, "
             "select and fit mathematical models, analyze statistical metrics and export "
             "publication-ready results — all in an intuitive multilingual interface."
@@ -345,6 +413,68 @@ _T = {
         "ct_email": "E-mail",
         "ct_linkedin": "LinkedIn",
         "ct_close": "Close",
+        "fit_excellent":       "Excellent",
+        "fit_good":            "Good",
+        "fit_acceptable":      "Acceptable",
+        "fit_insufficient":    "Insufficient",
+        "fit_quality":         "Fit quality",
+        "rs_individual_results": "Individual results",
+        "rs_top_n_label":      "Curves in overlay chart",
+        "rs_top_n_omitted":    "model(s) omitted. Adjust slider to see more.",
+        "rs_params_adjusted":  "Adjusted parameters",
+        "rs_residuals_normal": "Normal residuals",
+        "rs_residuals_abnormal": "Non-normal residuals",
+        "rs_run_hint":         "Click **▶ Run analysis** to fit the model(s).",
+        "rs_tol_per_model":    "🔧 Tolerance per model (advanced)",
+        "rs_tol_hint":         "Set individual tolerances. ODE models usually need lower values (1e-8).",
+        "rs_model_series_col": "Model / Series",
+        "dt_files_identical":  "files with identical columns → stacked",
+        "dt_files_merged":     "files merged (outer join on time)",
+        "dt_col_rename_hint":  "✏️ Rename headers — click a field to edit:",
+        "dt_data_applied":     "✅ Data applied! Scroll down and map the headers.",
+        "dt_chart_error":      "Chart error:",
+        "dt_estimated_mu":     "Estimated μ (h⁻¹)",
+        "dt_estimated_td":     "Estimated td (h)",
+        "tl_enzyme_config":    "Configure enzyme kinetics analysis",
+        "tl_data_source_lbl":  "Data source",
+        "tl_use_loaded_data":  "Use loaded data (Data tab)",
+        "tl_enter_manually":   "Enter S and v manually",
+        "tl_enzyme_conc_lbl":  "[E] — Enzyme concentration (µM, optional)",
+        "tl_enzyme_conc_help": "If provided, calculates kcat = Vmax / [E]",
+        "tl_enzyme_results":   "Results — Enzyme Kinetics",
+        "tl_ci_result":        "Competitive Inhibition fitted",
+        "tl_pts_extracted":    "[S] vs v datapoints extracted from data",
+        "tl_map_sub_time":     "Map Substrate and Time in the Data tab to use this option",
+        "tl_enter_sv_pairs":   "Enter [S] (µM or mM) and v (µM/s or mM/h) pairs separated by ';'",
+        "tl_format_invalid":   "Invalid format — use numbers separated by ';'",
+        "tl_mm_run_btn":       "▶ Calculate — Michaelis-Menten",
+        "tl_lp_config":        "Configure product formation analysis",
+        "tl_chick_section":    "Chick — First-Order Cell Inactivation",
+        "tl_min_pts":          "datapoints — minimum 4 required",
+        "tl_lp_run_btn":       "▶ Fit Luedeking-Piret",
+        "tl_chick_run_btn":    "▶ Fit Chick (kd)",
+        "tl_prod_primary":     "Primary product (growth-associated)",
+        "tl_prod_secondary":   "Secondary product (non-growth-associated)",
+        "tl_prod_mixed":       "Mixed product (α and β both significant)",
+        "tl_classification":   "Classification:",
+        "tl_lp_results":       "Results — Luedeking-Piret",
+        "tl_ck_results":       "Results — Chick (Inactivation)",
+        "tl_halflife":         "t½ (half-life)",
+        "tl_pirt_config":      "Configure yield analysis",
+        "tl_pirt_run_btn":     "▶ Fit Pirt — Variable Yield",
+        "tl_pirt_results":     "Results — Pirt (Variable Yield)",
+        "tl_maintenance_coef": "ms — Maintenance",
+        "tl_calc_quick":       "Quick calculator",
+        "tl_td_gen_section":   "⏱ Doubling time and generation rate",
+        "tl_mu_from_pts":      "📈 Estimate μ from two data points",
+        "tl_yield_coef_sect":  "⚗️ Observed yield coefficient",
+        "tl_chick_const_sect": "📐 Inactivation constant (Chick)",
+        "tl_s_values_lbl":     "[S] values:",
+        "tl_v_values_lbl":     "v values:",
+        "ab_stack":            "Tech stack",
+        "ab_algorithms":       "Algorithms",
+        "tl_subtitle": "Specialized models for enzyme kinetics, yield and cell turnover",
+
     },
     "es": {
         "app_name": "GrowthEmulator v1.2",
@@ -484,7 +614,7 @@ _T = {
         "gd_title": "Guía & Referencias",
         "gd_intro_title": "¿Qué es GrowthEmulator?",
         "gd_intro_body": (
-            "GrowthEmulator v1.1 es una plataforma interactiva de modelado cinético microbiano "
+            "GrowthEmulator v1.2 es una plataforma interactiva de modelado cinético microbiano "
             "para investigadores, ingenieros de bioprocesos y estudiantes. Cargue datos "
             "experimentales, seleccione y ajuste modelos matemáticos, analice métricas "
             "estadísticas y exporte resultados listos para publicación."
@@ -498,6 +628,68 @@ _T = {
         "ct_email": "Correo electrónico",
         "ct_linkedin": "LinkedIn",
         "ct_close": "Cerrar",
+        "fit_excellent":       "Excelente",
+        "fit_good":            "Bueno",
+        "fit_acceptable":      "Aceptable",
+        "fit_insufficient":    "Insuficiente",
+        "fit_quality":         "Calidad del ajuste",
+        "rs_individual_results": "Resultados individuales",
+        "rs_top_n_label":      "Curvas en gráfico superpuesto",
+        "rs_top_n_omitted":    "modelo(s) omitido(s). Ajuste el control para ver más.",
+        "rs_params_adjusted":  "Parámetros ajustados",
+        "rs_residuals_normal": "Residuales normales",
+        "rs_residuals_abnormal": "Residuales no normales",
+        "rs_run_hint":         "Haga clic en **▶ Ejecutar análisis** para ajustar el/los modelo(s).",
+        "rs_tol_per_model":    "🔧 Tolerancia por modelo (avanzado)",
+        "rs_tol_hint":         "Tolerancias individuales. Los modelos ODE suelen necesitar valores menores (1e-8).",
+        "rs_model_series_col": "Modelo / Serie",
+        "dt_files_identical":  "archivos con columnas idénticas → apilados",
+        "dt_files_merged":     "archivos fusionados (outer join en el tiempo)",
+        "dt_col_rename_hint":  "✏️ Renombrar encabezados — haga clic en el campo para editar:",
+        "dt_data_applied":     "✅ ¡Datos aplicados! Desplácese hacia abajo y mapee los encabezados.",
+        "dt_chart_error":      "Error en el gráfico:",
+        "dt_estimated_mu":     "μ estimado (h⁻¹)",
+        "dt_estimated_td":     "td estimado (h)",
+        "tl_enzyme_config":    "Configurar análisis enzimático",
+        "tl_data_source_lbl":  "Fuente de datos",
+        "tl_use_loaded_data":  "Usar datos cargados (pestaña Datos)",
+        "tl_enter_manually":   "Ingresar S y v manualmente",
+        "tl_enzyme_conc_lbl":  "[E] — Concentración de enzima (µM, opcional)",
+        "tl_enzyme_conc_help": "Si se proporciona, calcula kcat = Vmax / [E]",
+        "tl_enzyme_results":   "Resultados — Cinética Enzimática",
+        "tl_ci_result":        "Inhibición Competitiva ajustada",
+        "tl_pts_extracted":    "puntos [S] vs v extraídos de los datos",
+        "tl_map_sub_time":     "Mapee Sustrato y Tiempo en la pestaña Datos para usar esta opción",
+        "tl_enter_sv_pairs":   "Ingrese pares [S] (µM o mM) y v (µM/s o mM/h) separados por ';'",
+        "tl_format_invalid":   "Formato inválido — use números separados por ';'",
+        "tl_mm_run_btn":       "▶ Calcular — Michaelis-Menten",
+        "tl_lp_config":        "Configurar análisis de formación de producto",
+        "tl_chick_section":    "Chick — Inactivación Celular de 1er Orden",
+        "tl_min_pts":          "puntos — mínimo 4 requerido",
+        "tl_lp_run_btn":       "▶ Ajustar Luedeking-Piret",
+        "tl_chick_run_btn":    "▶ Ajustar Chick (kd)",
+        "tl_prod_primary":     "Producto primario (asociado al crecimiento)",
+        "tl_prod_secondary":   "Producto secundario (no asociado al crecimiento)",
+        "tl_prod_mixed":       "Producto mixto (α y β ambos significativos)",
+        "tl_classification":   "Clasificación:",
+        "tl_lp_results":       "Resultados — Luedeking-Piret",
+        "tl_ck_results":       "Resultados — Chick (Inactivación)",
+        "tl_halflife":         "t½ (vida media)",
+        "tl_pirt_config":      "Configurar análisis de rendimiento",
+        "tl_pirt_run_btn":     "▶ Ajustar Pirt — Rendimiento Variable",
+        "tl_pirt_results":     "Resultados — Pirt (Rendimiento Variable)",
+        "tl_maintenance_coef": "ms — Mantenimiento",
+        "tl_calc_quick":       "Calculadora rápida",
+        "tl_td_gen_section":   "⏱ Tiempo de duplicación y tasa de generación",
+        "tl_mu_from_pts":      "📈 Estimación de μ a partir de dos puntos",
+        "tl_yield_coef_sect":  "⚗️ Coeficiente de rendimiento observado",
+        "tl_chick_const_sect": "📐 Constante de inactivación (Chick)",
+        "tl_s_values_lbl":     "Valores de [S]:",
+        "tl_v_values_lbl":     "Valores de v:",
+        "ab_stack":            "Stack tecnológico",
+        "ab_algorithms":       "Algoritmos",
+        "tl_subtitle": "Modelos especializados de cinética enzimática, rendimiento y recambio celular",
+
     },
     "zh": {
         "app_name": "GrowthEmulator v1.2",
@@ -636,7 +828,7 @@ _T = {
         "gd_title": "指南与参考文献",
         "gd_intro_title": "GrowthEmulator 是什么？",
         "gd_intro_body": (
-            "GrowthEmulator v1.1 是面向研究人员、生物过程工程师和学生的交互式微生物动力学建模平台。"
+            "GrowthEmulator v1.2 是面向研究人员、生物过程工程师和学生的交互式微生物动力学建模平台。"
             "可加载实验生长数据、选择并拟合数学模型、分析统计指标并导出可发表的结果。"
         ),
         "gd_decision_title": "我应该使用哪个模型？",
@@ -648,6 +840,68 @@ _T = {
         "ct_email": "电子邮件",
         "ct_linkedin": "LinkedIn",
         "ct_close": "关闭",
+        "fit_excellent":       "优秀",
+        "fit_good":            "良好",
+        "fit_acceptable":      "可接受",
+        "fit_insufficient":    "不足",
+        "fit_quality":         "拟合质量",
+        "rs_individual_results": "单独结果",
+        "rs_top_n_label":      "叠加图中的曲线数",
+        "rs_top_n_omitted":    "个模型已省略。调整滑块以查看更多。",
+        "rs_params_adjusted":  "拟合参数",
+        "rs_residuals_normal": "残差正态",
+        "rs_residuals_abnormal": "残差非正态",
+        "rs_run_hint":         "点击 **▶ 运行分析** 拟合模型。",
+        "rs_tol_per_model":    "🔧 每模型容差（高级）",
+        "rs_tol_hint":         "设置各模型容差。ODE 模型通常需要更小的值 (1e-8)。",
+        "rs_model_series_col": "模型 / 系列",
+        "dt_files_identical":  "个列名相同的文件 → 已堆叠",
+        "dt_files_merged":     "个文件已合并（时间轴外连接）",
+        "dt_col_rename_hint":  "✏️ 重命名标题 — 点击字段编辑：",
+        "dt_data_applied":     "✅ 数据已应用！向下滚动并映射标题。",
+        "dt_chart_error":      "图表错误：",
+        "dt_estimated_mu":     "估算 μ (h⁻¹)",
+        "dt_estimated_td":     "估算 td (h)",
+        "tl_enzyme_config":    "配置酶动力学分析",
+        "tl_data_source_lbl":  "数据来源",
+        "tl_use_loaded_data":  "使用已加载数据（数据标签页）",
+        "tl_enter_manually":   "手动输入 S 和 v",
+        "tl_enzyme_conc_lbl":  "[E] — 酶浓度（µM，可选）",
+        "tl_enzyme_conc_help": "若提供，则计算 kcat = Vmax / [E]",
+        "tl_enzyme_results":   "结果 — 酶动力学",
+        "tl_ci_result":        "竞争性抑制拟合结果",
+        "tl_pts_extracted":    "个 [S] vs v 数据点已从数据中提取",
+        "tl_map_sub_time":     "在数据标签页映射底物和时间以使用此选项",
+        "tl_enter_sv_pairs":   "输入 [S]（µM或mM）和 v（µM/s或mM/h）对，用';'分隔",
+        "tl_format_invalid":   "格式无效 — 请使用';'分隔的数字",
+        "tl_mm_run_btn":       "▶ 计算 — Michaelis-Menten",
+        "tl_lp_config":        "配置产物生成分析",
+        "tl_chick_section":    "Chick — 一阶细胞失活",
+        "tl_min_pts":          "个数据点 — 至少需要 4 个",
+        "tl_lp_run_btn":       "▶ 拟合 Luedeking-Piret",
+        "tl_chick_run_btn":    "▶ 拟合 Chick (kd)",
+        "tl_prod_primary":     "初级产物（与生长相关）",
+        "tl_prod_secondary":   "次级产物（与生长无关）",
+        "tl_prod_mixed":       "混合型产物（α 和 β 均显著）",
+        "tl_classification":   "分类：",
+        "tl_lp_results":       "结果 — Luedeking-Piret",
+        "tl_ck_results":       "结果 — Chick（失活）",
+        "tl_halflife":         "t½（半衰期）",
+        "tl_pirt_config":      "配置产率分析",
+        "tl_pirt_run_btn":     "▶ 拟合 Pirt — 可变产率",
+        "tl_pirt_results":     "结果 — Pirt（可变产率）",
+        "tl_maintenance_coef": "ms — 维持系数",
+        "tl_calc_quick":       "快速计算器",
+        "tl_td_gen_section":   "⏱ 倍增时间与代时",
+        "tl_mu_from_pts":      "📈 从两点估算 μ",
+        "tl_yield_coef_sect":  "⚗️ 观测产率系数",
+        "tl_chick_const_sect": "📐 失活常数（Chick）",
+        "tl_s_values_lbl":     "[S] 值：",
+        "tl_v_values_lbl":     "v 值：",
+        "ab_stack":            "技术栈",
+        "ab_algorithms":       "算法",
+        "tl_subtitle": "酶动力学、产率和细胞更新的专业模型",
+
     },
 }
 
@@ -1128,11 +1382,11 @@ def predict_for_plot(key, params, t_fine, X0_data=None, S0=None):
 
 
 def fitness_label(r2):
-    """Return (label, color, emoji) based on R² quality."""
-    if r2 >= 0.99: return "Excelente", "#56d364", "🟢"
-    if r2 >= 0.95: return "Bom",       "#a5d96a", "🟡"
-    if r2 >= 0.85: return "Aceitável", "#e3b341", "🟠"
-    return "Insuficiente", "#f85149", "🔴"
+    """Return (label, color, emoji) based on R² quality — language-aware."""
+    if r2 >= 0.99: return t("fit_excellent"),    "#56d364", "🟢"
+    if r2 >= 0.95: return t("fit_good"),         "#a5d96a", "🟡"
+    if r2 >= 0.85: return t("fit_acceptable"),   "#e3b341", "🟠"
+    return          t("fit_insufficient"),        "#f85149", "🔴"
 
 
 def fit_model(key, t, X, S=None, settings=None):
@@ -1518,6 +1772,42 @@ section[data-testid="stSidebar"] * {{ color:{fg} !important; }}
 .stDataFrame, .stTable {{ border-radius:8px; overflow:hidden; }}
 hr {{ border-color:{border}; }}
 .stAlert {{ border-radius:8px; }}
+
+/* ── Mobile / Responsive ─────────────────────────── */
+@media screen and (max-width: 768px) {{
+    .main .block-container {{
+        padding: 0.75rem 0.6rem !important;
+        max-width: 100% !important;
+    }}
+    [data-testid="stHorizontalBlock"] {{
+        flex-direction: column !important;
+        gap: 6px !important;
+    }}
+    [data-testid="column"] {{
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        min-width: 100% !important;
+    }}
+    .bio-card {{ padding: 12px 14px; }}
+    .bio-card h4 {{ font-size: .88rem; }}
+    .stButton > button {{
+        min-height: 44px !important;
+        font-size: .86rem !important;
+    }}
+    .metric-box .val {{ font-size: 1.1rem; }}
+    .metric-box .lbl {{ font-size: .68rem; }}
+    .phase-pill {{ font-size: .66rem; padding: 2px 7px; }}
+    .stDataFrame {{ font-size: .78rem; }}
+    .tag-label {{ font-size: .72rem; padding: 2px 8px; }}
+    #bio-footer {{ font-size: .65rem; }}
+    section[data-testid="stSidebar"] {{ min-width: 0 !important; }}
+}}
+@media screen and (max-width: 480px) {{
+    .main .block-container {{ padding: 0.5rem !important; }}
+    .metric-box .val {{ font-size: .95rem; }}
+    h1, h2 {{ font-size: 1.2rem !important; }}
+    h3 {{ font-size: 1rem !important; }}
+}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -1561,7 +1851,11 @@ _init()
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 11. LOGO
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-_LOGO_PATH = os.path.join(os.path.dirname(__file__), "assets", "logo.png")
+_LOGO_PATH  = os.path.join(os.path.dirname(__file__), "assets", "logo.png")
+_FONTS_DIR  = os.path.join(os.path.dirname(__file__), "fonts")
+_FONT_REG   = os.path.join(_FONTS_DIR, "DejaVuSans.ttf")
+_FONT_BOLD  = os.path.join(_FONTS_DIR, "DejaVuSans-Bold.ttf")
+_HAS_DEJAVU = os.path.exists(_FONT_REG) and os.path.exists(_FONT_BOLD)
 if os.path.exists(_LOGO_PATH):
     with open(_LOGO_PATH, "rb") as _lf:
         LOGO_B64 = base64.b64encode(_lf.read()).decode()
@@ -1684,7 +1978,7 @@ def render_header():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 def render_footer():
     # ── AdSense leaderboard (728×90) — non-intrusive, centrado no rodapé ──
-    components.html("""
+    _components_html("""
 <div style="display:flex;justify-content:center;margin:14px 0 4px">
   <script async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9709593825202768"
@@ -1930,37 +2224,91 @@ def tab_data():
 
         if st.session_state.use_manual:
             st.caption(t("dt_manual_note"))
+
+            # ── Toolbar ──────────────────────────────────────────
             mc = st.columns(5)
-            if mc[0].button(t("dt_manual_add_col")):
-                st.session_state.manual_cols.append(f"Col{len(st.session_state.manual_cols)}")
+            if mc[0].button(t("dt_manual_add_col"), key="mc_add_col"):
+                new_name = f"Col{len(st.session_state.manual_cols)}"
+                st.session_state.manual_cols.append(new_name)
+                # CRITICAL: keep each row in sync with col count
+                st.session_state.manual_rows = [
+                    list(r) + [""] for r in st.session_state.manual_rows
+                ]
                 st.rerun()
-            if mc[1].button(t("dt_manual_rem_col")) and len(st.session_state.manual_cols) > 2:
+            if mc[1].button(t("dt_manual_rem_col"), key="mc_rem_col") \
+                    and len(st.session_state.manual_cols) > 2:
                 st.session_state.manual_cols.pop()
+                st.session_state.manual_rows = [
+                    list(r)[:-1] for r in st.session_state.manual_rows
+                ]
                 st.rerun()
-            if mc[2].button(t("dt_manual_add_row")):
-                st.session_state.manual_rows.append([""] * len(st.session_state.manual_cols))
+            if mc[2].button(t("dt_manual_add_row"), key="mc_add_row"):
+                st.session_state.manual_rows.append(
+                    [""] * len(st.session_state.manual_cols))
                 st.rerun()
-            if mc[3].button(t("dt_manual_rem_row")) and len(st.session_state.manual_rows) > 1:
+            if mc[3].button(t("dt_manual_rem_row"), key="mc_rem_row") \
+                    and len(st.session_state.manual_rows) > 1:
                 st.session_state.manual_rows.pop()
                 st.rerun()
-            if mc[4].button(t("dt_manual_clear")):
-                st.session_state.manual_rows = [[""] * len(st.session_state.manual_cols)] * 3
+            if mc[4].button(t("dt_manual_clear"), key="mc_clear"):
+                n = len(st.session_state.manual_cols)
+                st.session_state.manual_rows = [[""] * n for _ in range(3)]
                 st.rerun()
 
-            man_df = pd.DataFrame(st.session_state.manual_rows,
-                                   columns=st.session_state.manual_cols)
-            edited = st.data_editor(man_df, use_container_width=True,
-                                    num_rows="dynamic", key="manual_editor")
+            # ── Inline header renaming ────────────────────────────
+            st.caption(t("dt_col_rename_hint"))
+            n_cols_now  = len(st.session_state.manual_cols)
+            hdr_cols    = st.columns(max(n_cols_now, 1))
+            new_names   = list(st.session_state.manual_cols)
+            for ci, (hcol, old_name) in enumerate(
+                    zip(hdr_cols, st.session_state.manual_cols)):
+                renamed = hcol.text_input(
+                    f"H{ci}", value=old_name,
+                    key=f"hdr_rename_{ci}",
+                    label_visibility="collapsed",
+                    placeholder=f"Coluna {ci+1}",
+                )
+                new_names[ci] = renamed.strip() or old_name
+            if new_names != list(st.session_state.manual_cols):
+                st.session_state.manual_cols = new_names
+                st.rerun()
+
+            # ── Editable table ────────────────────────────────────
+            # Guarantee rows are aligned with cols before building df
+            n_c = len(st.session_state.manual_cols)
+            aligned = []
+            for r in st.session_state.manual_rows:
+                row = list(r)
+                if len(row) < n_c:
+                    row += [""] * (n_c - len(row))
+                elif len(row) > n_c:
+                    row = row[:n_c]
+                aligned.append(row)
+            st.session_state.manual_rows = aligned
+
+            man_df = pd.DataFrame(aligned, columns=st.session_state.manual_cols)
+            edited = st.data_editor(
+                man_df, use_container_width=True,
+                num_rows="dynamic", key="manual_editor")
+
+            # Sync editor changes back to session state
+            st.session_state.manual_rows = edited.values.tolist()
+
+            # Coerce numerics
             for c in edited.columns:
                 try:
-                    edited[c] = pd.to_numeric(edited[c].astype(str).str.replace(",", "."),
-                                              errors="coerce")
+                    edited[c] = pd.to_numeric(
+                        edited[c].astype(str).str.replace(",", "."),
+                        errors="coerce")
                 except Exception:
                     pass
-            if st.button("✅ Aplicar dados manuais"):
-                st.session_state.df_raw = edited
-                st.session_state.df = edited
+
+            if st.button("✅ Aplicar dados manuais", key="apply_manual"):
+                st.session_state.df_raw = edited.copy()
+                st.session_state.df     = edited.copy()
                 st.session_state.excluded_cols = []
+                st.session_state.headers       = {}  # reset mapping for fresh column names
+                st.success(t("dt_data_applied"))
                 st.rerun()
 
     # ── Variable mapping — tag-input style ───────────────────
@@ -2181,7 +2529,7 @@ def tab_data():
                 st.plotly_chart(fig, use_container_width=True,
                                 config={"scrollZoom": True})
         except Exception as e:
-            st.error(f"Erro no gráfico: {e}")
+            st.error(f"{t('dt_chart_error')} {e}")
 
     # ── Box 4+5: Available models & Select ────────────────────
     n_avail = _count_available_models()
@@ -2353,7 +2701,7 @@ def _render_single_result(fr, model_key, t_col, x_col):
     pb[3].markdown(f'<div class="metric-box"><div class="val">{yobs_str}</div><div class="lbl">{t("rs_yield_obs")} g·g⁻¹</div></div>', unsafe_allow_html=True)
 
     param_names = m_meta.get("params", [f"p{i}" for i in range(len(fr["popt"]))])
-    with st.expander("🔢 Parâmetros ajustados", expanded=False):
+    with st.expander(t("rs_params_adjusted"), expanded=False):
         param_rows = [{"Parâmetro": pn, "Valor": f"{pv:.6g}"}
                       for pn, pv in zip(param_names, fr["popt"])]
         if param_rows:
@@ -2394,8 +2742,8 @@ def _render_single_result(fr, model_key, t_col, x_col):
             fn = _stats.shapiro if len(resid) <= 50 else _stats.normaltest
             nm = "Shapiro-Wilk" if len(resid) <= 50 else "D'Agostino"
             _, pval = fn(resid)
-            norm_msg = (f"✅ Resíduos normais ({nm} p={pval:.4f})" if pval > 0.05
-                        else f"⚠️ Resíduos não-normais ({nm} p={pval:.4f})")
+            norm_msg = (f"{t('rs_residuals_normal')} ({nm} p={pval:.4f})" if pval > 0.05
+                        else f"{t('rs_residuals_abnormal')} ({nm} p={pval:.4f})")
     except Exception:
         pass
     st.markdown(f"##### 📉 {t('rs_resid_chart')}")
@@ -2504,10 +2852,8 @@ def tab_results():
         tol, max_it = speed_map[speed]
 
         if len(st.session_state.selected_models) > 1:
-            with st.expander("🔧 Tolerância por modelo (avançado)", expanded=False):
-                st.caption("Defina uma tolerância individual para cada modelo. "
-                           "Modelos mais complexos (ODE) geralmente precisam de "
-                           "tolerâncias menores (1e-8) para convergência adequada.")
+            with st.expander(t("rs_tol_per_model"), expanded=False):
+                st.caption(t("rs_tol_hint"))
                 per_tol = {}
                 # 2 colunas com nomes completos + quebra de linha no label
                 n_models = len(st.session_state.selected_models)
@@ -2573,75 +2919,111 @@ def tab_results():
         st.session_state.fit_results = results
 
     if not st.session_state.fit_results:
-        st.info("Clique em **Executar análise** para ajustar o(s) modelo(s).")
+        st.info(t("rs_run_hint"))
         return
 
     fit_results = st.session_state.fit_results
 
-    # ── Comparison table (multi-model × multi-series) ─────────
-    valid_keys = [k for k, v in fit_results.items() if "error" not in v and v]
+    # Sort valid results by R²adj descending
+    valid_keys        = [k for k, v in fit_results.items() if "error" not in v and v]
+    valid_keys_sorted = sorted(valid_keys,
+                               key=lambda k: fit_results[k].get("r2adj", -999),
+                               reverse=True)
+    error_keys        = [k for k in fit_results if k not in valid_keys]
+
     if len(valid_keys) > 1:
         st.markdown(f"### 📊 {t('rs_compare_title')}")
         st.caption(t("rs_compare_note"))
+
+        # ── Ranked comparison table ───────────────────────────
         comp_rows = []
-        for rkey, fr in fit_results.items():
+        for rank, rkey in enumerate(valid_keys_sorted + error_keys, 1):
+            fr      = fit_results[rkey]
             mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
             series  = fr.get("series", "")
             suffix  = f"  [{series}]" if len(x_cols) > 1 and series else ""
-            label   = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)[:35] + suffix
+            label   = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)[:38] + suffix
             if "error" in fr:
-                comp_rows.append({"Modelo / Série": label,
-                                   "Status": "❌ " + fr["error"][:40],
-                                   "RMSE": "—", "R²adj": "—",
-                                   "AIC": "—",  "BIC": "—"})
-            elif fr:
+                comp_rows.append({
+                    "#": "—", t("rs_model_series_col"): label,
+                    "Status": "❌ " + fr["error"][:40],
+                    "RMSE": "—", "R²adj": "—", "AIC": "—", "BIC": "—"})
+            else:
                 fl, _, fi = fitness_label(fr["r2adj"])
                 comp_rows.append({
-                    "Modelo / Série": label,
-                    "Status": f"{fi} {fl}",
-                    "RMSE":   f"{fr['rmse']:.5f}",
-                    "R²adj":  f"{fr['r2adj']:.5f}",
-                    "AIC":    f"{fr['aic']:.2f}",
-                    "BIC":    f"{fr['bic']:.2f}",
+                    "#":                      f"{rank}°",
+                    t("rs_model_series_col"): label,
+                    "Status":                 f"{fi} {fl}",
+                    "RMSE":                   f"{fr['rmse']:.5f}",
+                    "R²adj":                  f"{fr['r2adj']:.5f}",
+                    "AIC":                    f"{fr['aic']:.2f}",
+                    "BIC":                    f"{fr['bic']:.2f}",
                 })
         if comp_rows:
             st.dataframe(pd.DataFrame(comp_rows),
                          use_container_width=True, hide_index=True)
 
-        # Overlay comparison chart
+        # ── Top-N overlay chart ───────────────────────────────
+        n_valid     = len(valid_keys_sorted)
+        DEFAULT_TOP = min(5, n_valid)
+
+        if n_valid > DEFAULT_TOP:
+            sl_col, inf_col = st.columns([2, 1])
+            top_n = sl_col.slider(
+                t("rs_top_n_label"),
+                min_value=2, max_value=min(n_valid, 20),
+                value=DEFAULT_TOP, key="top_n_slider")
+            inf_col.markdown(
+                f'<div style="padding-top:28px;font-size:.78rem;'
+                f'color:var(--fg2)">Top <b style="color:var(--acc)">'
+                f'{top_n}</b> / {n_valid}</div>',
+                unsafe_allow_html=True)
+        else:
+            top_n = n_valid
+
+        chart_keys = valid_keys_sorted[:top_n]
+
         COLORS_CMP = [
             "#00c8b4","#f97316","#a855f7","#22c55e","#f43f5e",
             "#38bdf8","#fbbf24","#e879f9","#4ade80","#fb7185",
             "#34d399","#c084fc","#fdba74","#67e8f9","#86efac",
             "#fde68a","#f9a8d4","#6ee7b7","#a5b4fc","#fca5a5",
         ]
-        fig_cmp  = go.Figure()
-        first_fr = None
-        plotted_series: set = set()
-        for ci, (rkey, fr) in enumerate(fit_results.items()):
-            if "error" in fr or not fr:
-                continue
-            if first_fr is None:
-                first_fr = fr
+        fig_cmp         = go.Figure()
+        plotted_series  = set()
+
+        for ci, rkey in enumerate(chart_keys):
+            fr      = fit_results[rkey]
             mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
             series  = fr.get("series", "")
+            rank    = valid_keys_sorted.index(rkey) + 1
             suffix  = f" [{series}]" if len(x_cols) > 1 and series else ""
-            name    = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)[:28] + suffix
+            name    = f"{rank}° {ALL_MODELS.get(mk_disp,{}).get('name',mk_disp)[:22]}{suffix}"
+            color   = COLORS_CMP[ci % len(COLORS_CMP)]
             t_fine  = np.linspace(fr["t"][0], fr["t"][-1], 400)
             y_fine  = predict_for_plot(mk_disp, fr["popt"], t_fine,
                                        X0_data=fr.get("X0_fit"),
                                        S0=fr.get("S0_fit"))
             fig_cmp.add_trace(go.Scatter(
                 x=t_fine, y=y_fine, mode="lines", name=name,
-                line=dict(color=COLORS_CMP[ci % len(COLORS_CMP)], width=2.2)))
-            # Observed data — one scatter per unique series
+                line=dict(color=color, width=2.2),
+                hovertemplate=(f"<b>{name}</b><br>"
+                               "t=%{x:.2f}<br>X=%{y:.4g}<extra></extra>")))
             if series not in plotted_series and fr.get("X") is not None:
                 plotted_series.add(series)
-                data_name = f"Dados [{series}]" if series else "Dados"
+                d_name = f"Dados [{series}]" if series else "Dados"
                 fig_cmp.add_trace(go.Scatter(
-                    x=fr["t"], y=fr["X"], mode="markers", name=data_name,
-                    marker=dict(size=8, symbol="circle",
-                                line=dict(color="#fff", width=1))))
+                    x=fr["t"], y=fr["X"], mode="markers", name=d_name,
+                    marker=dict(color="#f97316", size=8, symbol="circle",
+                                line=dict(color="#fff", width=1)),
+                    hovertemplate="<b>Dados</b><br>t=%{x:.2f}<br>"
+                                  "X=%{y:.4g}<extra></extra>"))
+
+        legend_cfg = (
+            dict(bgcolor="rgba(0,0,0,0)", orientation="v",
+                 x=1.01, y=1, xanchor="left", font=dict(size=10))
+            if top_n > 7
+            else dict(bgcolor="rgba(0,0,0,0)", orientation="h", y=1.08))
 
         fig_cmp.update_layout(
             paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
@@ -2649,37 +3031,43 @@ def tab_results():
             yaxis=dict(color="#8b949e", gridcolor="#30363d",
                        title=" / ".join(x_cols[:3]),
                        tickformat=".4g", exponentformat="none"),
-            legend=dict(bgcolor="rgba(0,0,0,0)", orientation="h", y=1.1),
+            legend=legend_cfg,
             uirevision="comparison_chart",
-            margin=dict(l=40, r=20, t=40, b=40), height=400,
-        )
+            margin=dict(l=40, r=10 if top_n > 7 else 20, t=50, b=40),
+            height=430 if top_n <= 7 else 470)
         st.plotly_chart(fig_cmp, use_container_width=True,
-                        config={"scrollZoom": True})
+                        config={"scrollZoom": True,
+                                "displayModeBar": True})
+        if n_valid > top_n:
+            st.caption(
+                f"💡 {n_valid - top_n} {t('rs_top_n_omitted')}")
         st.divider()
-        st.markdown("### 🔍 Resultados individuais")
+        st.markdown(f"### 🔍 {t('rs_individual_results')}")
 
     # ── Individual results ────────────────────────────────────
     all_export_data = {}
-    for rkey, fr in fit_results.items():
+    iter_keys = valid_keys_sorted if valid_keys_sorted else list(fit_results.keys())
+    for rkey in iter_keys:
+        fr      = fit_results.get(rkey, {})
+        if not fr or "error" in fr:
+            st.error(f"{fr.get('error','?')}"); continue
         mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
         series  = fr.get("series", "")
         m_name  = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)
         suffix  = f"  [{series}]" if len(x_cols) > 1 and series else ""
-        if "error" in fr:
-            st.error(f"**{m_name}{suffix}**: {fr['error']}"); continue
-        if not fr:
-            continue
         exp_label = (f"**{m_name}**{suffix}  ·  "
                      f"R²={fr['r2adj']:.4f}  ·  RMSE={fr['rmse']:.4f}")
         if len(valid_keys) > 1:
             with st.expander(exp_label, expanded=False):
-                extras = _render_single_result(fr, mk_disp, t_col, series or x_cols[0])
+                extras = _render_single_result(
+                    fr, mk_disp, t_col, series or x_cols[0])
         else:
             st.markdown(
                 f"**Modelo:** `{m_name}`  —  "
                 f"*{ALL_MODELS.get(mk_disp,{}).get('author','')}*")
             st.divider()
-            extras = _render_single_result(fr, mk_disp, t_col, series or x_cols[0])
+            extras = _render_single_result(
+                fr, mk_disp, t_col, series or x_cols[0])
         all_export_data[rkey] = {"fr": fr, **extras}
 
     # Export — bottom, full-width
@@ -2732,10 +3120,35 @@ def tab_results():
                 if st.button(t("rs_export_pdf"), use_container_width=True, type="secondary"):
                     pdf = FPDF()
                     pdf.add_page()
-                    pdf.set_font("Helvetica", "B", 16)
-                    pdf.cell(0, 10, "GrowthEmulator v1.2 - Relatorio de Analise", ln=True)
-                    pdf.set_font("Helvetica", "", 9)
-                    pdf.cell(0, 5, f"Series analisadas: {len(all_export_data)}", ln=True)
+
+                    # ── Register DejaVu (UTF-8 / accents / Greek letters) ──
+                    if _HAS_DEJAVU:
+                        pdf.add_font("DejaVu", "",  _FONT_REG)
+                        pdf.add_font("DejaVu", "B", _FONT_BOLD)
+                        FONT = "DejaVu"
+                    else:
+                        # Fallback: Helvetica only supports latin-1 → strip
+                        # unsupported chars (μ, ², °, etc.) to avoid crashes.
+                        FONT = "Helvetica"
+
+                    def _safe(txt: str) -> str:
+                        if FONT == "DejaVu":
+                            return txt
+                        repl = {"μ": "u", "²": "2", "°": "deg", "α": "alpha",
+                                "β": "beta", "ν": "v", "λ": "lambda",
+                                "₀": "0", "·": "*", "—": "-", "–": "-",
+                                "→": "->", "✓": "OK", "≈": "~"}
+                        for k, v in repl.items():
+                            txt = txt.replace(k, v)
+                        return txt.encode("latin-1", "replace").decode("latin-1")
+
+                    pdf.set_font(FONT, "B", 16)
+                    pdf.cell(0, 10, _safe("GrowthEmulator v1.2 - "
+                            f"{t('rs_title')}"), ln=True)
+                    pdf.set_font(FONT, "", 9)
+                    pdf.cell(0, 5, _safe(
+                        f"{t('rs_individual_results')}: "
+                        f"{len(all_export_data)}"), ln=True)
                     pdf.ln(3)
                     for rkey, ed in all_export_data.items():
                         fr      = ed["fr"]
@@ -2743,12 +3156,13 @@ def tab_results():
                         series  = fr.get("series", "")
                         m_name  = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)
                         suffix  = f" [{series}]" if series else ""
-                        pdf.set_font("Helvetica","B",12)
-                        pdf.cell(0, 8, f"Modelo: {m_name}{suffix}", ln=True)
-                        pdf.set_font("Helvetica","",10)
-                        pdf.cell(0, 5,
-                                 f"  Autor: {ALL_MODELS.get(mk_disp,{}).get('author','')}",
-                                 ln=True)
+                        pdf.set_font(FONT, "B", 12)
+                        pdf.cell(0, 8, _safe(f"{m_name}{suffix}"), ln=True)
+                        pdf.set_font(FONT, "", 10)
+                        pdf.cell(0, 5, _safe(
+                            f"  {t('ab_author')}: "
+                            f"{ALL_MODELS.get(mk_disp,{}).get('author','')}"),
+                            ln=True)
                         for label, val in [
                             (t("rs_rmse"),   fr["rmse"]),
                             (t("rs_r2adj"),  fr["r2adj"]),
@@ -2761,10 +3175,10 @@ def tab_results():
                             v_str = (f"{val:.5f}"
                                      if isinstance(val, float) and not np.isnan(val)
                                      else "N/A")
-                            pdf.cell(0, 5, f"  {label}: {v_str}", ln=True)
+                            pdf.cell(0, 5, _safe(f"  {label}: {v_str}"), ln=True)
                         pnames = ALL_MODELS.get(mk_disp, {}).get("params", [])
                         for pn, pv in zip(pnames, fr["popt"]):
-                            pdf.cell(0, 5, f"  {pn}: {pv:.5g}", ln=True)
+                            pdf.cell(0, 5, _safe(f"  {pn}: {pv:.5g}"), ln=True)
                         pdf.ln(3)
                     buf_pdf = BytesIO(pdf.output())
                     st.download_button(
@@ -2777,7 +3191,7 @@ def tab_results():
 
         # ── AdSense — after export, non-intrusive ─────────────
         st.markdown("<br>", unsafe_allow_html=True)
-        components.html("""
+        _components_html("""
 <div style="display:flex;justify-content:center;margin:10px 0 4px">
   <script async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9709593825202768"
@@ -2800,7 +3214,7 @@ def tab_tools():
     from scipy import stats as _stats
 
     st.markdown(f"## 🔧 {t('tl_title')}")
-    st.caption("Modelos especializados de cinética enzimática, rendimento e turn-over celular")
+    st.caption(t("tl_subtitle"))
     st.divider()
 
     # ── Show TOOLS_BOXES models ───────────────────────────────
@@ -2831,7 +3245,7 @@ def tab_tools():
     st.markdown(f"### 🧫 {t('tl_enzyme_title')}")
     st.caption(t("tl_enzyme_note"))
 
-    with st.expander("⚙️ Configurar análise enzimática", expanded=True):
+    with st.expander(f"⚙️ {t('tl_enzyme_config')}", expanded=True):
         ek1, ek2 = st.columns(2)
         ek_mode = ek1.radio("Fonte de dados",
                              ["Usar dados carregados (aba Dados)",
@@ -2861,13 +3275,13 @@ def tab_tools():
                     mask   = (S_raw[:n] > 0) & (v_raw > 0)
                     S_enz  = S_raw[:n][mask]
                     v_enz  = v_raw[mask]
-                    st.success(f"✅ {len(S_enz)} pontos de [S] vs v extraídos dos dados")
+                    st.success(f"✅ {len(S_enz)} {t('tl_pts_extracted')}")
                 else:
                     st.warning("Dados insuficientes — mapeie Tempo e Substrato na aba Dados")
             else:
-                st.warning("Mapeie Substrato e Tempo na aba Dados para usar esta opção")
+                st.warning(t("tl_map_sub_time"))
         else:
-            st.caption("Insira pares [S] (µM ou mM) e v (µM/s ou mM/h) separados por ponto-e-vírgula")
+            st.caption(t("tl_enter_sv_pairs"))
             raw_s = st.text_input("Valores de [S]:", "0.5;1;2;4;8;12;20", key="ek_s_raw")
             raw_v = st.text_input("Valores de v:",   "0.8;1.3;2.0;2.8;3.5;3.8;4.0", key="ek_v_raw")
             try:
@@ -2875,7 +3289,7 @@ def tab_tools():
                 S_enz = np.array([float(x.replace(",",".")) for x in raw_s.split(sep)])
                 v_enz = np.array([float(x.replace(",",".")) for x in raw_v.split(sep)])
             except Exception:
-                st.error("Formato inválido — use números separados por ';'")
+                st.error(t("tl_format_invalid"))
 
     if S_enz is not None and v_enz is not None and len(S_enz) >= 3:
         if st.button(f"▶ {t('tl_run')} — Michaelis-Menten", key="run_mm"):
@@ -2925,7 +3339,7 @@ def tab_tools():
 
     if "michaelis" in st.session_state.tools_results:
         res = st.session_state.tools_results["michaelis"]
-        st.markdown("#### 📊 Resultados — Cinética Enzimática")
+        st.markdown(f"#### 📊 {t('tl_enzyme_results')}")
         mc1, mc2, mc3, mc4 = st.columns(4)
         mc1.metric(t("tl_vmax"),   f"{res['Vmax']:.4g}")
         mc2.metric(t("tl_km"),     f"{res['Km']:.4g}")
@@ -2938,7 +3352,7 @@ def tab_tools():
 
         if res.get("popt_ci") is not None:
             ci = res["popt_ci"]
-            st.info(f"🔬 Inibição Competitiva ajustada — Vmax={ci[0]:.4g}  Km={ci[1]:.4g}  Ki={ci[2]:.4g}")
+            st.info(f"🔬 {t('tl_ci_result')} — Vmax={ci[0]:.4g}  Km={ci[1]:.4g}  Ki={ci[2]:.4g}")
 
         S_enz, v_obs, v_pred_mm = res["S"], res["v_obs"], res["v_pred"]
         S_fine = np.linspace(S_enz.min()*0.1, S_enz.max()*1.1, 300)
@@ -3040,7 +3454,7 @@ def tab_tools():
     lp_ready = (df_src3 is not None and t_col3 and x_col3 and p_col3
                 and x_col3 in df_src3.columns and p_col3 in df_src3.columns)
 
-    with st.expander("⚙️ Configurar análise de formação de produto", expanded=bool(lp_ready)):
+    with st.expander(f"⚙️ {t('tl_lp_config')}", expanded=bool(lp_ready)):
         if lp_ready:
             t_lp  = pd.to_numeric(df_src3[t_col3], errors="coerce").dropna().values
             X_lp  = pd.to_numeric(df_src3[x_col3], errors="coerce").dropna().values
@@ -3069,13 +3483,13 @@ def tab_tools():
                     except Exception as ex:
                         st.error(f"Erro: {ex}")
             else:
-                st.warning(f"Apenas {n_lp} pontos — mínimo 4 necessário")
+                st.warning(f"{n_lp} {t('tl_min_pts')}")
         else:
             st.info("Mapeie **Tempo**, **Biomassa** e **Produto** na aba 📊 Dados para habilitar")
 
         # Chick inactivation — always available if biomass data present
         st.markdown("---")
-        st.markdown("**Chick — Inativação Celular de 1ª Ordem**")
+        st.markdown(f"**{t('tl_chick_section')}**")
         if df_src3 is not None and x_col3 and t_col3:
             t_ck = pd.to_numeric(df_src3[t_col3], errors="coerce").dropna().values
             X_ck = pd.to_numeric(df_src3[x_col3], errors="coerce").dropna().values
@@ -3099,18 +3513,18 @@ def tab_tools():
 
     if "luedeking_piret" in st.session_state.tools_results:
         res = st.session_state.tools_results["luedeking_piret"]
-        st.markdown("#### 📊 Resultados — Luedeking-Piret")
+        st.markdown(f"#### 📊 {t('tl_lp_results')}")
         lc1, lc2, lc3 = st.columns(3)
         lc1.metric(t("tl_alpha"), f"{res['alpha']:.5g}")
         lc2.metric(t("tl_beta"),  f"{res['beta']:.5g}")
         lc3.metric("R² Ajustado", f"{res['r2']:.5f}")
 
-        prod_type = ("Produto primário (crescimento-associado)"
+        prod_type = (t("tl_prod_primary")
                      if abs(res["alpha"]) > abs(res["beta"]) * 5
-                     else ("Produto secundário (não-associado)"
+                     else (t("tl_prod_secondary")
                            if abs(res["beta"]) > abs(res["alpha"]) * 5
-                           else "Produto misto (α e β significativos)"))
-        st.info(f"🔬 Classificação: **{prod_type}**")
+                           else t("tl_prod_mixed")))
+        st.info(f"🔬 {t('tl_classification')} **{prod_type}**")
 
         fig_lp = make_subplots(rows=1, cols=2,
                                 subplot_titles=["P observado vs ajustado", "dP/dt: obs vs pred"])
@@ -3130,7 +3544,7 @@ def tab_tools():
 
     if "chick" in st.session_state.tools_results:
         res = st.session_state.tools_results["chick"]
-        st.markdown("#### 📊 Resultados — Chick (Inativação)")
+        st.markdown(f"#### 📊 {t('tl_ck_results')}")
         cc1, cc2, cc3 = st.columns(3)
         cc1.metric("X₀", f"{res['X0']:.4g}")
         cc2.metric("kd (h⁻¹)", f"{res['kd']:.5g}")
@@ -3163,7 +3577,7 @@ def tab_tools():
     st.markdown(f"### ⚗️ {t('tl_yield_title')}")
     st.caption(t("tl_yield_note"))
 
-    with st.expander("⚙️ Configurar análise de rendimento", expanded=False):
+    with st.expander(f"⚙️ {t('tl_pirt_config')}", expanded=False):
         pt1, pt2 = st.columns(2)
         pt1.markdown("Insira pares μ (h⁻¹) e Y_obs (g/g) para ajustar o modelo de Pirt:")
         raw_mu_p  = pt1.text_input("μ (h⁻¹):",    "0.05;0.1;0.2;0.3;0.4;0.5", key="pirt_mu")
@@ -3173,7 +3587,7 @@ def tab_tools():
             sep = ";" if ";" in s else ","
             return np.array([float(x.replace(",", ".")) for x in s.split(sep)])
 
-        if st.button("▶ Ajustar Pirt — Rendimento Variável", key="run_pirt"):
+        if st.button(t("tl_pirt_run_btn"), key="run_pirt"):
             try:
                 mu_arr  = _parse_pirt(raw_mu_p)
                 yobs_arr = _parse_pirt(raw_yobs)
@@ -3198,7 +3612,7 @@ def tab_tools():
 
     if "pirt" in st.session_state.tools_results:
         res = st.session_state.tools_results["pirt"]
-        st.markdown("#### 📊 Resultados — Pirt (Rendimento Variável)")
+        st.markdown(f"#### 📊 {t('tl_pirt_results')}")
         pc1, pc2, pc3 = st.columns(3)
         pc1.metric(t("tl_yield_true"), f"{res['Ymax']:.5g} g/g")
         pc2.metric("ms — Manutenção",  f"{res['ms']:.5g} g/g·h")
@@ -3231,10 +3645,10 @@ def tab_tools():
     st.markdown(f"### 🧮 {t('tl_params_title')}")
     st.caption(t("tl_params_note"))
 
-    with st.expander("⚙️ Calculadora rápida", expanded=True):
+    with st.expander(f"⚙️ {t('tl_calc_quick')}", expanded=True):
         calc_cols = st.columns(2)
         with calc_cols[0]:
-            st.markdown("**⏱ Tempo de duplicação e taxa de geração**")
+            st.markdown(f"**{t('tl_td_gen_section')}**")
             mu_calc = st.number_input("μmax (h⁻¹):", min_value=1e-6, value=0.693,
                                        format="%.4f", key="calc_mu")
             td_calc  = np.log(2) / mu_calc
@@ -3243,7 +3657,7 @@ def tab_tools():
             st.metric(t("tl_gen_per_h"), f"{gen_calc:.4f} gen/h")
 
             st.markdown("---")
-            st.markdown("**📈 Estimativa de μ a partir de dois pontos**")
+            st.markdown(f"**{t('tl_mu_from_pts')}**")
             xA = st.number_input("X₁ (g/L):", min_value=1e-6, value=0.1, format="%.4f", key="xA")
             xB = st.number_input("X₂ (g/L):", min_value=1e-6, value=1.0, format="%.4f", key="xB")
             tA = st.number_input("t₁ (h):", value=0.0, format="%.2f", key="tA")
@@ -3255,7 +3669,7 @@ def tab_tools():
                 st.metric("td estimado (h)",   f"{td_est:.4f}" if not np.isnan(td_est) else "—")
 
         with calc_cols[1]:
-            st.markdown("**⚗️ Coeficiente de rendimento observado**")
+            st.markdown(f"**{t('tl_yield_coef_sect')}**")
             X0_yc = st.number_input("X₀ (g/L):", min_value=0.0, value=0.05, format="%.4f", key="X0_yc")
             Xf_yc = st.number_input("Xf (g/L):", min_value=0.0, value=4.0,  format="%.4f", key="Xf_yc")
             S0_yc = st.number_input("S₀ (g/L):", min_value=0.0, value=20.0, format="%.4f", key="S0_yc")
@@ -3270,7 +3684,7 @@ def tab_tools():
                 st.warning("S₀ deve ser maior que Sf")
 
             st.markdown("---")
-            st.markdown("**📐 Constante de inativação (Chick)**")
+            st.markdown(f"**{t('tl_chick_const_sect')}**")
             X0_ck = st.number_input("X₀ inativação (g/L):", min_value=1e-6,
                                      value=5.0, format="%.4f", key="X0_ck_calc")
             Xt_ck = st.number_input("X(t) (g/L):", min_value=1e-8,

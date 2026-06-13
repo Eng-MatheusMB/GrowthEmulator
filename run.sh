@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ──────────────────────────────────────────────────────────────
-# BioGrowth v1.1 — Script de inicialização (Unix/macOS/Linux)
+# BioGrowth v1.2 — Script de inicialização (Unix/macOS/Linux)
 # Uso: bash run.sh
 # ──────────────────────────────────────────────────────────────
 set -e
@@ -10,7 +10,7 @@ APP="app.py"
 PORT=8501
 
 echo ""
-echo "  🧫  BioGrowth v1.1 — Microbial Growth Simulator"
+echo "  🧫  BioGrowth v1.2 — Microbial Growth Simulator"
 echo "  ─────────────────────────────────────────────────"
 
 # ── 1. Python check ──────────────────────────────────────────
