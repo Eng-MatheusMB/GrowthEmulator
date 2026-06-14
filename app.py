@@ -176,7 +176,7 @@ _T = {
         "gd_title": "Guia & Referências",
         "gd_intro_title": "O que é o GrowthEmulator?",
         "gd_intro_body": (
-            "GrowthEmulator v1.2 é uma plataforma interativa de modelagem cinética microbiana "
+            "GrowthEmulator v1.1 é uma plataforma interativa de modelagem cinética microbiana "
             "construída para pesquisadores, engenheiros de bioprocessos e estudantes. "
             "Permite carregar dados experimentais de crescimento celular, selecionar e ajustar "
             "modelos matemáticos, analisar métricas estatísticas e exportar resultados prontos "
@@ -197,7 +197,7 @@ _T = {
         "fit_good":            "Bom",
         "fit_acceptable":      "Aceitável",
         "fit_insufficient":    "Insuficiente",
-        "fit_quality":         t("fit_quality"),
+        "fit_quality": "Qualidade do ajuste",
         # ── Comparison chart ───────────────────────────────────
         "rs_individual_results": "Resultados individuais",
         "rs_top_n_label":      "Curvas no gráfico overlay",
@@ -206,54 +206,54 @@ _T = {
         "rs_residuals_normal": "Resíduos normais",
         "rs_residuals_abnormal": "Resíduos não-normais",
         "rs_run_hint":         "Clique em **▶ Executar análise** para ajustar o(s) modelo(s).",
-        "rs_tol_per_model":    t("rs_tol_per_model"),
+        "rs_tol_per_model": "🔧 Tolerância por modelo (avançado)",
         "rs_tol_hint":         "Defina tolerâncias individuais. Modelos ODE precisam de valores menores (1e-8).",
-        "rs_model_series_col": t("rs_model_series_col"),
+        "rs_model_series_col": "Modelo / Série",
         # ── Data tab ───────────────────────────────────────────
         "dt_files_identical":  "arquivos com colunas idênticas → empilhados",
         "dt_files_merged":     "arquivos mesclados (outer join no tempo)",
-        "dt_col_rename_hint":  t("dt_col_rename_hint"),
-        "dt_data_applied":     t("dt_data_applied"),
-        "dt_chart_error":      t("dt_chart_error"),
+        "dt_col_rename_hint": "✏️ Renomear cabeçalhos — clique no campo e edite:",
+        "dt_data_applied": "✅ Dados aplicados! Role para baixo e mapeie os cabeçalhos.",
+        "dt_chart_error": "Erro no gráfico:",
         "dt_estimated_mu":     "μ estimado (h⁻¹)",
         "dt_estimated_td":     "td estimado (h)",
         # ── Tools tab (static UI) ──────────────────────────────
-        "tl_enzyme_config":    t("tl_enzyme_config"),
-        "tl_data_source_lbl":  t("tl_data_source_lbl"),
-        "tl_use_loaded_data":  t("tl_use_loaded_data"),
-        "tl_enter_manually":   t("tl_enter_manually"),
-        "tl_enzyme_conc_lbl":  t("tl_enzyme_conc_lbl"),
-        "tl_enzyme_conc_help": t("tl_enzyme_conc_help"),
+        "tl_enzyme_config": "Configurar análise enzimática",
+        "tl_data_source_lbl": "Fonte de dados",
+        "tl_use_loaded_data": "Usar dados carregados (aba Dados)",
+        "tl_enter_manually": "Inserir S e v manualmente",
+        "tl_enzyme_conc_lbl": "[E] — Concentração de enzima (µM, opcional)",
+        "tl_enzyme_conc_help": "Se fornecido, calcula kcat = Vmax / [E]",
         "tl_enzyme_results":   "Resultados — Cinética Enzimática",
         "tl_ci_result":        "Inibição Competitiva ajustada",
         "tl_pts_extracted":    "pontos de [S] vs v extraídos dos dados",
         "tl_map_sub_time":     "Mapeie Substrato e Tempo na aba Dados para usar esta opção",
         "tl_enter_sv_pairs":   "Insira pares [S] (µM ou mM) e v (µM/s ou mM/h) separados por ';'",
-        "tl_format_invalid":   t("tl_format_invalid"),
+        "tl_format_invalid": "Formato inválido — use números separados por ';'",
         "tl_mm_run_btn":       "▶ Calcular — Michaelis-Menten",
         "tl_lp_config":        "Configurar análise de formação de produto",
-        "tl_chick_section":    t("tl_chick_section"),
+        "tl_chick_section": "Chick — Inativação Celular de 1ª Ordem",
         "tl_min_pts":          "pontos — mínimo 4 necessário",
-        "tl_lp_run_btn":       t("tl_lp_run_btn"),
-        "tl_chick_run_btn":    t("tl_chick_run_btn"),
-        "tl_prod_primary":     t("tl_prod_primary"),
+        "tl_lp_run_btn": "▶ Ajustar Luedeking-Piret",
+        "tl_chick_run_btn": "▶ Ajustar Chick (kd)",
+        "tl_prod_primary": "Produto primário (crescimento-associado)",
         "tl_prod_secondary":   "Produto secundário (não-associado ao crescimento)",
         "tl_prod_mixed":       "Produto misto (α e β ambos significativos)",
         "tl_classification":   "Classificação:",
         "tl_lp_results":       "Resultados — Luedeking-Piret",
         "tl_ck_results":       "Resultados — Chick (Inativação)",
-        "tl_halflife":         t("tl_halflife"),
+        "tl_halflife": "t½ (tempo de meia-vida)",
         "tl_pirt_config":      "Configurar análise de rendimento",
-        "tl_pirt_run_btn":     t("tl_pirt_run_btn"),
+        "tl_pirt_run_btn": "▶ Ajustar Pirt — Rendimento Variável",
         "tl_pirt_results":     "Resultados — Pirt (Rendimento Variável)",
-        "tl_maintenance_coef": t("tl_maintenance_coef"),
+        "tl_maintenance_coef": "ms — Manutenção",
         "tl_calc_quick":       "Calculadora rápida",
         "tl_td_gen_section":   "⏱ Tempo de duplicação e taxa de geração",
         "tl_mu_from_pts":      "📈 Estimativa de μ a partir de dois pontos",
         "tl_yield_coef_sect":  "⚗️ Coeficiente de rendimento observado",
         "tl_chick_const_sect": "📐 Constante de inativação (Chick)",
-        "tl_s_values_lbl":     t("tl_s_values_lbl"),
-        "tl_v_values_lbl":     t("tl_v_values_lbl"),
+        "tl_s_values_lbl": "Valores de [S]:",
+        "tl_v_values_lbl": "Valores de v:",
         # ── About tab ─────────────────────────────────────────
         "ab_stack":            "Stack tecnológico",
         "ab_algorithms":       "Algoritmos",
@@ -399,7 +399,7 @@ _T = {
         "gd_title": "Guide & References",
         "gd_intro_title": "What is GrowthEmulator?",
         "gd_intro_body": (
-            "GrowthEmulator v1.2 is an interactive microbial kinetic modeling platform built for "
+            "GrowthEmulator v1.1 is an interactive microbial kinetic modeling platform built for "
             "researchers, bioprocess engineers and students. Load experimental growth data, "
             "select and fit mathematical models, analyze statistical metrics and export "
             "publication-ready results — all in an intuitive multilingual interface."
@@ -559,7 +559,7 @@ _T = {
         "rs_est_mode": "Estimación de parámetros",
         "rs_est_auto": "Automático",
         "rs_est_manual": "Manual",
-        "rs_tolerance": "Tolerancia",
+        "rs_tolerance": "Tolerancia", 
         "rs_maxiter": "Iteraciones máximas",
         "rs_restarts": "Reinicios",
         "rs_restart_std": "Estándar (1×)",
@@ -614,7 +614,7 @@ _T = {
         "gd_title": "Guía & Referencias",
         "gd_intro_title": "¿Qué es GrowthEmulator?",
         "gd_intro_body": (
-            "GrowthEmulator v1.2 es una plataforma interactiva de modelado cinético microbiano "
+            "GrowthEmulator v1.1 es una plataforma interactiva de modelado cinético microbiano "
             "para investigadores, ingenieros de bioprocesos y estudiantes. Cargue datos "
             "experimentales, seleccione y ajuste modelos matemáticos, analice métricas "
             "estadísticas y exporte resultados listos para publicación."
@@ -828,7 +828,7 @@ _T = {
         "gd_title": "指南与参考文献",
         "gd_intro_title": "GrowthEmulator 是什么？",
         "gd_intro_body": (
-            "GrowthEmulator v1.2 是面向研究人员、生物过程工程师和学生的交互式微生物动力学建模平台。"
+            "GrowthEmulator v1.1 是面向研究人员、生物过程工程师和学生的交互式微生物动力学建模平台。"
             "可加载实验生长数据、选择并拟合数学模型、分析统计指标并导出可发表的结果。"
         ),
         "gd_decision_title": "我应该使用哪个模型？",
@@ -2678,7 +2678,7 @@ def _render_single_result(fr, model_key, t_col, x_col):
     mc[4].markdown(
         f'<div class="metric-box" style="border-color:{fit_col};margin-top:4px">'
         f'<div class="val" style="color:{fit_col};font-size:1rem">{fit_ico} {fit_lbl}</div>'
-        f'<div class="lbl">Qualidade do ajuste</div></div>',
+        f'<div class="lbl">{t("fit_quality")}</div></div>',
         unsafe_allow_html=True)
 
     # Computed kinetic parameters
@@ -3247,17 +3247,17 @@ def tab_tools():
 
     with st.expander(f"⚙️ {t('tl_enzyme_config')}", expanded=True):
         ek1, ek2 = st.columns(2)
-        ek_mode = ek1.radio("Fonte de dados",
-                             ["Usar dados carregados (aba Dados)",
-                              "Inserir S e v manualmente"],
+        ek_mode = ek1.radio(t("tl_data_source_lbl"),
+                             [t("tl_use_loaded_data"),
+                              t("tl_enter_manually")],
                              key="ek_mode")
         ek_enzyme_conc = ek2.number_input(
-            "[E] — Concentração de enzima (µM, opcional)",
+            t("tl_enzyme_conc_lbl"),
             value=0.0, min_value=0.0, format="%.4f", key="ek_enzyme_conc",
-            help="Se fornecido, calcula kcat = Vmax / [E]")
+            help=t("tl_enzyme_conc_help"))
 
         S_enz = v_enz = None
-        if ek_mode == "Usar dados carregados (aba Dados)":
+        if ek_mode == t("tl_use_loaded_data"):
             # Use the correct session state keys — df_clean and df
             _dc  = st.session_state.get("df_clean")
             _df  = st.session_state.get("df")
@@ -3282,8 +3282,8 @@ def tab_tools():
                 st.warning(t("tl_map_sub_time"))
         else:
             st.caption(t("tl_enter_sv_pairs"))
-            raw_s = st.text_input("Valores de [S]:", "0.5;1;2;4;8;12;20", key="ek_s_raw")
-            raw_v = st.text_input("Valores de v:",   "0.8;1.3;2.0;2.8;3.5;3.8;4.0", key="ek_v_raw")
+            raw_s = st.text_input(t("tl_s_values_lbl"), "0.5;1;2;4;8;12;20", key="ek_s_raw")
+            raw_v = st.text_input(t("tl_v_values_lbl"), "0.8;1.3;2.0;2.8;3.5;3.8;4.0", key="ek_v_raw")
             try:
                 sep = ";" if ";" in raw_s else ","
                 S_enz = np.array([float(x.replace(",",".")) for x in raw_s.split(sep)])
@@ -3463,7 +3463,7 @@ def tab_tools():
             t_lp, X_lp, P_lp = t_lp[:n_lp], X_lp[:n_lp], P_lp[:n_lp]
             if n_lp >= 4:
                 st.success(f"✅ {n_lp} pontos detectados — Tempo, Biomassa e Produto mapeados")
-                if st.button("▶ Ajustar Luedeking-Piret", key="run_lp"):
+                if st.button(t("tl_lp_run_btn"), key="run_lp"):
                     try:
                         dX_dt = np.gradient(X_lp, t_lp)
                         dP_dt = np.gradient(P_lp, t_lp)
@@ -3495,7 +3495,7 @@ def tab_tools():
             X_ck = pd.to_numeric(df_src3[x_col3], errors="coerce").dropna().values
             n_ck = min(len(t_ck), len(X_ck))
             t_ck, X_ck = t_ck[:n_ck], X_ck[:n_ck]
-            if st.button("▶ Ajustar Chick (kd)", key="run_chick"):
+            if st.button(t("tl_chick_run_btn"), key="run_chick"):
                 try:
                     popt_ck, _ = curve_fit(m_chick, t_ck, X_ck,
                                             p0=[X_ck[0], 0.1],
@@ -3550,7 +3550,7 @@ def tab_tools():
         cc2.metric("kd (h⁻¹)", f"{res['kd']:.5g}")
         cc3.metric("R² Ajustado", f"{res['r2']:.5f}")
         t_half = np.log(2) / res["kd"] if res["kd"] > 0 else float("nan")
-        st.caption(f"t½ (tempo de meia-vida) = {t_half:.3f} h")
+        st.caption(f"{t('tl_halflife')} = {t_half:.3f} h")
         fig_ck = go.Figure()
         t_ck_fine = np.linspace(res["t"][0], res["t"][-1], 300)
         fig_ck.add_trace(go.Scatter(x=t_ck_fine,
@@ -3615,7 +3615,7 @@ def tab_tools():
         st.markdown(f"#### 📊 {t('tl_pirt_results')}")
         pc1, pc2, pc3 = st.columns(3)
         pc1.metric(t("tl_yield_true"), f"{res['Ymax']:.5g} g/g")
-        pc2.metric("ms — Manutenção",  f"{res['ms']:.5g} g/g·h")
+        pc2.metric(t("tl_maintenance_coef"), f"{res['ms']:.5g} g/g·h")
         pc3.metric("R² Ajustado",      f"{res['r2']:.5f}")
 
         mu_fine = np.linspace(res["mu"].min()*0.5, res["mu"].max()*1.1, 200)
