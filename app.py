@@ -16,6 +16,7 @@ from plotly.subplots import make_subplots
 from scipy.optimize import curve_fit, minimize, differential_evolution
 from scipy.integrate import solve_ivp
 from io import BytesIO
+from pathlib import Path
 import base64, os, warnings, re, copy
 warnings.filterwarnings("ignore")
 
@@ -176,7 +177,7 @@ _T = {
         "gd_title": "Guia & Referências",
         "gd_intro_title": "O que é o GrowthEmulator?",
         "gd_intro_body": (
-            "GrowthEmulator v1.1 é uma plataforma interativa de modelagem cinética microbiana "
+            "GrowthEmulator v1.2 é uma plataforma interativa de modelagem cinética microbiana "
             "construída para pesquisadores, engenheiros de bioprocessos e estudantes. "
             "Permite carregar dados experimentais de crescimento celular, selecionar e ajustar "
             "modelos matemáticos, analisar métricas estatísticas e exportar resultados prontos "
@@ -192,6 +193,8 @@ _T = {
         "ct_email": "E-mail",
         "ct_linkedin": "LinkedIn",
         "ct_close": "Fechar",
+        "ab_integrators":       "Integradores",
+        "dt_rename_category_hint": "Clique para renomear esta categoria",
         # ── Fitness labels ─────────────────────────────────────
         "fit_excellent":       "Excelente",
         "fit_good":            "Bom",
@@ -399,7 +402,7 @@ _T = {
         "gd_title": "Guide & References",
         "gd_intro_title": "What is GrowthEmulator?",
         "gd_intro_body": (
-            "GrowthEmulator v1.1 is an interactive microbial kinetic modeling platform built for "
+            "GrowthEmulator v1.2 is an interactive microbial kinetic modeling platform built for "
             "researchers, bioprocess engineers and students. Load experimental growth data, "
             "select and fit mathematical models, analyze statistical metrics and export "
             "publication-ready results — all in an intuitive multilingual interface."
@@ -413,6 +416,8 @@ _T = {
         "ct_email": "E-mail",
         "ct_linkedin": "LinkedIn",
         "ct_close": "Close",
+        "ab_integrators":       "Integrators",
+        "dt_rename_category_hint": "Click to rename this category",
         "fit_excellent":       "Excellent",
         "fit_good":            "Good",
         "fit_acceptable":      "Acceptable",
@@ -559,7 +564,7 @@ _T = {
         "rs_est_mode": "Estimación de parámetros",
         "rs_est_auto": "Automático",
         "rs_est_manual": "Manual",
-        "rs_tolerance": "Tolerancia", 
+        "rs_tolerance": "Tolerancia",
         "rs_maxiter": "Iteraciones máximas",
         "rs_restarts": "Reinicios",
         "rs_restart_std": "Estándar (1×)",
@@ -614,7 +619,7 @@ _T = {
         "gd_title": "Guía & Referencias",
         "gd_intro_title": "¿Qué es GrowthEmulator?",
         "gd_intro_body": (
-            "GrowthEmulator v1.1 es una plataforma interactiva de modelado cinético microbiano "
+            "GrowthEmulator v1.2 es una plataforma interactiva de modelado cinético microbiano "
             "para investigadores, ingenieros de bioprocesos y estudiantes. Cargue datos "
             "experimentales, seleccione y ajuste modelos matemáticos, analice métricas "
             "estadísticas y exporte resultados listos para publicación."
@@ -628,6 +633,8 @@ _T = {
         "ct_email": "Correo electrónico",
         "ct_linkedin": "LinkedIn",
         "ct_close": "Cerrar",
+        "ab_integrators":       "Integradores",
+        "dt_rename_category_hint": "Haga clic para renombrar esta categoría",
         "fit_excellent":       "Excelente",
         "fit_good":            "Bueno",
         "fit_acceptable":      "Aceptable",
@@ -828,7 +835,7 @@ _T = {
         "gd_title": "指南与参考文献",
         "gd_intro_title": "GrowthEmulator 是什么？",
         "gd_intro_body": (
-            "GrowthEmulator v1.1 是面向研究人员、生物过程工程师和学生的交互式微生物动力学建模平台。"
+            "GrowthEmulator v1.2 是面向研究人员、生物过程工程师和学生的交互式微生物动力学建模平台。"
             "可加载实验生长数据、选择并拟合数学模型、分析统计指标并导出可发表的结果。"
         ),
         "gd_decision_title": "我应该使用哪个模型？",
@@ -840,6 +847,8 @@ _T = {
         "ct_email": "电子邮件",
         "ct_linkedin": "LinkedIn",
         "ct_close": "关闭",
+        "ab_integrators":       "积分器",
+        "dt_rename_category_hint": "点击重命名此类别",
         "fit_excellent":       "优秀",
         "fit_good":            "良好",
         "fit_acceptable":      "可接受",
@@ -1856,6 +1865,28 @@ _FONTS_DIR  = os.path.join(os.path.dirname(__file__), "fonts")
 _FONT_REG   = os.path.join(_FONTS_DIR, "DejaVuSans.ttf")
 _FONT_BOLD  = os.path.join(_FONTS_DIR, "DejaVuSans-Bold.ttf")
 _HAS_DEJAVU = os.path.exists(_FONT_REG) and os.path.exists(_FONT_BOLD)
+_ADSENSE_PATH = os.path.join(os.path.dirname(__file__), "static", "adsense.html")
+
+
+def _render_adsense_banner(height: int = 100):
+    """
+    Render the AdSense leaderboard from a standalone HTML file.
+    Uses st.iframe (Streamlit >= 1.56) when available, which auto-detects
+    HTML-string content and renders it in a proper iframe document — this
+    gives the AdSense script its own <head>/<body> context, which is more
+    reliable than injecting a bare <ins> fragment.
+    Falls back to streamlit.components.v1.html on older Streamlit versions.
+    """
+    try:
+        with open(_ADSENSE_PATH, "r", encoding="utf-8") as f:
+            ad_html = f.read()
+    except Exception:
+        return  # static/adsense.html missing — skip silently
+
+    if hasattr(st, "iframe"):
+        st.iframe(ad_html, height=height)
+    else:
+        _components_html(ad_html, height=height, scrolling=False)
 if os.path.exists(_LOGO_PATH):
     with open(_LOGO_PATH, "rb") as _lf:
         LOGO_B64 = base64.b64encode(_lf.read()).decode()
@@ -1978,20 +2009,7 @@ def render_header():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 def render_footer():
     # ── AdSense leaderboard (728×90) — non-intrusive, centrado no rodapé ──
-    _components_html("""
-<div style="display:flex;justify-content:center;margin:14px 0 4px">
-  <script async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9709593825202768"
-    crossorigin="anonymous"></script>
-  <ins class="adsbygoogle"
-       style="display:inline-block;width:728px;height:90px"
-       data-ad-client="ca-pub-9709593825202768"
-       data-ad-slot="1603232023"></ins>
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-</div>
-""", height=110, scrolling=False)
+    _render_adsense_banner(height=100)
     st.markdown("""
 <div id="bio-footer">
   <a href="https://github.com/matheusmonteirobatista/growthemulator">GrowthEmulator</a> © 2026 by
@@ -2322,23 +2340,40 @@ def tab_data():
             st.markdown("""
 <style>
 .tag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin-bottom:6px}
-.tag-label{display:inline-flex;align-items:center;gap:5px;background:var(--bg2);
-  border:1px solid var(--brd);border-radius:20px;padding:3px 11px;
-  font-size:.78rem;font-weight:600;color:var(--fg);white-space:nowrap}
-.tag-label.mapped{border-color:var(--acc);color:var(--acc);background:rgba(0,200,180,.08)}
+.cat-row{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.cat-icon{font-size:1rem;line-height:1;flex-shrink:0}
+.cat-req{color:var(--acc);font-weight:700;flex-shrink:0}
+.cat-label-input input{
+  border:1px solid var(--brd) !important;
+  background:var(--bg2) !important;
+  border-radius:14px !important;
+  padding:1px 10px !important;
+  font-size:.76rem !important;
+  font-weight:600 !important;
+  height:26px !important;
+  min-height:26px !important;
+}
+.cat-label-input.mapped input{
+  border-color:var(--acc) !important;
+  color:var(--acc) !important;
+  background:rgba(0,200,180,.08) !important;
+}
+.cat-label-input div[data-testid="stTextInputRootElement"]{
+  border:none !important; background:transparent !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
-            # (key, icon, label, required, multi)
+            # (key, icon, default_label_key, required, multi)
             # multi=True → st.multiselect (can map multiple columns of same type)
             # multi=False → st.selectbox  (single reference column)
             var_defs = [
-                ("time",      "⏱",  t("dt_time_lbl"),      True,  False),
-                ("biomass",   "🦠",  t("dt_biomass_lbl"),   True,  True),
-                ("substrate", "🍬",  t("dt_substrate_lbl"), False, True),
-                ("ph",        "⚗️",  t("dt_ph_lbl"),         False, False),
-                ("product",   "🧪",  t("dt_product_lbl"),   False, True),
-                ("drymass",   "⚖️",  t("dt_drymass_lbl"),   False, False),
+                ("time",      "⏱",  "dt_time_lbl",      True,  False),
+                ("biomass",   "🦠",  "dt_biomass_lbl",   True,  True),
+                ("substrate", "🍬",  "dt_substrate_lbl", False, True),
+                ("ph",        "⚗️",  "dt_ph_lbl",        False, False),
+                ("product",   "🧪",  "dt_product_lbl",   False, True),
+                ("drymass",   "⚖️",  "dt_drymass_lbl",   False, False),
             ]
 
             # All available column names
@@ -2346,25 +2381,55 @@ def tab_data():
             # Column list with a "not mapped" placeholder (for selectbox)
             cols_none  = [none_label] + col_opts
 
+            if "category_labels" not in st.session_state:
+                st.session_state.category_labels = {}
+
             grid_cols = st.columns(3)
-            for idx, (var_key, icon, var_label, required, multi) in enumerate(var_defs):
+            for idx, (var_key, icon, label_key, required, multi) in enumerate(var_defs):
                 gcol = grid_cols[idx % 3]
-                req_star   = "&nbsp;<span style='color:var(--acc)'>*</span>" if required else ""
-                bold_open  = "<b>" if required else ""
-                bold_close = "</b>" if required else ""
+                default_label = t(label_key)
 
                 if multi:
-                    # ── Multiselect: allows mapping several columns to the same role
                     curr_multi = _hdr_list(var_key)
-                    curr_multi = [c for c in curr_multi if c in col_opts]  # drop stale
-                    mapped     = len(curr_multi) > 0
-                    gcol.markdown(
-                        f'<div class="tag-label {"mapped" if mapped else ""}">'
-                        f'{icon} {bold_open}{var_label}{bold_close}{req_star}'
-                        f'</div>',
-                        unsafe_allow_html=True)
+                    curr_multi = [c for c in curr_multi if c in col_opts]
+                    mapped = len(curr_multi) > 0
+                else:
+                    current = st.session_state.headers.get(var_key, none_label)
+                    if isinstance(current, list):
+                        current = current[0] if current else none_label
+                    if current not in cols_none:
+                        current = none_label
+                    mapped = current != none_label
+
+                # ── Editable category name (icon + required marker + text input) ──
+                icon_col, txt_col = gcol.columns([1, 5], gap="small")
+                req_badge = '<span class="cat-req">*</span>' if required else ""
+                icon_col.markdown(
+                    f'<div class="cat-row" style="margin-top:8px">'
+                    f'<span class="cat-icon">{icon}</span>'
+                    f'{req_badge}'
+                    f'</div>', unsafe_allow_html=True)
+
+                mapped_cls = "mapped" if mapped else ""
+                txt_col.markdown(
+                    f'<div class="cat-label-input {mapped_cls}">',
+                    unsafe_allow_html=True)
+                stored_label = st.session_state.category_labels.get(var_key, default_label)
+                edited_label = txt_col.text_input(
+                    f"catlabel_{var_key}",
+                    value=stored_label,
+                    key=f"catlabel_{var_key}",
+                    label_visibility="collapsed",
+                    placeholder=default_label,
+                    help=t("dt_rename_category_hint"),
+                )
+                txt_col.markdown('</div>', unsafe_allow_html=True)
+                final_label = edited_label.strip() or default_label
+                st.session_state.category_labels[var_key] = final_label
+
+                if multi:
                     sel = gcol.multiselect(
-                        var_label, col_opts,
+                        final_label, col_opts,
                         default=curr_multi,
                         key=f"hdr_{var_key}",
                         label_visibility="collapsed",
@@ -2372,20 +2437,8 @@ def tab_data():
                     )
                     st.session_state.headers[var_key] = sel if sel else None
                 else:
-                    # ── Selectbox: single reference column (time, pH, dry mass)
-                    current = st.session_state.headers.get(var_key, none_label)
-                    if isinstance(current, list):       # handle legacy list value
-                        current = current[0] if current else none_label
-                    if current not in cols_none:
-                        current = none_label
-                    mapped = current != none_label
-                    gcol.markdown(
-                        f'<div class="tag-label {"mapped" if mapped else ""}">'
-                        f'{icon} {bold_open}{var_label}{bold_close}{req_star}'
-                        f'</div>',
-                        unsafe_allow_html=True)
                     sel = gcol.selectbox(
-                        var_label, cols_none,
+                        final_label, cols_none,
                         index=cols_none.index(current),
                         key=f"hdr_{var_key}",
                         label_visibility="collapsed",
@@ -3191,20 +3244,7 @@ def tab_results():
 
         # ── AdSense — after export, non-intrusive ─────────────
         st.markdown("<br>", unsafe_allow_html=True)
-        _components_html("""
-<div style="display:flex;justify-content:center;margin:10px 0 4px">
-  <script async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9709593825202768"
-    crossorigin="anonymous"></script>
-  <ins class="adsbygoogle"
-       style="display:inline-block;width:728px;height:90px"
-       data-ad-client="ca-pub-9709593825202768"
-       data-ad-slot="1603232023"></ins>
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-</div>
-""", height=110, scrolling=False)
+        _render_adsense_banner(height=100)
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3262,7 +3302,7 @@ def tab_tools():
             _dc  = st.session_state.get("df_clean")
             _df  = st.session_state.get("df")
             df_src = _dc if _dc is not None else _df
-            s_col  = st.session_state.headers.get("substrate")
+            s_col  = _hdr_primary("substrate")
             t_col2 = st.session_state.headers.get("time")
             if df_src is not None and s_col and t_col2 and s_col in df_src.columns:
                 S_raw  = pd.to_numeric(df_src[s_col], errors="coerce").dropna().values
@@ -3303,7 +3343,7 @@ def tab_tools():
                 r2_mm = r2_adj(v_enz, v_pred_mm, 2)
 
                 # Try competitive inhibition if product column exists
-                p_col   = st.session_state.headers.get("product")
+                p_col   = _hdr_primary("product")
                 _dc2    = st.session_state.get("df_clean")
                 _df2    = st.session_state.get("df")
                 df_src2 = _dc2 if _dc2 is not None else _df2
@@ -3448,8 +3488,8 @@ def tab_tools():
     _df3   = st.session_state.get("df")
     df_src3 = _dc3 if _dc3 is not None else _df3
     t_col3   = st.session_state.headers.get("time")
-    x_col3   = st.session_state.headers.get("biomass")
-    p_col3   = st.session_state.headers.get("product")
+    x_col3   = _hdr_primary("biomass")
+    p_col3   = _hdr_primary("product")
 
     lp_ready = (df_src3 is not None and t_col3 and x_col3 and p_col3
                 and x_col3 in df_src3.columns and p_col3 in df_src3.columns)
@@ -3727,18 +3767,18 @@ def tab_about():
     st.divider()
     c3, c4 = st.columns(2)
     with c3:
-        st.markdown("""
-**Stack tecnológico**
+        st.markdown(f"""
+**{t('ab_stack')}**
 - Python 3.9+ · Streamlit ≥ 1.32
 - Plotly · SciPy · Pandas · NumPy
 - openpyxl · fpdf2
 """)
     with c4:
-        st.markdown("""
-**Algoritmos**
+        st.markdown(f"""
+**{t('ab_algorithms')}**
 - Levenberg-Marquardt · Trust-Region Reflective
 - Nelder-Mead (Simplex) · Differential Evolution
-- Integradores: RK4 · RK45 · LSODA
+- {t('ab_integrators')}: RK4 · RK45 · LSODA
 """)
 
 
