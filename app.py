@@ -2329,7 +2329,51 @@ def tab_data():
                 st.success(t("dt_data_applied"))
                 st.rerun()
 
-    # ── Variable mapping — tag-input style ───────────────────
+# ── Variable mapping — tag-input style ───────────────────# (modificação realizada, apagar caso não funcione)
+
+with st.expander(f"🏷️ {t('dt_mapping_title')}", expanded=True):
+            st.caption(t("dt_mapping_note"))
+            st.markdown("""
+<style>
+.tag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin-bottom:6px}
+.cat-row{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.cat-icon{font-size:1rem;line-height:1;flex-shrink:0}
+.cat-req{color:var(--acc);font-weight:700;flex-shrink:0}
+.cat-label-input input{
+  border:1px solid var(--brd) !important;
+  background:var(--bg2) !important;
+  border-radius:14px !important;
+  padding:1px 10px !important;
+  font-size:.76rem !important;
+  font-weight:600 !important;
+  height:26px !important;
+  min-height:26px !important;
+}
+.cat-label-input.mapped input{
+  border-color:var(--acc) !important;
+  color:var(--acc) !important;
+  background:rgba(0,200,180,.08) !important;
+}
+.cat-label-input div[data-testid="stTextInputRootElement"]{
+  border:none !important; background:transparent !important;
+}
+
+/* Otimização de espaçamento interno para eliminar excessos vazios */
+[data-testid="column"] div[data-testid="stVerticalBlock"] {
+  gap: 2px !important;
+}
+div[data-testid="stSelectbox"], div[data-testid="stMultiSelect"] {
+  margin: 0 !important;
+}
+[data-testid="column"] div[data-testid="stHorizontalBlock"] {
+  margin-top: 14px !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
+'''    # ── Variable mapping — tag-input style ───────────────────# (necessário a modificação para retirar os espaços excedentes, retornar caso não funcione)
     if st.session_state.df is not None:
         df = st.session_state.df
         none_label = t("dt_none")
@@ -2362,7 +2406,7 @@ def tab_data():
   border:none !important; background:transparent !important;
 }
 </style>
-""", unsafe_allow_html=True)
+""", unsafe_allow_html=True)'''
 
             # (key, icon, default_label_key, required, multi)
             # multi=True → st.multiselect (can map multiple columns of same type)
