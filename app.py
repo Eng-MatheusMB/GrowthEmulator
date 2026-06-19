@@ -54,12 +54,14 @@ _T = {
         "dt_mapping_title": "Mapeamento de variáveis",
         "dt_mapping_note": "Associe cada coluna do seu arquivo às variáveis do simulador",
         "dt_none": "— Não mapeado —",
-        "dt_time_lbl": "Tempo (h ou similar)",
-        "dt_biomass_lbl": "Biomassa / Concentração (g/L, OD…)",
+        "dt_time_lbl": "Tempo (h)",
+        "dt_biomass_lbl": "Concentração (g/L, OD)",
         "dt_substrate_lbl": "Substrato (g/L)",
         "dt_ph_lbl": "pH",
         "dt_product_lbl": "Produto (g/L)",
         "dt_drymass_lbl": "Massa seca (g)",
+        "dt_tool": "Mapeie **Tempo**, **Biomassa** e **Produto** na aba 📊 Dados para habilitar.",
+        "dt_info": "Mapeie **Tempo** e **Biomassa** para ajustar o modelo de Chick",
         "dt_manual_title": "Entrada manual de dados",
         "dt_manual_note": "Use Ctrl+V para colar dados de uma planilha",
         "dt_manual_add_col": "＋ Coluna",
@@ -67,6 +69,8 @@ _T = {
         "dt_manual_add_row": "＋ Linha",
         "dt_manual_rem_row": "－ Linha",
         "dt_manual_clear": "🗑 Limpar tabela",
+        "dt_files_merge": " arquivos mesclados (outer join no eixo do tempo)",
+        "dt_manual_add_data": " Aplicar dados manuais",
         "dt_summary_title": "Resumo dos dados",
         "dt_nan_warn": "⚠️ Linhas com valores ausentes serão desconsideradas nas análises.",
         "dt_neg_time": "🚫 Valores negativos de tempo detectados!",
@@ -75,6 +79,9 @@ _T = {
         "dt_preview_log": "Eixo Y em escala logarítmica",
         "dt_avail_title": "Modelos disponíveis",
         "dt_avail_note": "com os headers atuais",
+        "dt_avail_complement0": " Modelos cinéticos",
+        "dt_avail_complement1":"Ferramentas",
+        "dt_avail_prep":"de",
         "dt_select_btn": "🔬 Selecionar modelo para análise →",
         "dt_select_disabled": "Mapeie pelo menos **Tempo** e **Biomassa** para habilitar",
         "dt_excl_cols": "Colunas excluídas da análise",
@@ -111,6 +118,7 @@ _T = {
         "md_go_results": "📈 Ver Resultados →",
         "md_disabled_tip": "Requer: ",
         "md_back": "← Voltar para Dados",
+        "md_points_detection": " Pontos detectados — Tempo, Biomassa e Produto mapeados",
         "rs_compare_title": "Comparação de Modelos",
         "rs_compare_note": "Análise comparativa dos modelos selecionados",
         # --- Results Tab ---
@@ -158,9 +166,17 @@ _T = {
         "rs_duration": "Duração (h)",
         "rs_export_pdf": "📄 Exportar PDF",
         "rs_export_xlsx": "📊 Exportar Excel",
+        "rs_export_results": " Exportar Resultados",
+        "rs_download_excel": " Baixar Excel",
+        "rs_error_lib": " Instale fpdf2 para exportar PDF",
         "rs_back": "← Voltar para Modelos",
         "rs_no_model": "Nenhum modelo selecionado. Acesse 🔬 Modelos Cinéticos e escolha um modelo.",
         "rs_no_data": "Nenhum dado disponível. Vá para 📊 Dados primeiro.",
+        "rs_sub_plot1":" Resíduos x Tempo",
+        "rs_sub_plot2":" Distribuição",
+        "rs_error_adjust": " Erro de Ajuste",
+        "rs_named_col1": " Parâmetro",
+        "rs_named_col2": " Valor",
         # --- About Tab ---
         "ab_title": "Sobre o GrowthEmulator",
         "ab_version": "Versão",
@@ -183,11 +199,26 @@ _T = {
             "modelos matemáticos, analisar métricas estatísticas e exportar resultados prontos "
             "para publicação — tudo em uma interface intuitiva e multilíngue."
         ),
+        "gd_intro_background1":" Modelos Cinéticos",
+        "gd_intro_background2":" 4 Idiomas",
+        "gd_intro_background3":" Exportação PDF & Excel",
+        "gd_intro_background4":" Acessibilidade",
         "gd_decision_title": "Qual modelo utilizar?",
         "gd_decision_note": "Guia rápido para seleção de modelo baseado no comportamento dos seus dados",
         "gd_refs_title": "Referências bibliográficas",
         "gd_param_title": "Interpretação dos parâmetros",
         "gd_param_note": "Significado e faixas típicas dos principais parâmetros cinéticos",
+        "gd_param_descript1":" Intervalo de Análises",
+        "gd_param_descript2":" Interpretação",
+        "gd_label":"Modelo Recomendado",
+        "gd_data":"### 🚀 Fluxo de trabalho recomendado",
+        "gd_flux_recommended": """
+        1. **📊 Dados** → Faça upload do arquivo ou insira manualmente → Mapeie as variáveis → Visualize a curva  
+        2. **🔬 Modelos Cinéticos** → Explore os modelos disponíveis → Selecione o mais adequado para seus dados  
+        3. **📈 Resultados** → Configure a otimização → Execute a análise → Interprete os parâmetros e métricas → Exporte  
+
+        > 💡 **Dica:** Use escala logarítmica na prévia dos dados para identificar visualmente a fase exponencial e estimar o λ.  
+        > Se R² < 0,95 ou RMSE > 10% do Xm, tente outro modelo ou revise os dados.""", 
         # --- Contact Dialog ---
         "ct_title": "Entre em contato",
         "ct_email": "E-mail",
@@ -218,8 +249,10 @@ _T = {
         "dt_col_rename_hint": "✏️ Renomear cabeçalhos — clique no campo e edite:",
         "dt_data_applied": "✅ Dados aplicados! Role para baixo e mapeie os cabeçalhos.",
         "dt_chart_error": "Erro no gráfico:",
-        "dt_estimated_mu":     "μ estimado (h⁻¹)",
-        "dt_estimated_td":     "td estimado (h)",
+        "dt_estimated_mu":  "μ estimado (h⁻¹)",
+        "dt_estimated_td":  "td estimado (h)",
+        "dt_estimated_x0": "**X₀** inativação (g/L)",
+        "dt_estimated_yield": "**S₀** deve ser maior que **Sf**",
         # ── Tools tab (static UI) ──────────────────────────────
         "tl_enzyme_config": "Configurar análise enzimática",
         "tl_data_source_lbl": "Fonte de dados",
@@ -249,6 +282,7 @@ _T = {
         "tl_pirt_config":      "Configurar análise de rendimento",
         "tl_pirt_run_btn": "▶ Ajustar Pirt — Rendimento Variável",
         "tl_pirt_results":     "Resultados — Pirt (Rendimento Variável)",
+        "t1_pirt_mark": "Insira pares **μ (h⁻¹)** e **Y_obs (g/g)** para ajustar o modelo de Pirt:",
         "tl_maintenance_coef": "ms — Manutenção",
         "tl_calc_quick":       "Calculadora rápida",
         "tl_td_gen_section":   "⏱ Tempo de duplicação e taxa de geração",
@@ -261,7 +295,10 @@ _T = {
         "ab_stack":            "Stack tecnológico",
         "ab_algorithms":       "Algoritmos",
         "tl_subtitle": "Modelos especializados de cinética enzimática, rendimento e turn-over celular",
-
+        # ── Table (metric) ─────────────────────────────────────────
+        "tm_metric_col": " Colunas",
+        "tm_metric_line": " Linhas",
+        "tm_metric_model": " Modelos disponíveis",
     },
     "en": {
         "app_name": "GrowthEmulator v1.2",
@@ -284,12 +321,14 @@ _T = {
         "dt_mapping_title": "Variable mapping",
         "dt_mapping_note": "Associate each column with a simulator variable",
         "dt_none": "— Not mapped —",
-        "dt_time_lbl": "Time (h or equivalent)",
-        "dt_biomass_lbl": "Biomass / Concentration (g/L, OD…)",
+        "dt_time_lbl": "Time (h)",
+        "dt_biomass_lbl": "Concentration (g/L, OD)",
         "dt_substrate_lbl": "Substrate (g/L)",
         "dt_ph_lbl": "pH",
         "dt_product_lbl": "Product (g/L)",
         "dt_drymass_lbl": "Dry mass (g)",
+        "dt_tool": "Map **Time**, **Biomass**, and **Product** in the 📊 Data tab to enable.",
+        "dt_info": "Map **Time and **Biomass** to fit the Chick model.",
         "dt_manual_title": "Manual data entry",
         "dt_manual_note": "Use Ctrl+V to paste data from a spreadsheet",
         "dt_manual_add_col": "＋ Column",
@@ -297,6 +336,8 @@ _T = {
         "dt_manual_add_row": "＋ Row",
         "dt_manual_rem_row": "－ Row",
         "dt_manual_clear": "🗑 Clear table",
+        "dt_files_merge": " merged files (outer join on time axis)",
+        "dt_manual_add_data": " Apply manual data",
         "dt_summary_title": "Data summary",
         "dt_nan_warn": "⚠️ Rows with missing values will be excluded from analyses.",
         "dt_neg_time": "🚫 Negative time values detected!",
@@ -305,6 +346,9 @@ _T = {
         "dt_preview_log": "Y-axis in logarithmic scale",
         "dt_avail_title": "Available models",
         "dt_avail_note": "with current headers",
+        "dt_avail_complement0": " Kinetic models",
+        "dt_avail_complement1":"Tools",
+        "dt_avail_prep":"of",
         "dt_select_btn": "🔬 Select model for analysis →",
         "dt_select_disabled": "Map at least **Time** and **Biomass** to enable",
         "dt_excl_cols": "Excluded columns",
@@ -339,6 +383,7 @@ _T = {
         "md_go_results": "📈 View Results →",
         "md_disabled_tip": "Requires: ",
         "md_back": "← Back to Data",
+        "md_points_detection": " Points detected — Time, Biomass and Product mapped",
         "rs_compare_title": "Model Comparison",
         "rs_compare_note": "Comparative analysis of selected models",
         "rs_title": "Analysis Results",
@@ -385,9 +430,17 @@ _T = {
         "rs_duration": "Duration (h)",
         "rs_export_pdf": "📄 Export PDF",
         "rs_export_xlsx": "📊 Export Excel",
-        "rs_back": "← Back to Models",
+        "rs_export_results": " Export Results",
+        "rs_download_excel": " Download Excel",
+        "rs_error_lib": " Install fpdf2 to export PDF",
+        "rs_back": " ← Back to Models",
         "rs_no_model": "No model selected. Go to 🔬 Kinetic Models and choose one.",
         "rs_no_data": "No data available. Go to 📊 Data first.",
+        "rs_sub_plot1":" Waste × Time",
+        "rs_sub_plot2":" Distribution",
+        "rs_error_adjust": " Adjustment error",
+        "rs_named_col1": " Parameter",
+        "rs_named_col2": " Value",
         "ab_title": "About GrowthEmulator",
         "ab_version": "Version",
         "ab_desc": (
@@ -407,11 +460,26 @@ _T = {
             "select and fit mathematical models, analyze statistical metrics and export "
             "publication-ready results — all in an intuitive multilingual interface."
         ),
+        "gd_intro_background1":" Kinetic Models",
+        "gd_intro_background2":" 4 Languages",
+        "gd_intro_background3":" PDF & Excel Export",
+        "gd_intro_background4":" Accessibility",
         "gd_decision_title": "Which model should I use?",
         "gd_decision_note": "Quick selection guide based on your data's behavior",
         "gd_refs_title": "Bibliography",
         "gd_param_title": "Parameter interpretation",
         "gd_param_note": "Meaning and typical ranges of the main kinetic parameters",
+        "gd_param_descript1":" Analysis interval",
+        "gd_param_descript2":" Interpretation",
+        "gd_data":"### 🚀 Recommended Workflow",
+        "gd_flux_recommended": """
+        1. **📊 Data** → Upload file or enter manually → Map variables → Visualize curve  
+        2. **🔬 Kinetic Models** → Explore available models → Select the most suitable for your data  
+        3. **📈 Results** → Configure optimization → Run analysis → Interpret parameters and metrics → Export  
+
+        > 💡 **Tip:** Use a logarithmic scale in the data preview to visually identify the exponential phase and estimate λ.  
+        > If R² < 0.95 or RMSE > 10% of Xm, try another model or review the data.""",
+        "gd_label":"Recommended model",
         "ct_title": "Get in touch",
         "ct_email": "E-mail",
         "ct_linkedin": "LinkedIn",
@@ -440,6 +508,8 @@ _T = {
         "dt_chart_error":      "Chart error:",
         "dt_estimated_mu":     "Estimated μ (h⁻¹)",
         "dt_estimated_td":     "Estimated td (h)",
+        "dt_estimated_x0": "**X₀** inactivation (g/L)",
+        "dt_estimated_yield": "**S₀** must be greater than **Sf**",
         "tl_enzyme_config":    "Configure enzyme kinetics analysis",
         "tl_data_source_lbl":  "Data source",
         "tl_use_loaded_data":  "Use loaded data (Data tab)",
@@ -468,6 +538,7 @@ _T = {
         "tl_pirt_config":      "Configure yield analysis",
         "tl_pirt_run_btn":     "▶ Fit Pirt — Variable Yield",
         "tl_pirt_results":     "Results — Pirt (Variable Yield)",
+        "t1_pirt_mark": "Enter **μ (h⁻¹)** and **Y_obs (g/g)** pairs to fit the Pirt model:",
         "tl_maintenance_coef": "ms — Maintenance",
         "tl_calc_quick":       "Quick calculator",
         "tl_td_gen_section":   "⏱ Doubling time and generation rate",
@@ -479,6 +550,9 @@ _T = {
         "ab_stack":            "Tech stack",
         "ab_algorithms":       "Algorithms",
         "tl_subtitle": "Specialized models for enzyme kinetics, yield and cell turnover",
+        "tm_metric_col": " Columns",
+        "tm_metric_line": " Lines",
+        "tm_metric_model": " Available Models",
 
     },
     "es": {
@@ -502,12 +576,14 @@ _T = {
         "dt_mapping_title": "Mapeo de variables",
         "dt_mapping_note": "Asocie cada columna del archivo con las variables del simulador",
         "dt_none": "— No mapeado —",
-        "dt_time_lbl": "Tiempo (h o equivalente)",
-        "dt_biomass_lbl": "Biomasa / Concentración (g/L, OD…)",
+        "dt_time_lbl": "Tiempo (h)",
+        "dt_biomass_lbl": "Concentración (g/L, OD)",
         "dt_substrate_lbl": "Sustrato (g/L)",
         "dt_ph_lbl": "pH",
         "dt_product_lbl": "Producto (g/L)",
         "dt_drymass_lbl": "Masa seca (g)",
+        "dt_tool": "Mapee **Tiempo**, **Biomasa** y **Producto** en la pestaña 📊 Datos para habilitar.",
+        "dt_info": "Mapee **Tiempo** y Biomasa** para ajustar el modelo de Chick.",
         "dt_manual_title": "Entrada manual de datos",
         "dt_manual_note": "Use Ctrl+V para pegar datos desde una hoja de cálculo",
         "dt_manual_add_col": "＋ Columna",
@@ -515,6 +591,8 @@ _T = {
         "dt_manual_add_row": "＋ Fila",
         "dt_manual_rem_row": "－ Fila",
         "dt_manual_clear": "🗑 Limpiar tabla",
+        "dt_files_merge": " archivos fusionados (unión externa en el eje de tiempo)",
+        "dt_manual_add_data": " Aplicar datos manuales",
         "dt_summary_title": "Resumen de datos",
         "dt_nan_warn": "⚠️ Las filas con valores faltantes serán excluidas del análisis.",
         "dt_neg_time": "🚫 ¡Valores negativos de tiempo detectados!",
@@ -523,6 +601,9 @@ _T = {
         "dt_preview_log": "Eje Y en escala logarítmica",
         "dt_avail_title": "Modelos disponibles",
         "dt_avail_note": "con los encabezados actuales",
+        "dt_avail_complement0": " Modelos Cinéticos",
+        "dt_avail_complement1":"Herramientas",
+        "dt_avail_prep":"de",
         "dt_select_btn": "🔬 Seleccionar modelo para análisis →",
         "dt_select_disabled": "Mapee al menos **Tiempo** y **Biomasa** para habilitar",
         "dt_excl_cols": "Columnas excluidas",
@@ -557,6 +638,7 @@ _T = {
         "md_go_results": "📈 Ver Resultados →",
         "md_disabled_tip": "Requiere: ",
         "md_back": "← Volver a Datos",
+        "md_points_detection": " Puntos detectados: tiempo, biomasa y producto mapeados",
         "rs_compare_title": "Comparación de Modelos",
         "rs_compare_note": "Análisis comparativo de los modelos seleccionados",
         "rs_title": "Resultados del Análisis",
@@ -603,9 +685,17 @@ _T = {
         "rs_duration": "Duración (h)",
         "rs_export_pdf": "📄 Exportar PDF",
         "rs_export_xlsx": "📊 Exportar Excel",
+        "rs_export_results": " Exportar resultados",
+        "rs_download_excel": " Descargar Excel",
+        "rs_error_lib": " Instale fpdf2 para exportar PDF",
         "rs_back": "← Volver a Modelos",
         "rs_no_model": "Ningún modelo seleccionado. Ve a 🔬 Modelos Cinéticos y elige uno.",
         "rs_no_data": "Sin datos disponibles. Ve a 📊 Datos primero.",
+        "rs_sub_plot1":" Desperdicio × Tiempo",
+        "rs_sub_plot2":" Distribución",
+        "rs_error_adjust": " Error de ajuste",
+        "rs_named_col1": " Parámetro",
+        "rs_named_col2": " Valor",
         "ab_title": "Acerca de GrowthEmulator",
         "ab_version": "Versión",
         "ab_desc": (
@@ -624,11 +714,26 @@ _T = {
             "experimentales, seleccione y ajuste modelos matemáticos, analice métricas "
             "estadísticas y exporte resultados listos para publicación."
         ),
+        "gd_intro_background1":" Modelos Cinéticos",
+        "gd_intro_background2":" 4 Idiomas",
+        "gd_intro_background3":" Exportación PDF & Excel",
+        "gd_intro_background4":" Accesibilidad",
         "gd_decision_title": "¿Qué modelo debo usar?",
         "gd_decision_note": "Guía rápida de selección basada en el comportamiento de sus datos",
         "gd_refs_title": "Bibliografía",
         "gd_param_title": "Interpretación de parámetros",
         "gd_param_note": "Significado y rangos típicos de los principales parámetros cinéticos",
+        "gd_param_descript1":" Intervalo de análisis",
+        "gd_param_descript2":" Interpretación",
+        "gd_data":"### 🚀 Flujo de trabajo recomendado",
+        "gd_flux_recommended": """
+        1. **📊 Datos** → Suba el archivo o introdúzcalo manualmente → Mapée las variables → Visualice la curva  
+        2. **🔬 Modelos Cinéticos** → Explore los modelos disponibles → Seleccione el más adecuado para sus datos  
+        3. **📈 Resultados** → Configure la optimización → Ejecute el análisis → Interprete los parámetros y métricas → Exporte  
+
+        > 💡 **Consejo:** Utilice la escala logarítmica en la vista previa de los datos para identificar visualmente la fase exponencial y estimar el λ.  
+        > Si R² < 0,95 o RMSE > 10% de Xm, intente con otro modelo o revise los datos.""",
+        "gd_label":"Modelo recomendado",
         "ct_title": "Ponerse en contacto",
         "ct_email": "Correo electrónico",
         "ct_linkedin": "LinkedIn",
@@ -657,6 +762,8 @@ _T = {
         "dt_chart_error":      "Error en el gráfico:",
         "dt_estimated_mu":     "μ estimado (h⁻¹)",
         "dt_estimated_td":     "td estimado (h)",
+        "dt_estimated_x0": "**X₀** inactivación (g/L)",
+        "dt_estimated_yield": "**S₀** debe ser mayor que **Sf**",
         "tl_enzyme_config":    "Configurar análisis enzimático",
         "tl_data_source_lbl":  "Fuente de datos",
         "tl_use_loaded_data":  "Usar datos cargados (pestaña Datos)",
@@ -685,6 +792,7 @@ _T = {
         "tl_pirt_config":      "Configurar análisis de rendimiento",
         "tl_pirt_run_btn":     "▶ Ajustar Pirt — Rendimiento Variable",
         "tl_pirt_results":     "Resultados — Pirt (Rendimiento Variable)",
+        "t1_pirt_mark": "Ingrese pares de **μ (h⁻¹)** y **Y_obs (g/g)** para ajustar el modelo de Pirt:",
         "tl_maintenance_coef": "ms — Mantenimiento",
         "tl_calc_quick":       "Calculadora rápida",
         "tl_td_gen_section":   "⏱ Tiempo de duplicación y tasa de generación",
@@ -696,6 +804,9 @@ _T = {
         "ab_stack":            "Stack tecnológico",
         "ab_algorithms":       "Algoritmos",
         "tl_subtitle": "Modelos especializados de cinética enzimática, rendimiento y recambio celular",
+        "tm_metric_col": " Columnas",
+        "tm_metric_line": " Pauta",
+        "tm_metric_model": " Modelos disponibles",
 
     },
     "zh": {
@@ -719,12 +830,14 @@ _T = {
         "dt_mapping_title": "变量映射",
         "dt_mapping_note": "将文件中的每列与模拟器变量对应",
         "dt_none": "— 未映射 —",
-        "dt_time_lbl": "时间（h 或等效单位）",
-        "dt_biomass_lbl": "生物量 / 浓度（g/L, OD…）",
+        "dt_time_lbl": "时间（h）",
+        "dt_biomass_lbl": "生物量 / 浓度（g/L, OD）",
         "dt_substrate_lbl": "底物（g/L）",
         "dt_ph_lbl": "pH",
         "dt_product_lbl": "产物（g/L）",
         "dt_drymass_lbl": "干重（g）",
+        "dt_tool": "请在 📊 数据 选项卡中映射时间、生物质和产物以启用",
+        "dt_info": "映射时间和生物质以拟合 Chick 模型",
         "dt_manual_title": "手动输入数据",
         "dt_manual_note": "使用 Ctrl+V 从电子表格粘贴数据",
         "dt_manual_add_col": "＋ 列",
@@ -732,6 +845,8 @@ _T = {
         "dt_manual_add_row": "＋ 行",
         "dt_manual_rem_row": "－ 行",
         "dt_manual_clear": "🗑 清除表格",
+        "dt_files_merge": " 合并文件（时间轴上的外连接)",
+        "dt_manual_add_data": " 应用手动数据",
         "dt_summary_title": "数据摘要",
         "dt_nan_warn": "⚠️ 含缺失值的行将在分析中被排除。",
         "dt_neg_time": "🚫 检测到负时间值！",
@@ -740,6 +855,9 @@ _T = {
         "dt_preview_log": "Y 轴使用对数刻度",
         "dt_avail_title": "可用模型",
         "dt_avail_note": "基于当前标题",
+        "dt_avail_complement0": " 动力学模型",
+        "dt_avail_complement1":"工具",
+        "dt_avail_prep":"的",
         "dt_select_btn": "🔬 选择分析模型 →",
         "dt_select_disabled": "请至少映射**时间**和**生物量**以启用",
         "dt_excl_cols": "已排除的列",
@@ -774,6 +892,7 @@ _T = {
         "md_go_results": "📈 查看结果 →",
         "md_disabled_tip": "需要：",
         "md_back": "← 返回数据",
+        "md_points_detection": " 检测到的点 - 时间、生物量和产品映射",
         "rs_compare_title": "模型比较",
         "rs_compare_note": "所选模型的比较分析",
         "rs_title": "分析结果",
@@ -820,9 +939,17 @@ _T = {
         "rs_duration": "持续 (h)",
         "rs_export_pdf": "📄 导出 PDF",
         "rs_export_xlsx": "📊 导出 Excel",
+        "rs_export_results": " 导出结果",
+        "rs_download_excel": " 下载Excel",
+        "rs_error_lib": " 安装fpdf2导出PDF",
         "rs_back": "← 返回模型",
         "rs_no_model": "未选择模型。请前往 🔬 动力学模型 选择一个。",
         "rs_no_data": "无数据。请先前往 📊 数据。",
+        "rs_sub_plot1":" 浪费 × 时间",
+        "rs_sub_plot2":" 分配",
+        "rs_error_adjust": " 调整误差",
+        "rs_named_col1": " 范围",
+        "rs_named_col2": " 价值",
         "ab_title": "关于 GrowthEmulator",
         "ab_version": "版本",
         "ab_desc": (
@@ -838,11 +965,26 @@ _T = {
             "GrowthEmulator v1.2 是面向研究人员、生物过程工程师和学生的交互式微生物动力学建模平台。"
             "可加载实验生长数据、选择并拟合数学模型、分析统计指标并导出可发表的结果。"
         ),
+        "gd_intro_background1":" 动力学模型",
+        "gd_intro_background2":" 4 种语言",
+        "gd_intro_background3":" 导出 PDF 和 Excel",
+        "gd_intro_background4":" 无障碍辅助",
         "gd_decision_title": "我应该使用哪个模型？",
         "gd_decision_note": "基于数据行为的快速模型选择指南",
         "gd_refs_title": "参考文献",
         "gd_param_title": "参数解读",
         "gd_param_note": "主要动力学参数的含义及典型范围",
+        "gd_param_descript1":" 分析区间",
+        "gd_param_descript2":" 解释",
+        "gd_data":"### 🚀 推荐工作流",
+        "gd_flux_recommended": """
+        1. **📊 数据** → 上传文件或手动输入 → 映射变量 → 可视化曲线  
+        2. **🔬 动力学模型** → 探索可用模型 → 选择最适合您数据的模型  
+        3. **📈 配置优化结果** → 配置优化 → 运行分析 → 解释参数与指标 → 导出  
+
+        > 💡 **提示:** 在数据预览中使用对数坐标轴，以直观识别指数生长期并估算 λ。  
+        > 如果 R² < 0.95 或 RMSE > Xm 的 10%，请尝试其他模型或检查数据。""",
+        "gd_label":"推荐型号",
         "ct_title": "联系我们",
         "ct_email": "电子邮件",
         "ct_linkedin": "LinkedIn",
@@ -871,6 +1013,8 @@ _T = {
         "dt_chart_error":      "图表错误：",
         "dt_estimated_mu":     "估算 μ (h⁻¹)",
         "dt_estimated_td":     "估算 td (h)",
+        "dt_estimated_x0": "**X₀** 灭活 (g/L)",
+        "dt_estimated_yield": "**S₀** 必须大于 **Sf**",
         "tl_enzyme_config":    "配置酶动力学分析",
         "tl_data_source_lbl":  "数据来源",
         "tl_use_loaded_data":  "使用已加载数据（数据标签页）",
@@ -899,6 +1043,7 @@ _T = {
         "tl_pirt_config":      "配置产率分析",
         "tl_pirt_run_btn":     "▶ 拟合 Pirt — 可变产率",
         "tl_pirt_results":     "结果 — Pirt（可变产率）",
+        "t1_pirt_mark": "输入 **μ (h⁻¹)** 和 **Y_obs (g/g)** 数据对以拟合 Pirt 模型：",
         "tl_maintenance_coef": "ms — 维持系数",
         "tl_calc_quick":       "快速计算器",
         "tl_td_gen_section":   "⏱ 倍增时间与代时",
@@ -910,6 +1055,9 @@ _T = {
         "ab_stack":            "技术栈",
         "ab_algorithms":       "算法",
         "tl_subtitle": "酶动力学、产率和细胞更新的专业模型",
+        "tm_metric_col": " 专栏",
+        "tm_metric_line": " 线路",
+        "tm_metric_model": " 可用型号",
 
     },
 }
@@ -926,19 +1074,54 @@ def t(key):
 BOXES = [
     {
         "id": "box1",
-        "title": {"pt": "Modelos Exponenciais e Lineares Simples", "en": "Simple Exponential & Linear Models",
-                  "es": "Modelos Exponenciales y Lineales Simples", "zh": "简单指数与线性模型"},
+        "title": {
+            "pt": "Modelos Exponenciais e Lineares Simples", 
+            "en": "Simple Exponential & Linear Models",
+            "es": "Modelos Exponenciales y Lineales Simples", 
+            "zh": "简单指数与线性模型"
+            },
         "models": [
-            {"key": "malthus", "name": "Malthus — Crescimento Exponencial",
-             "author": "Thomas R. Malthus (1798)",
-             "category": {"pt": "Modelo exponencial simples", "en": "Simple exponential model",
-                          "es": "Modelo exponencial simple", "zh": "简单指数模型"},
+            {"key": "malthus", 
+             "name": {
+                 "pt": "Malthus — Crescimento Exponencial", 
+                 "en": "Malthus — Exponential Growth", 
+                 "es": "Malthus — Crecimiento Exponencial", 
+                 "zh": "Malthus — 指数增长"
+                 },
+             "author":{
+                 "pt": " Thomas R. Malthus (1798)",
+                 "en": " Thomas R. Malthus (1798)",
+                 "es": " Thomas R. Malthus (1798)",
+                 "zh": " Thomas R. Malthus (1798)",
+                },
+             "category": {
+                 "pt": "Modelo exponencial simples", 
+                 "en": "Simple exponential model",
+                 "es": "Modelo exponencial simple", 
+                 "zh": "简单指数模型"
+                 },
              "latex": r"X(t) = X_0 \cdot e^{\mu \cdot t}",
              "params": ["X₀ (g/L)", "μ (h⁻¹)"],
              "requires": ["time", "biomass"], "ode": False},
-            {"key": "linear", "name": "Crescimento Linear",
-             "author": "Modelo genérico",
-             "category": {"pt": "Modelo linear", "en": "Linear model", "es": "Modelo lineal", "zh": "线性模型"},
+            {"key": "linear", 
+             "name": {
+                 "pt": "Crescimento Linear", 
+                 "en": "Linear Growth", 
+                 "es": "Crecimiento Lineal", 
+                 "zh": "线性增长"
+                 },
+             "author":{
+                 "pt": " Modelo genérico",
+                 "en": " Generic model",
+                 "es": " Modelo genérico",
+                 "zh": " 通用模型",
+                },
+             "category": {
+                 "pt": "Modelo linear", 
+                 "en": "Linear model", 
+                 "es": "Modelo lineal", 
+                 "zh": "线性模型"
+                 },
              "latex": r"X(t) = X_0 + \mu \cdot t",
              "params": ["X₀ (g/L)", "μ (g/L·h)"],
              "requires": ["time", "biomass"], "ode": False},
@@ -946,61 +1129,201 @@ BOXES = [
     },
     {
         "id": "box2",
-        "title": {"pt": "Modelos Logísticos", "en": "Logistic Models",
-                  "es": "Modelos Logísticos", "zh": "Logistic 模型"},
+        "title": {"pt": "Modelos Logísticos", 
+                  "en": "Logistic Models",
+                  "es": "Modelos Logísticos", 
+                  "zh": "Logistic 模型"
+                  },
         "models": [
-            {"key": "verhulst", "name": "Verhulst — Logístico Clássico",
-             "author": "Pierre François Verhulst (1845)",
-             "category": {"pt": "Logístico clássico", "en": "Classic logistic", "es": "Logístico clásico", "zh": "经典 Logistic"},
+            {"key": "verhulst", 
+             "name": {
+                 "pt": "Verhulst — Logístico Clássico", 
+                 "en": "Verhulst — Classic Logistic", 
+                 "es": "Verhulst — Logístico Clásico", 
+                 "zh": "Verhulst — 经典 Logistic"
+                 },
+             "author":{
+                 "pt": " Pierre François Verhulst (1845)",
+                 "en": " Pierre François Verhulst (1845)",
+                 "es": " Pierre François Verhulst (1845)",
+                 "zh": " Pierre François Verhulst (1845)",
+                },
+             "category": {
+                 "pt": "Logístico clássico", 
+                 "en": "Classic logistic", 
+                 "es": "Logístico clásico", 
+                 "zh": "经典 Logistic"
+                 
+                 },
              "latex": r"X(t)=\frac{X_m}{1+\left(\frac{X_m}{X_0}-1\right)e^{-\mu_{max}t}}",
              "params": ["X₀", "Xm", "μmax"], "requires": ["time", "biomass"], "ode": False},
-            {"key": "gompertz_mod", "name": "Gibson — Gompertz Modificado",
-             "author": "Gibson et al. (1987) · Zwietering et al. (1990)",
-             "category": {"pt": "Gompertz modificado", "en": "Modified Gompertz", "es": "Gompertz modificado", "zh": "改进 Gompertz"},
+            {"key": "gompertz_mod", 
+             "name": {
+                 "pt": "Gibson — Gompertz Modificado", 
+                 "en": "Gibson — Modified Gompertz", 
+                 "es": "Gibson — Gompertz Modificado", 
+                 "zh": "Gibson — 改进 Gompertz"
+                 },
+             "author":{
+                 "pt": " Gibson et al. (1987) · Zwietering et al. (1990)",
+                 "en": " Gibson et al. (1987) · Zwietering et al. (1990)",
+                 "es": " Gibson et al. (1987) · Zwietering et al. (1990)",
+                 "zh": " Gibson et al. (1987) · Zwietering et al. (1990)",
+                },
+             "category": {
+                 "pt": "Gompertz modificado", 
+                 "en": "Modified Gompertz", 
+                 "es": "Gompertz modificado", 
+                 "zh": "改进 Gompertz"
+                 },
              "latex": r"\ln\!\frac{X}{X_0}=A\exp\!\left(-\exp\!\left(\frac{\mu_{max}\,e}{A}(\lambda-t)+1\right)\right)",
              "params": ["A=ln(Xm/X0)", "μmax", "λ (lag)"], "requires": ["time", "biomass"], "ode": False},
-            {"key": "logistic_mod", "name": "Zwietering — Logístico Modificado",
-             "author": "Zwietering et al. (1990)",
-             "category": {"pt": "Logístico modificado", "en": "Modified logistic", "es": "Logístico modificado", "zh": "改进 Logistic"},
+            {"key": "logistic_mod", 
+             "name": {
+                 "pt": "Zwietering — Logístico Modificado", 
+                 "en": "Zwietering — Modified Logistic", 
+                 "es": "Zwietering — Logístico Modificado", 
+                 "zh": "Zwietering — 改进 Logistic"
+                 },
+             "author":{
+                 "pt": " Zwietering et al. (1990)",
+                 "en": " Zwietering et al. (1990)",
+                 "es": " Zwietering et al. (1990)",
+                 "zh": " Zwietering et al. (1990)",
+                },
+             "category": {
+                 "pt": "Logístico modificado", 
+                 "en": "Modified logistic", 
+                 "es": "Logístico modificado", 
+                 "zh": "改进 Logistic"
+                 },
              "latex": r"\ln\!\frac{X}{X_0}=\frac{A}{1+\exp\!\left(\frac{4\mu_{max}}{A}(\lambda-t)+2\right)}",
              "params": ["A", "μmax", "λ (lag)"], "requires": ["time", "biomass"], "ode": False},
         ],
     },
     {
         "id": "box3",
-        "title": {"pt": "Modelos Mecanísticos", "en": "Mechanistic Models",
-                  "es": "Modelos Mecanísticos", "zh": "机理模型"},
+        "title": {
+            "pt": "Modelos Mecanísticos", 
+            "en": "Mechanistic Models",
+            "es": "Modelos Mecanísticos", 
+            "zh": "机理模型"
+            },
         "models": [
-            {"key": "baranyi", "name": "Baranyi & Roberts — Modelo Mecanístico",
-             "author": "József Baranyi & Terry A. Roberts (1994)",
-             "category": {"pt": "Mecanístico com fase lag", "en": "Mechanistic with lag", "es": "Mecanístico con fase lag", "zh": "含滞后期机理模型"},
+            {"key": "baranyi", 
+             "name": {
+                 "pt": "Baranyi & Roberts — Modelo Mecanístico", 
+                 "en": "Baranyi & Roberts — Mechanistic Model", 
+                 "es": "Baranyi & Roberts — Modelo Mecanístico", 
+                 "zh": "Baranyi & Roberts — 机理模型"
+                 },
+             "author":{
+                 "pt": " József Baranyi & Terry A. Roberts (1994)",
+                 "en": " József Baranyi & Terry A. Roberts (1994)",
+                 "es": " József Baranyi & Terry A. Roberts (1994)",
+                 "zh": " József Baranyi & Terry A. Roberts (1994)",
+                },
+             "category": {
+                 "pt": "Mecanístico com fase lag", 
+                 "en": "Mechanistic with lag", 
+                 "es": "Mecanístico con fase lag", 
+                 "zh": "含滞后期机理模型"
+                 },
              "latex": r"\frac{dX}{dt}=\mu_{max}\frac{q}{1+q}\!\left(1-\frac{X}{X_m}\right)\!X;\quad\frac{dq}{dt}=\nu q",
              "params": ["X₀", "Xm", "μmax", "q₀", "ν"], "requires": ["time", "biomass"], "ode": True},
-            {"key": "contois", "name": "Contois — Cinética de Contois",
-             "author": "D.E. Contois (1959)",
-             "category": {"pt": "Inibição por biomassa", "en": "Biomass inhibition", "es": "Inhibición por biomasa", "zh": "生物量抑制"},
+            {"key": "contois", 
+             "name": {
+                 "pt": "Contois — Cinética de Contois", 
+                 "en": "Contois — Contois Kinetics", 
+                 "es": "Contois — Cinética de Contois", 
+                 "zh": "Contois — Contois 动力学"
+                 },
+             "author":{
+                 "pt": " D.E. Contois (1959)",
+                 "en": " D.E. Contois (1959)",
+                 "es": " D.E. Contois (1959)",
+                 "zh": " D.E. Contois (1959)",
+                },
+             "category": {
+                 "pt": "Inibição por biomassa", 
+                 "en": "Biomass inhibition", 
+                 "es": "Inhibición por biomasa", 
+                 "zh": "生物量抑制"
+                 },
              "latex": r"\mu=\frac{\mu_{max} S}{K_s X + S}",
              "params": ["μmax", "Ks", "X₀", "Y"], "requires": ["time", "biomass", "substrate"], "ode": True},
-            {"key": "herbert", "name": "Herbert-Pirt — Com Manutenção",
-             "author": "Dennis Herbert (1958) · Sidney Pirt (1965)",
-             "category": {"pt": "Mecanístico com manutenção", "en": "Mechanistic with maintenance", "es": "Mecanístico con mantenimiento", "zh": "含维持能机理模型"},
+            {"key": "herbert", 
+             "name": {
+                 "pt": "Herbert-Pirt — Com Manutenção", 
+                 "en": "Herbert-Pirt — With Maintenance", 
+                 "es": "Herbert-Pirt — Con Mantenimiento", 
+                 "zh": "Herbert-Pirt — 含维持能"
+                 },
+             "author":{
+                 "pt": " Dennis Herbert (1958) · Sidney Pirt (1965)",
+                 "en": " Dennis Herbert (1958) · Sidney Pirt (1965)",
+                 "es": " Dennis Herbert (1958) · Sidney Pirt (1965)",
+                 "zh": " Dennis Herbert (1958) · Sidney Pirt (1965)",
+                },
+             "category": {
+                 "pt": "Mecanístico com manutenção", 
+                 "en": "Mechanistic with maintenance", 
+                 "es": "Mecanístico con mantenimiento", 
+                 "zh": "含维持能机理模型"
+                 },
              "latex": r"\frac{dX}{dt}=(\mu-k_d)X;\quad\frac{dS}{dt}=-\!\left(\frac{\mu}{Y}+m_s\right)\!X",
              "params": ["μmax", "Ks", "Y", "kd", "ms"], "requires": ["time", "biomass", "substrate"], "ode": True},
         ],
     },
     {
         "id": "box4",
-        "title": {"pt": "Modelos Sigmoides — Curva Completa", "en": "Sigmoid Models — Full Growth Curve",
-                  "es": "Modelos Sigmoideos — Curva Completa", "zh": "S 型模型 — 完整生长曲线"},
+        "title": {
+            "pt": "Modelos Sigmoides — Curva Completa", 
+            "en": "Sigmoid Models — Full Growth Curve",
+            "es": "Modelos Sigmoideos — Curva Completa", 
+            "zh": "S 型模型 — 完整生长曲线"
+            },
         "models": [
-            {"key": "richards", "name": "Richards — Curva Generalizada",
-             "author": "F.J. Richards (1959)",
-             "category": {"pt": "Sigmoide generalizado", "en": "Generalized sigmoid", "es": "Sigmoide generalizado", "zh": "广义 S 型"},
+            {"key": "richards", 
+             "name": {
+                 "pt": "Richards — Curva Generalizada", 
+                 "en": "Richards — Generalised Curve", 
+                 "es": "Richards — Curva Generalizada", 
+                 "zh": "Richards — 广义增长曲线"
+                 },
+             "author":{
+                 "pt": " F.J. Richards (1959)",
+                 "en": " F.J. Richards (1959)",
+                 "es": " F.J. Richards (1959)",
+                 "zh": " F.J. Richards (1959)",
+                },
+             "category": {
+                 "pt": "Sigmoide generalizado", 
+                 "en": "Generalized sigmoid", 
+                 "es": "Sigmoide generalizado", 
+                 "zh": "广义 S 型"
+                 },
              "latex": r"X(t)=\frac{X_m}{\left(1+\nu\,e^{-k(t-\lambda)}\right)^{1/\nu}}",
              "params": ["Xm", "ν", "k", "λ"], "requires": ["time", "biomass"], "ode": False},
-            {"key": "von_bertalanffy", "name": "Von Bertalanffy — Crescimento com Saturação",
-             "author": "Ludwig von Bertalanffy (1957)",
-             "category": {"pt": "Crescimento allométrico", "en": "Allometric growth", "es": "Crecimiento alométrico", "zh": "异速生长"},
+            {"key": "von_bertalanffy", 
+             "name": {
+                 "pt": "Von Bertalanffy — Crescimento com Saturação", 
+                 "en": "Von Bertalanffy — Saturation Growth", 
+                 "es": "Von Bertalanffy — Crecimiento con Saturación", 
+                 "zh": "Von Bertalanffy — 饱和增长"
+                 },
+             "author":{
+                 "pt": " Ludwig von Bertalanffy (1957)",
+                 "en": " Ludwig von Bertalanffy (1957)",
+                 "es": " Ludwig von Bertalanffy (1957)",
+                 "zh": " Ludwig von Bertalanffy (1957)",
+                },
+             "category": {
+                 "pt": "Crescimento allométrico", 
+                 "en": "Allometric growth", 
+                 "es": "Crecimiento alométrico", 
+                 "zh": "异速生长"
+                 },
              "latex": r"X(t)=\!\left(X_\infty^{1/3}-\!\left(X_\infty^{1/3}-X_0^{1/3}\right)e^{-\beta t/3}\right)^{\!3}",
              "params": ["X₀", "X∞", "β"], "requires": ["time", "biomass"], "ode": False},
         ],
@@ -1009,87 +1332,251 @@ BOXES = [
         "id": "box8",
         "title": {"pt": "Modelos Cinéticos Clássicos (Dependentes de Substrato)",
                   "en": "Classic Substrate-Dependent Kinetic Models",
-                  "es": "Modelos Cinéticos Clásicos (Dependientes de Sustrato)", "zh": "经典底物依赖动力学模型"},
+                  "es": "Modelos Cinéticos Clásicos (Dependientes de Sustrato)", 
+                  "zh": "经典底物依赖动力学模型"
+                  },
         "models": [
-            {"key": "monod", "name": "Monod — Cinética de Monod",
-             "author": "Jacques Monod (1949)",
-             "category": {"pt": "Limitação por substrato", "en": "Substrate limitation",
-                          "es": "Limitación por sustrato", "zh": "底物限制"},
+            {"key": "monod", 
+             "name": {
+                 "pt": "Monod — Cinética de Monod", 
+                 "en": "Monod — Monod Kinetics", 
+                 "es": "Monod — Cinética de Monod", 
+                 "zh": "Monod — Monod 动力学"
+                 },
+             "author":{
+                 "pt": " Jacques Monod (1949)",
+                 "en": " Jacques Monod (1949)",
+                 "es": " Jacques Monod (1949)",
+                 "zh": " Jacques Monod (1949)",
+                },
+             "category": {
+                 "pt": "Limitação por substrato", 
+                 "en": "Substrate limitation",
+                 "es": "Limitación por sustrato", 
+                 "zh": "底物限制"
+                 },
              "latex": r"\mu=\frac{\mu_{max}\,S}{K_s+S}",
              "params": ["μmax", "Ks", "X₀", "Y"], "requires": ["time", "biomass", "substrate"], "ode": True},
-            {"key": "tessier", "name": "Tessier — Saturação Exponencial",
-             "author": "Georges Tessier (1942)",
-             "category": {"pt": "Saturação exponencial", "en": "Exponential saturation",
-                          "es": "Saturación exponencial", "zh": "指数饱和"},
+            {"key": "tessier", 
+             "name": {
+                 "pt": "Tessier — Saturação Exponencial", 
+                 "en": "Tessier — Exponential Saturation", 
+                 "es": "Tessier — Saturación Exponencial", 
+                 "zh": "Tessier — 指数饱和"
+                 },
+             "author":{
+                 "pt": " Georges Tessier (1942)",
+                 "en": " Georges Tessier (1942)",
+                 "es": " Georges Tessier (1942)",
+                 "zh": " Georges Tessier (1942)",
+                },
+             "category": {
+                 "pt": "Saturação exponencial", 
+                 "en": "Exponential saturation",
+                 "es": "Saturación exponencial", 
+                 "zh": "指数饱和"
+                 },
              "latex": r"\mu=\mu_{max}\!\left(1-e^{-S/K_s}\right)",
              "params": ["μmax", "Ks"], "requires": ["time", "biomass", "substrate"], "ode": True},
-            {"key": "moser", "name": "Moser — Modelo de Potência",
-             "author": "H. Moser (1958)",
-             "category": {"pt": "Modelo de potência modificado", "en": "Modified power model",
-                          "es": "Modelo de potencia modificado", "zh": "幂次模型"},
+            {"key": "moser", 
+             "name": {
+                 "pt": "Moser — Modelo de Potência", 
+                 "en": "Moser — Power Model", 
+                 "es": "Moser — Modelo de Potencia", 
+                 "zh": "Moser — 幂次模型"
+                 },
+             "author":{
+                 "pt": " H. Moser (1958)",
+                 "en": " H. Moser (1958)",
+                 "es": " H. Moser (1958)",
+                 "zh": " H. Moser (1958)",
+                },
+             "category": {
+                 "pt": "Modelo de potência modificado", 
+                 "en": "Modified power model",
+                 "es": "Modelo de potencia modificado", 
+                 "zh": "幂次模型"
+                 },
              "latex": r"\mu=\frac{\mu_{max}}{1+\left(K_s/S\right)^n}",
              "params": ["μmax", "Ks", "n"], "requires": ["time", "biomass", "substrate"], "ode": True},
-            {"key": "haldane", "name": "Haldane/Andrews — Inibição por Substrato",
-             "author": "J.B.S. Haldane (1930) · J.F. Andrews (1968)",
-             "category": {"pt": "Inibição por substrato", "en": "Substrate inhibition",
-                          "es": "Inhibición por sustrato", "zh": "底物抑制"},
+            {"key": "haldane", 
+             "name": {
+                 "pt": "Haldane/Andrews — Inibição por Substrato", 
+                 "en": "Haldane/Andrews — Substrate Inhibition", 
+                 "es": "Haldane/Andrews — Inhibición por Sustrato", 
+                 "zh": "Haldane/Andrews — 底物抑制"
+                 },
+             "author":{
+                 "pt": " J.B.S. Haldane (1930) · J.F. Andrews (1968)",
+                 "en": " J.B.S. Haldane (1930) · J.F. Andrews (1968)",
+                 "es": " J.B.S. Haldane (1930) · J.F. Andrews (1968)",
+                 "zh": " J.B.S. Haldane (1930) · J.F. Andrews (1968)",
+                },
+             "category": {
+                 "pt": "Inibição por substrato", 
+                 "en": "Substrate inhibition",
+                 "es": "Inhibición por sustrato",
+                 "zh": "底物抑制"
+                 },
              "latex": r"\mu=\frac{\mu_{max}\,S}{K_s+S+S^2/K_i}",
              "params": ["μmax", "Ks", "Ki"], "requires": ["time", "biomass", "substrate"], "ode": True},
-            {"key": "aiba", "name": "Aiba — Inibição Mista (Exponencial)",
-             "author": "Shuichi Aiba et al. (1965)",
-             "category": {"pt": "Inibição exponencial mista", "en": "Mixed exponential inhibition",
-                          "es": "Inhibición exponencial mixta", "zh": "混合指数抑制"},
+            {"key": "aiba", 
+             "name": {
+                 "pt": "Aiba — Inibição Mista (Exponencial)", 
+                 "en": "Aiba — Mixed Inhibition (Exponential)", 
+                 "es": "Aiba — Inhibición Mixta (Exponencial)", 
+                 "zh": "Aiba — 混合抑制（指数型）"
+                 },
+             "author":{
+                 "pt": " Shuichi Aiba et al. (1965)",
+                 "en": " Shuichi Aiba et al. (1965)",
+                 "es": " Shuichi Aiba et al. (1965)",
+                 "zh": " Shuichi Aiba et al. (1965)",
+                },
+             "category": {
+                 "pt": "Inibição exponencial mista", 
+                 "en": "Mixed exponential inhibition",
+                 "es": "Inhibición exponencial mixta", 
+                 "zh": "混合指数抑制"
+                 },
              "latex": r"\mu=\frac{\mu_{max}\,S\,e^{-S/K_i}}{K_s+S}",
              "params": ["μmax", "Ks", "Ki"], "requires": ["time", "biomass", "substrate"], "ode": True},
         ],
     },
     {
         "id": "box9",
-        "title": {"pt": "Modelos Empíricos", "en": "Empirical Models",
-                  "es": "Modelos Empíricos", "zh": "经验模型"},
+        "title": {
+            "pt": "Modelos Empíricos", 
+            "en": "Empirical Models",
+            "es": "Modelos Empíricos", 
+            "zh": "经验模型"
+            },
         "models": [
-            {"key": "buchanan", "name": "Buchanan — Modelo Trifásico Linear",
-             "author": "Robert L. Buchanan (1993)",
-             "category": {"pt": "Trifásico empírico", "en": "Empirical three-phase",
-                          "es": "Trifásico empírico", "zh": "经验三阶段"},
+            {"key": "buchanan", 
+             "name": {
+                 "pt": "Buchanan — Modelo Trifásico Linear", 
+                 "en": "Buchanan — Three-Phase Linear", 
+                 "es": "Buchanan — Modelo Trifásico Lineal", 
+                 "zh": "Buchanan — 三阶段线性模型"
+                 },
+             "author":{
+                 "pt": " Robert L. Buchanan (1993)",
+                 "en": " Robert L. Buchanan (1993)",
+                 "es": " Robert L. Buchanan (1993)",
+                 "zh": " Robert L. Buchanan (1993)",
+                },
+             "category": {
+                 "pt": "Trifásico empírico", 
+                 "en": "Empirical three-phase",
+                 "es": "Trifásico empírico", 
+                 "zh": "经验三阶段"
+                 },
              "latex": r"\ln X=\begin{cases}\ln X_0 & t\le\lambda\\\ln X_0+\mu_{max}(t-\lambda) & \lambda<t\le t_{max}\\\ln X_m & t>t_{max}\end{cases}",
              "params": ["X₀", "Xm", "μmax", "λ", "tmax"], "requires": ["time", "biomass"], "ode": False},
         ],
     },
     {
         "id": "box10",
-        "title": {"pt": "Modelos Lineares de Ajuste de Curva", "en": "Linear Curve Fitting",
-                  "es": "Modelos Lineales de Ajuste de Curva", "zh": "线性曲线拟合"},
+        "title": {
+            "pt": "Modelos Lineares de Ajuste de Curva", 
+            "en": "Linear Curve Fitting",
+            "es": "Modelos Lineales de Ajuste de Curva", 
+            "zh": "线性曲线拟合"
+            },
         "models": [
-            {"key": "polynomial", "name": "Regressão Polinomial",
-             "author": "Ajuste numérico clássico",
-             "category": {"pt": "Regressão polinomial", "en": "Polynomial regression",
-                          "es": "Regresión polinomial", "zh": "多项式回归"},
+            {"key": "polynomial", 
+             "name": {
+                 "pt": "Regressão Polinomial", 
+                 "en": "Polynomial Regression", 
+                 "es": "Regresión Polinomial", 
+                 "zh": "多项式回归"
+                 },
+             "author":{
+                 "pt": " Ajuste numérico clássico",
+                 "en": " Classic numeric adjustment",
+                 "es": " Ajuste numérico clásico",
+                 "zh": " 经典数值调整",
+                },
+             "category": {
+                 "pt": "Regressão polinomial", 
+                 "en": "Polynomial regression",
+                 "es": "Regresión polinomial", 
+                 "zh": "多项式回归"
+                 },
              "latex": r"X=\sum_{i=0}^{n}a_i\,t^i",
              "params": ["a₀", "a₁", "a₂", "…"], "requires": ["time", "biomass"], "ode": False},
-            {"key": "lin_logspace", "name": "Regressão Linear em Espaço Log",
-             "author": "Método clássico",
-             "category": {"pt": "Regressão log-linear", "en": "Log-linear regression",
-                          "es": "Regresión log-lineal", "zh": "对数线性回归"},
+            {"key": "lin_logspace", 
+             "name": {
+                 "pt": "Regressão Linear em Espaço Log", 
+                 "en": "Linear Regression in Log Space", 
+                 "es": "Regresión Lineal en Espacio Log", 
+                 "zh": "对数空间线性回归"
+                 },
+             "author":{
+                 "pt": " Método clássico",
+                 "en": " Classic method",
+                 "es": " Método clásico",
+                 "zh": " 经典方法",
+                },
+             "category": {
+                 "pt": "Regressão log-linear", 
+                 "en": "Log-linear regression",
+                 "es": "Regresión log-lineal", 
+                 "zh": "对数线性回归"
+                 },
              "latex": r"\ln X=\ln X_0+\mu\,t",
              "params": ["X₀", "μ"], "requires": ["time", "biomass"], "ode": False},
         ],
     },
     {
         "id": "box11",
-        "title": {"pt": "Modelos Não Lineares de Ajuste de Curva", "en": "Non-linear Curve Fitting",
-                  "es": "Modelos No Lineales de Ajuste de Curva", "zh": "非线性曲线拟合"},
+        "title": {
+            "pt": "Modelos Não Lineares de Ajuste de Curva", 
+            "en": "Non-linear Curve Fitting",
+            "es": "Modelos No Lineales de Ajuste de Curva", 
+            "zh": "非线性曲线拟合"
+            },
         "models": [
-            {"key": "gaussian", "name": "Gaussiana — Ajuste por Curva Normal",
-             "author": "Modelo estatístico clássico",
-             "category": {"pt": "Ajuste gaussiano", "en": "Gaussian fit",
-                          "es": "Ajuste gaussiano", "zh": "高斯拟合"},
+            {"key": "gaussian", 
+             "name": {
+                 "pt": "Gaussiana — Ajuste por Curva Normal", 
+                 "en": "Gaussian — Normal Curve Fit", 
+                 "es": "Gaussiana — Ajuste por Curva Normal", 
+                 "zh": "高斯 — 正态曲线拟合"
+                 },
+             "author":{
+                 "pt": " Modelo estatístico clássico",
+                 "en": " Classic statistical model",
+                 "es": " Modelo estadístico clásico",
+                 "zh": " 经典统计模型",
+                },
+             "category": {
+                 "pt": "Ajuste gaussiano", 
+                 "en": "Gaussian fit",
+                 "es": "Ajuste gaussiano", 
+                 "zh": "高斯拟合"
+                 },
              "latex": r"X=A\,e^{-\frac{(t-\mu_t)^2}{2\sigma^2}}+C",
              "params": ["A", "μt", "σ", "C"], "requires": ["time", "biomass"], "ode": False},
-            {"key": "power_law", "name": "Lei de Potência",
-             "author": "Modelo empírico geral",
-             "category": {"pt": "Lei de potência", "en": "Power law",
-                          "es": "Ley de potencia", "zh": "幂律"},
+            {"key": "power_law", 
+             "name": {
+                 "pt": "Lei de Potência", 
+                 "en": "Power Law", "es": 
+                 "Ley de Potencia", "zh": 
+                 "幂律"
+                 },
+             "author": {
+                 "pt": " Modelo Empírico Geral",
+                 "en": " General Empirical Model",
+                 "es": " Modelo Empírico General",
+                 "zh": " 一般经验模型",
+                },
+             "category": {
+                 "pt": "Lei de potência", 
+                 "en": "Power law",
+                 "es": "Ley de potencia", 
+                 "zh": "幂律"
+                 },
              "latex": r"X=X_0\,t^n",
              "params": ["X₀", "n"], "requires": ["time", "biomass"], "ode": False},
         ],
@@ -1102,19 +1589,44 @@ ALL_MODELS = {m["key"]: m for b in BOXES for m in b["models"]}
 TOOLS_BOXES = [
     {
         "id": "tbox1",
-        "title": {"pt": "Cinética Enzimática Homogênea", "en": "Homogeneous Enzyme Kinetics",
-                  "es": "Cinética Enzimática Homogénea", "zh": "均相酶动力学"},
+        "title": {"pt": "Cinética Enzimática Homogênea", 
+                  "en": "Homogeneous Enzyme Kinetics",
+                  "es": "Cinética Enzimática Homogénea", 
+                  "zh": "均相酶动力学"
+                  },
         "icon": "🧫",
         "models": [
-            {"key": "michaelis", "name": "Michaelis-Menten — Cinética Enzimática",
+            {"key": "michaelis", 
+             "name": {
+                "pt": "Michaelis-Menten — Cinética Enzimática", 
+                "en": "Michaelis-Menten — Enzyme Kinetics", 
+                "es": "Michaelis-Menten — Cinética Enzimática", 
+                "zh": "Michaelis-Menten — 酶动力学"
+                },
              "author": "Leonor Michaelis & Maud Menten (1913)",
-             "category": {"pt": "Enzimática clássica", "en": "Classic enzyme kinetics", "es": "Cinética enzimática clásica", "zh": "经典酶动力学"},
+             "category": {
+                 "pt": "Enzimática clássica", 
+                 "en": "Classic enzyme kinetics", 
+                 "es": "Cinética enzimática clásica", 
+                 "zh": "经典酶动力学"
+                 },
              "latex": r"v=\frac{V_{max}\,S}{K_m+S}",
              "params": ["Vmax (mmol/L·h)", "Km (mmol/L)"],
              "requires": ["time", "substrate"], "ode": False},
-            {"key": "inhib_comp", "name": "Inibição Competitiva",
+            {"key": "inhib_comp", 
+             "name": {
+                "pt": "Inibição Competitiva", 
+                "en": "Competitive Inhibition", 
+                "es": "Inhibición Competitiva", 
+                "zh": "竞争性抑制"
+                },
              "author": "Briggs & Haldane (1925)",
-             "category": {"pt": "Inibição competitiva", "en": "Competitive inhibition", "es": "Inhibición competitiva", "zh": "竞争性抑制"},
+             "category": {
+                 "pt": "Inibição competitiva", 
+                 "en": "Competitive inhibition", 
+                 "es": "Inhibición competitiva", 
+                 "zh": "竞争性抑制"
+                 },
              "latex": r"v=\frac{V_{max}\,S}{K_m\!\left(1+I/K_i\right)+S}",
              "params": ["Vmax", "Km", "Ki"],
              "requires": ["time", "substrate"], "ode": False},
@@ -1122,13 +1634,28 @@ TOOLS_BOXES = [
     },
     {
         "id": "tbox2",
-        "title": {"pt": "Rendimento Variável e Cinética Heterogênea", "en": "Variable Yield & Heterogeneous Kinetics",
-                  "es": "Rendimiento Variable y Cinética Heterogénea", "zh": "可变产率与非均相动力学"},
+        "title": {
+            "pt": "Rendimento Variável e Cinética Heterogênea", 
+            "en": "Variable Yield & Heterogeneous Kinetics",
+            "es": "Rendimiento Variable y Cinética Heterogénea", 
+            "zh": "可变产率与非均相动力学"
+            },
         "icon": "⚗️",
         "models": [
-            {"key": "pirt", "name": "Pirt — Rendimento Variável",
+            {"key": "pirt", 
+             "name": {
+                 "pt": "Pirt — Rendimento Variável", 
+                 "en": "Pirt — Variable Yield", "es": 
+                 "Pirt — Rendimiento Variable", "zh": 
+                 "Pirt — 可变产率"
+                 },
              "author": "Sidney John Pirt (1965)",
-             "category": {"pt": "Rendimento com manutenção", "en": "Yield with maintenance", "es": "Rendimiento con mantenimiento", "zh": "含维持的产率"},
+             "category": {
+                 "pt": "Rendimento com manutenção", 
+                 "en": "Yield with maintenance", 
+                 "es": "Rendimiento con mantenimiento", 
+                 "zh": "含维持的产率"
+                 },
              "latex": r"Y_{obs}=\frac{Y_{max}}{1+m_s\,Y_{max}/\mu}",
              "params": ["Ymax (g/g)", "ms (g/g·h)"],
              "requires": ["time", "biomass", "substrate"], "ode": False},
@@ -1136,24 +1663,50 @@ TOOLS_BOXES = [
     },
     {
         "id": "tbox3",
-        "title": {"pt": "Turn-over Celular e Formação de Produto", "en": "Cell Turnover & Product Formation",
-                  "es": "Recambio Celular y Formación de Producto", "zh": "细胞更新与产物生成"},
+        "title": {
+            "pt": "Turn-over Celular e Formação de Produto", 
+            "en": "Cell Turnover & Product Formation",
+            "es": "Recambio Celular y Formación de Producto", 
+            "zh": "细胞更新与产物生成"
+            },
         "icon": "🔄",
         "models": [
-            {"key": "luedeking_piret", "name": "Luedeking-Piret — Formação de Produto",
+            {"key": "luedeking_piret", 
+             "name": {
+                 "pt": "Luedeking-Piret — Formação de Produto", 
+                 "en": "Luedeking-Piret — Product Formation", 
+                 "es": "Luedeking-Piret — Formación de Producto", 
+                 "zh": "Luedeking-Piret — 产物生成"
+                 },
              "author": "Robert Luedeking & E.L. Piret (1959)",
-             "category": {"pt": "Produto acoplado ao crescimento", "en": "Growth-coupled product", "es": "Producto acoplado al crecimiento", "zh": "生长偶联产物"},
+             "category": {
+                 "pt": "Produto acoplado ao crescimento", 
+                 "en": "Growth-coupled product", 
+                 "es": "Producto acoplado al crecimiento", 
+                 "zh": "生长偶联产物"
+                 },
              "latex": r"\frac{dp}{dt}=\alpha\frac{dX}{dt}+\beta X",
              "params": ["α (g/g)", "β (g/g·h)"],
              "requires": ["time", "biomass"], "ode": False},
-            {"key": "chick", "name": "Chick — Inativação/Morte Celular",
+            {"key": "chick", 
+             "name": {
+                 "pt": "Chick — Inativação/Morte Celular", 
+                 "en": "Chick — Cell Inactivation/Death", 
+                 "es": "Chick — Inactivación/Muerte Celular", 
+                 "zh": "Chick — 细胞失活/死亡"
+                 },
              "author": "Harriette Chick (1908)",
-             "category": {"pt": "Morte/inativação de 1ª ordem", "en": "First-order inactivation", "es": "Inactivación de 1er orden", "zh": "一阶失活"},
+             "category": {
+                 "pt": "Morte/inativação de 1ª ordem", 
+                 "en": "First-order inactivation", 
+                 "es": "Inactivación de 1er orden", 
+                 "zh": "一阶失活"
+                 },
              "latex": r"X(t)=X_0\,e^{-k_d t}",
              "params": ["X₀ (g/L)", "kd (h⁻¹)"],
              "requires": ["time", "biomass"], "ode": False},
         ],
-    },
+    }
 ]
 ALL_TOOLS = {m["key"]: m for b in TOOLS_BOXES for m in b["models"]}
 
@@ -1898,7 +2451,7 @@ else:
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 12. CONTACT DIALOG
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-@st.dialog("📧 Entre em contato / Contact")
+@st.dialog(f'{t("nav_contact")}')
 def contact_dialog():
     st.markdown(f"""
 <div style="padding:8px 0">
@@ -2070,6 +2623,19 @@ def _model_available(m):
     return set(m["requires"]).issubset(_mapped_vars())
 
 
+def _model_name(model_or_meta: dict) -> str:
+    """Return the model name in the currently selected language.
+    Accepts either a BOXES model dict or an ALL_MODELS meta dict.
+    Falls back to PT if the key is missing, then to the raw string if
+    'name' is still a plain string (backward-compat).
+    """
+    lang = st.session_state.get("lang", "pt")
+    name_val = model_or_meta.get("name", "")
+    if isinstance(name_val, dict):
+        return name_val.get(lang) or name_val.get("pt") or next(iter(name_val.values()), "")
+    return str(name_val)  # legacy plain string
+
+
 def _extract_sorted_series(df_src, t_col: str, x_col: str, s_col=None):
     """
     Extract time, biomass (and optional substrate) from df_src,
@@ -2199,7 +2765,7 @@ def tab_data():
 
                         st.session_state.df_raw = result
                         st.info(
-                            f"📂 {len(dfs)} arquivos mesclados (outer join no eixo do tempo) "
+                            f"📂 {len(dfs)} {t('dt_files_merge')} "
                             f"→ {result.shape[0]} × {result.shape[1]}")
                         # Show column mapping per file
                         for i, (nm, df_i) in enumerate(zip(names, dfs)):
@@ -2321,7 +2887,7 @@ def tab_data():
                 except Exception:
                     pass
 
-            if st.button("✅ Aplicar dados manuais", key="apply_manual"):
+            if st.button(f"✅ {t('dt_manual_add_data')}", key="apply_manual"):
                 st.session_state.df_raw = edited.copy()
                 st.session_state.df     = edited.copy()
                 st.session_state.excluded_cols = []
@@ -2329,51 +2895,7 @@ def tab_data():
                 st.success(t("dt_data_applied"))
                 st.rerun()
 
-# ── Variable mapping — tag-input style ───────────────────# (modificação realizada, apagar caso não funcione)
-
-with st.expander(f"🏷️ {t('dt_mapping_title')}", expanded=True):
-            st.caption(t("dt_mapping_note"))
-            st.markdown("""
-<style>
-.tag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin-bottom:6px}
-.cat-row{display:flex;align-items:center;gap:6px;margin-bottom:2px}
-.cat-icon{font-size:1rem;line-height:1;flex-shrink:0}
-.cat-req{color:var(--acc);font-weight:700;flex-shrink:0}
-.cat-label-input input{
-  border:1px solid var(--brd) !important;
-  background:var(--bg2) !important;
-  border-radius:14px !important;
-  padding:1px 10px !important;
-  font-size:.76rem !important;
-  font-weight:600 !important;
-  height:26px !important;
-  min-height:26px !important;
-}
-.cat-label-input.mapped input{
-  border-color:var(--acc) !important;
-  color:var(--acc) !important;
-  background:rgba(0,200,180,.08) !important;
-}
-.cat-label-input div[data-testid="stTextInputRootElement"]{
-  border:none !important; background:transparent !important;
-}
-
-/* Otimização de espaçamento interno para eliminar excessos vazios */
-[data-testid="column"] div[data-testid="stVerticalBlock"] {
-  gap: 2px !important;
-}
-div[data-testid="stSelectbox"], div[data-testid="stMultiSelect"] {
-  margin: 0 !important;
-}
-[data-testid="column"] div[data-testid="stHorizontalBlock"] {
-  margin-top: 14px !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-
-
-'''    # ── Variable mapping — tag-input style ───────────────────# (necessário a modificação para retirar os espaços excedentes, retornar caso não funcione)
+    # ── Variable mapping — tag-input style ───────────────────
     if st.session_state.df is not None:
         df = st.session_state.df
         none_label = t("dt_none")
@@ -2383,34 +2905,36 @@ div[data-testid="stSelectbox"], div[data-testid="stMultiSelect"] {
             st.caption(t("dt_mapping_note"))
             st.markdown("""
 <style>
-.tag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin-bottom:6px}
-.cat-row{display:flex;align-items:center;gap:6px;margin-bottom:2px}
-.cat-icon{font-size:1rem;line-height:1;flex-shrink:0}
-.cat-req{color:var(--acc);font-weight:700;flex-shrink:0}
-.cat-label-input input{
+.cat-row{
+  display:flex; align-items:center; gap:4px;
+  margin:8px 0 2px 2px; font-size:.82rem; line-height:1;
+}
+.cat-icon{ font-size:.92rem; }
+.cat-req { color:var(--acc); font-weight:700; }
+/* Collapse extra padding around text inputs inside the mapping grid */
+div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"]
+  > div.stTextInput > div {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"]
+  > div.stTextInput input {
   border:1px solid var(--brd) !important;
   background:var(--bg2) !important;
-  border-radius:14px !important;
-  padding:1px 10px !important;
-  font-size:.76rem !important;
+  border-radius:8px !important;
+  padding:3px 10px !important;
+  font-size:.8rem !important;
   font-weight:600 !important;
-  height:26px !important;
-  min-height:26px !important;
+  height:28px !important;
+  min-height:28px !important;
 }
-.cat-label-input.mapped input{
-  border-color:var(--acc) !important;
-  color:var(--acc) !important;
-  background:rgba(0,200,180,.08) !important;
-}
-.cat-label-input div[data-testid="stTextInputRootElement"]{
-  border:none !important; background:transparent !important;
+div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"]
+  > div.stSelectbox, div.stMultiSelect {
+  margin-top: 2px !important;
 }
 </style>
-""", unsafe_allow_html=True)'''
+""", unsafe_allow_html=True)
 
-            # (key, icon, default_label_key, required, multi)
-            # multi=True → st.multiselect (can map multiple columns of same type)
-            # multi=False → st.selectbox  (single reference column)
             var_defs = [
                 ("time",      "⏱",  "dt_time_lbl",      True,  False),
                 ("biomass",   "🦠",  "dt_biomass_lbl",   True,  True),
@@ -2420,10 +2944,8 @@ div[data-testid="stSelectbox"], div[data-testid="stMultiSelect"] {
                 ("drymass",   "⚖️",  "dt_drymass_lbl",   False, False),
             ]
 
-            # All available column names
-            col_opts   = list(df.columns.astype(str))
-            # Column list with a "not mapped" placeholder (for selectbox)
-            cols_none  = [none_label] + col_opts
+            col_opts  = list(df.columns.astype(str))
+            cols_none = [none_label] + col_opts
 
             if "category_labels" not in st.session_state:
                 st.session_state.category_labels = {}
@@ -2445,21 +2967,17 @@ div[data-testid="stSelectbox"], div[data-testid="stMultiSelect"] {
                         current = none_label
                     mapped = current != none_label
 
-                # ── Editable category name (icon + required marker + text input) ──
-                icon_col, txt_col = gcol.columns([1, 5], gap="small")
-                req_badge = '<span class="cat-req">*</span>' if required else ""
-                icon_col.markdown(
-                    f'<div class="cat-row" style="margin-top:8px">'
+                req_badge  = '<span class="cat-req">*</span>' if required else ""
+                # Single-column layout — no sub-split, no whitespace gap
+                gcol.markdown(
+                    f'<div class="cat-row">'
                     f'<span class="cat-icon">{icon}</span>'
                     f'{req_badge}'
-                    f'</div>', unsafe_allow_html=True)
-
-                mapped_cls = "mapped" if mapped else ""
-                txt_col.markdown(
-                    f'<div class="cat-label-input {mapped_cls}">',
+                    f'</div>',
                     unsafe_allow_html=True)
+
                 stored_label = st.session_state.category_labels.get(var_key, default_label)
-                edited_label = txt_col.text_input(
+                edited_label = gcol.text_input(
                     f"catlabel_{var_key}",
                     value=stored_label,
                     key=f"catlabel_{var_key}",
@@ -2467,7 +2985,6 @@ div[data-testid="stSelectbox"], div[data-testid="stMultiSelect"] {
                     placeholder=default_label,
                     help=t("dt_rename_category_hint"),
                 )
-                txt_col.markdown('</div>', unsafe_allow_html=True)
                 final_label = edited_label.strip() or default_label
                 st.session_state.category_labels[var_key] = final_label
 
@@ -2542,11 +3059,12 @@ div[data-testid="stSelectbox"], div[data-testid="stMultiSelect"] {
 
             st.dataframe(df.head(50).style.map(_highlight_neg),
                          use_container_width=True, height=220)
+            lang = st.session_state.get("lang", "pt")
             m1, m2, m3, m4 = st.columns(4)
-            m1.metric("Linhas", df.shape[0])
-            m2.metric("Colunas", df.shape[1])
+            m1.metric(f'{t("tm_metric_line")}', df.shape[0])
+            m2.metric(f'{t("tm_metric_col")}', df.shape[1])
             m3.metric("NaN", f"{df.isnull().mean().mean()*100:.1f}%")
-            m4.metric("Modelos disp.", _count_available_models())
+            m4.metric(f'{t("tm_metric_model")}', _count_available_models())
 
     # ── Box 3: Scatter preview ────────────────────────────────
     t_col_p  = st.session_state.headers.get("time")
@@ -2637,7 +3155,7 @@ div[data-testid="stSelectbox"], div[data-testid="stMultiSelect"] {
   <h4>🔢 {t("dt_avail_title")}</h4>
   <div class="author">{t("dt_avail_note")}</div>
   <div style="font-size:2rem;font-weight:900;color:var(--acc)">{n_avail}</div>
-  <div style="font-size:.75rem;color:var(--fg2)">de {len(ALL_MODELS)} modelos cinéticos · + {len(ALL_TOOLS)} ferramentas</div>
+  <div style="font-size:.75rem;color:var(--fg2)">{t("dt_avail_prep")} {len(ALL_MODELS)}{t("dt_avail_complement0")} · + {len(ALL_TOOLS)} {t("dt_avail_complement1")}</div>
 </div>
 """, unsafe_allow_html=True)
     with cb:
@@ -2700,10 +3218,11 @@ def tab_models():
                 card_cls = ("sel" if is_sel else "") + (" dis" if not avail else "")
                 col = cols[i % n_cols]
                 with col:
+                    lang = st.session_state.get("lang", "pt")
                     col.markdown(f"""
 <div class="model-card {card_cls}">
-  <h5>{model['name']}</h5>
-  <div class="auth">{model['author']}</div>
+  <h5>{_model_name(model)}</h5>
+  <div class="auth">{model['author'].get(lang,model['author']['en'])}</div>
   <div class="catg">{_model_category(model)}</div>
 </div>
 """, unsafe_allow_html=True)
@@ -2799,7 +3318,8 @@ def _render_single_result(fr, model_key, t_col, x_col):
 
     param_names = m_meta.get("params", [f"p{i}" for i in range(len(fr["popt"]))])
     with st.expander(t("rs_params_adjusted"), expanded=False):
-        param_rows = [{"Parâmetro": pn, "Valor": f"{pv:.6g}"}
+        lang = st.session_state.get("lang", "pt")
+        param_rows = [{t("rs_named_col1"): pn, t("rs_named_col2"): f"{pv:.6g}"}
                       for pn, pv in zip(param_names, fr["popt"])]
         if param_rows:
             st.dataframe(pd.DataFrame(param_rows), use_container_width=True, hide_index=True)
@@ -2845,7 +3365,7 @@ def _render_single_result(fr, model_key, t_col, x_col):
         pass
     st.markdown(f"##### 📉 {t('rs_resid_chart')}")
     fig_res = make_subplots(rows=1, cols=2,
-                             subplot_titles=["Resíduos × Tempo", "Distribuição"])
+                             subplot_titles=[f"{t('rs_sub_plot1')}", f"{t('rs_sub_plot2')}"])
     rcol = ["#f85149" if abs(r) > 2*resid_std else "#7c3aed" for r in resid]
     fig_res.add_trace(go.Scatter(x=t_d, y=resid, mode="markers",
                                   marker=dict(color=rcol, size=6, opacity=.85)), row=1, col=1)
@@ -2958,8 +3478,9 @@ def tab_results():
                 for idx, mk in enumerate(st.session_state.selected_models):
                     m_info  = ALL_MODELS.get(mk, {})
                     # Full name: "Modelo (Autor)"
-                    full_name = m_info.get("name", mk)
-                    author    = m_info.get("author", "")
+                    lang = st.session_state.get("lang", "pt")
+                    full_name = _model_name(m_info) or mk
+                    author    = m_info.get(m_info["author"].get(lang, m_info["author"]["en"]), "")
                     col = ptcols[idx % 2]
                     col.markdown(
                         f'<div style="font-size:.78rem;color:var(--acc);'
@@ -3039,7 +3560,7 @@ def tab_results():
             mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
             series  = fr.get("series", "")
             suffix  = f"  [{series}]" if len(x_cols) > 1 and series else ""
-            label   = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)[:38] + suffix
+            label   = (_model_name(ALL_MODELS.get(mk_disp, {})) or mk_disp)[:38] + suffix
             if "error" in fr:
                 comp_rows.append({
                     "#": "—", t("rs_model_series_col"): label,
@@ -3095,7 +3616,7 @@ def tab_results():
             series  = fr.get("series", "")
             rank    = valid_keys_sorted.index(rkey) + 1
             suffix  = f" [{series}]" if len(x_cols) > 1 and series else ""
-            name    = f"{rank}° {ALL_MODELS.get(mk_disp,{}).get('name',mk_disp)[:22]}{suffix}"
+            name    = f"{rank}° {_model_name(ALL_MODELS.get(mk_disp, {}))[:22] or mk_disp}{suffix}"
             color   = COLORS_CMP[ci % len(COLORS_CMP)]
             t_fine  = np.linspace(fr["t"][0], fr["t"][-1], 400)
             y_fine  = predict_for_plot(mk_disp, fr["popt"], t_fine,
@@ -3150,7 +3671,7 @@ def tab_results():
             st.error(f"{fr.get('error','?')}"); continue
         mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
         series  = fr.get("series", "")
-        m_name  = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)
+        m_name  = _model_name(ALL_MODELS.get(mk_disp, {})) or mk_disp
         suffix  = f"  [{series}]" if len(x_cols) > 1 and series else ""
         exp_label = (f"**{m_name}**{suffix}  ·  "
                      f"R²={fr['r2adj']:.4f}  ·  RMSE={fr['rmse']:.4f}")
@@ -3170,7 +3691,7 @@ def tab_results():
     # Export — bottom, full-width
     if all_export_data:
         st.divider()
-        st.markdown("### 📤 Exportar resultados")
+        st.markdown(f"### 📤 {t('rs_export_results')}")
         exp_col1, exp_col2 = st.columns(2)
 
         with exp_col1:
@@ -3205,7 +3726,7 @@ def tab_results():
                             pd.DataFrame(ed["phase_rows"]).to_excel(
                                 writer, sheet_name=f"Fases_{pfx}", index=False)
                 st.download_button(
-                    "⬇ Baixar Excel", data=buf.getvalue(),
+                    f"⬇ {t('rs_download_excel')}", data=buf.getvalue(),
                     file_name="GrowthEmulator_results.xlsx",
                     mime=("application/vnd.openxmlformats-officedocument"
                           ".spreadsheetml.sheet"),
@@ -3251,10 +3772,10 @@ def tab_results():
                         fr      = ed["fr"]
                         mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
                         series  = fr.get("series", "")
-                        m_name  = ALL_MODELS.get(mk_disp, {}).get("name", mk_disp)
+                        m_name  = _model_name(ALL_MODELS.get(mk_disp, {})) or mk_disp
                         suffix  = f" [{series}]" if series else ""
                         pdf.set_font(FONT, "B", 12)
-                        pdf.cell(0, 8, _safe(f"{m_name}{suffix}"), ln=True)
+                        pdf.cell(0, 8, _safe(f"{m_name}{suffix}"), ln= True)
                         pdf.set_font(FONT, "", 10)
                         pdf.cell(0, 5, _safe(
                             f"  {t('ab_author')}: "
@@ -3284,7 +3805,7 @@ def tab_results():
                         mime="application/pdf",
                         use_container_width=True)
             except ImportError:
-                st.caption("Instale fpdf2 para exportar PDF.")
+                st.caption(f"{t('rs_error_lib')}")
 
         # ── AdSense — after export, non-intrusive ─────────────
         st.markdown("<br>", unsafe_allow_html=True)
@@ -3313,7 +3834,7 @@ def tab_tools():
                 mc = model["category"].get(lang, model["category"]["en"])
                 col.markdown(f"""
 <div class="bio-card">
-  <h4>{model['name']}</h4>
+  <h4>{_model_name(model)}</h4>
   <div class="author">{model['author']}</div>
   <div class="category">{mc}</div>
 </div>
@@ -3419,7 +3940,7 @@ def tab_tools():
                     "popt_ci": popt_ci,
                 }
             except Exception as ex:
-                st.error(f"Erro no ajuste: {ex}")
+                st.error(f"{t('rs_error_adjust'): ex}")
 
     if "michaelis" in st.session_state.tools_results:
         res = st.session_state.tools_results["michaelis"]
@@ -3546,7 +4067,7 @@ def tab_tools():
             n_lp  = min(len(t_lp), len(X_lp), len(P_lp))
             t_lp, X_lp, P_lp = t_lp[:n_lp], X_lp[:n_lp], P_lp[:n_lp]
             if n_lp >= 4:
-                st.success(f"✅ {n_lp} pontos detectados — Tempo, Biomassa e Produto mapeados")
+                st.success(f"✅ {n_lp} {t('md_points_detection')}")
                 if st.button(t("tl_lp_run_btn"), key="run_lp"):
                     try:
                         dX_dt = np.gradient(X_lp, t_lp)
@@ -3569,7 +4090,7 @@ def tab_tools():
             else:
                 st.warning(f"{n_lp} {t('tl_min_pts')}")
         else:
-            st.info("Mapeie **Tempo**, **Biomassa** e **Produto** na aba 📊 Dados para habilitar")
+            st.info(t("dt_tool"))
 
         # Chick inactivation — always available if biomass data present
         st.markdown("---")
@@ -3593,7 +4114,7 @@ def tab_tools():
                 except Exception as ex:
                     st.error(f"Erro: {ex}")
         else:
-            st.info("Mapeie Tempo e Biomassa para ajustar o modelo de Chick")
+            st.info(t("dt_info"))
 
     if "luedeking_piret" in st.session_state.tools_results:
         res = st.session_state.tools_results["luedeking_piret"]
@@ -3663,7 +4184,7 @@ def tab_tools():
 
     with st.expander(f"⚙️ {t('tl_pirt_config')}", expanded=False):
         pt1, pt2 = st.columns(2)
-        pt1.markdown("Insira pares μ (h⁻¹) e Y_obs (g/g) para ajustar o modelo de Pirt:")
+        pt1.markdown(t("t1_pirt_mark"))
         raw_mu_p  = pt1.text_input("μ (h⁻¹):",    "0.05;0.1;0.2;0.3;0.4;0.5", key="pirt_mu")
         raw_yobs  = pt1.text_input("Y_obs (g/g):", "0.30;0.38;0.44;0.48;0.50;0.51", key="pirt_y")
 
@@ -3749,8 +4270,8 @@ def tab_tools():
             if tB > tA and xB > 0 and xA > 0:
                 mu_est = np.log(xB / xA) / (tB - tA)
                 td_est = np.log(2) / mu_est if mu_est > 0 else float("nan")
-                st.metric("μ estimado (h⁻¹)", f"{mu_est:.5f}")
-                st.metric("td estimado (h)",   f"{td_est:.4f}" if not np.isnan(td_est) else "—")
+                st.metric(t("dt_estimated_mu"), f"{mu_est:.5f}")
+                st.metric(t("dt_estimated_td"),   f"{td_est:.4f}" if not np.isnan(td_est) else "—")
 
         with calc_cols[1]:
             st.markdown(f"**{t('tl_yield_coef_sect')}**")
@@ -3765,11 +4286,11 @@ def tab_tools():
                 st.metric(t("tl_yield_obs"), f"{Y_obs_calc:.5f} g·g⁻¹")
                 st.caption(f"ΔX = {dX:.4g} g/L  ·  ΔS = {dS:.4g} g/L")
             else:
-                st.warning("S₀ deve ser maior que Sf")
+                st.warning(t("dt_estimated_yield"))
 
             st.markdown("---")
             st.markdown(f"**{t('tl_chick_const_sect')}**")
-            X0_ck = st.number_input("X₀ inativação (g/L):", min_value=1e-6,
+            X0_ck = st.number_input(t("dt_estimated_x0"), min_value=1e-6,
                                      value=5.0, format="%.4f", key="X0_ck_calc")
             Xt_ck = st.number_input("X(t) (g/L):", min_value=1e-8,
                                      value=0.5, format="%.4f", key="Xt_ck_calc")
@@ -3837,7 +4358,13 @@ _DECISION_GUIDE = [
             "es": "Crecimiento exponencial puro sin límite",
             "zh": "纯指数增长，无上限",
         },
-        "model": "Malthus (Exponencial)",
+        "model": {
+            "pt": "Malthus (Exponencial)",
+            "en": "Malthus (Exponential)",
+            "es": "Malthus (Exponencial)",
+            "zh": "Malthus 指数型 (Exponential)"
+        },
+
         "reason": {
             "pt": "Apenas 2 parâmetros. Ideal para fase log inicial ou poucos pontos experimentais.",
             "en": "Only 2 parameters. Ideal for the early log phase or few data points.",
@@ -3855,7 +4382,13 @@ _DECISION_GUIDE = [
             "es": "Curva S simple con meseta (sin fase lag visible)",
             "zh": "简单 S 形曲线带平台（无明显滞后期）",
         },
-        "model": "Verhulst — Logístico",
+        "model": {
+            "pt": "Verhulst — Logístico",
+            "en": "Verhulst — Logistic",
+            "es": "Verhulst — Logístico",
+            "zh": "Verhulst — 逻辑斯蒂型 (Logistic)"
+        },
+
         "reason": {
             "pt": "Modelo logístico clássico. 3 parâmetros: X₀, Xm, μmax. Robusto e amplamente validado.",
             "en": "Classic logistic model. 3 parameters: X₀, Xm, μmax. Robust and widely validated.",
@@ -3873,7 +4406,13 @@ _DECISION_GUIDE = [
             "es": "Curva sigmoide con fase lag y asíntota superior clara",
             "zh": "具有明显滞后期和上渐近线的 S 形曲线",
         },
-        "model": "Gompertz Modificado (Gibson/Zwietering)",
+        "model": {
+            "pt": "Gompertz Modificado (Gibson/Zwietering)",
+            "en": "Gompertz Modified (Gibson/Zwietering)",
+            "es": "Gompertz Modificado (Gibson/Zwietering)",
+            "zh": "Gompertz 修正型 (Gibson/Zwietering)"
+        },
+
         "reason": {
             "pt": "Padrão ouro em microbiologia de alimentos. Parâmetros biológicos diretos: lag (λ), μmax e A. "
                   "Preferido ao logístico quando a curva é assimétrica.",
@@ -3893,7 +4432,13 @@ _DECISION_GUIDE = [
             "es": "Modelado mecanístico con predicción de comportamiento futuro",
             "zh": "具有未来行为预测的机理建模",
         },
-        "model": "Baranyi & Roberts",
+        "model": {
+            "pt": "Baranyi & Roberts",
+            "en": "Baranyi & Roberts",
+            "es": "Baranyi & Roberts",
+            "zh": "Baranyi & Roberts"
+        },
+
         "reason": {
             "pt": "Derivado de equações diferenciais com significado fisiológico. Melhor modelo global "
                   "para cultura em batelada. Recomendado quando a fase lag é longa ou irregular.",
@@ -3913,7 +4458,12 @@ _DECISION_GUIDE = [
             "es": "Crecimiento limitado por sustrato (biorreactor, quimiostato)",
             "zh": "底物限制生长（生物反应器，恒化器）",
         },
-        "model": "Monod",
+        "model": {
+            "pt": "Monod",
+            "en": "Monod",
+            "es": "Monod",
+            "zh": "Monod"
+        },
         "reason": {
             "pt": "Modelo fundamental em engenharia de bioprocessos. Requer medições de substrato (S). "
                   "μmax e Ks são parâmetros cinéticos do microrganismo.",
@@ -3933,7 +4483,12 @@ _DECISION_GUIDE = [
             "es": "Sustrato inhibidor a altas concentraciones (fenol, etanol, antibiótico)",
             "zh": "高浓度抑制性底物（苯酚、乙醇、抗生素）",
         },
-        "model": "Haldane / Andrews",
+        "model": {
+            "pt": "Haldane & Andrews",
+            "en": "Haldane & Andrews",
+            "es": "Haldane & Andrews",
+            "zh": "Haldane & Andrews"
+        },
         "reason": {
             "pt": "Adiciona o termo Ki ao modelo de Monod. A curva de taxa tem formato de sino. "
                   "Identifica concentração ótima de substrato.",
@@ -3953,7 +4508,12 @@ _DECISION_GUIDE = [
             "es": "Cultivo continuo con energía de mantenimiento significativa",
             "zh": "具有显著维持能的连续培养",
         },
-        "model": "Herbert-Pirt",
+        "model": {
+            "pt": "Herbert-Pirt",
+            "en": "Herbert-Pirt",
+            "es": "Herbert-Pirt",
+            "zh": "Herbert-Pirt"
+        },
         "reason": {
             "pt": "Inclui coeficiente de manutenção (ms) e coeficiente de decaimento (kd). "
                   "Mais realista que Monod para culturas limitadas por energia.",
@@ -3973,7 +4533,12 @@ _DECISION_GUIDE = [
             "es": "Cinética enzimática in vitro (S → P)",
             "zh": "体外酶动力学 (S → P)",
         },
-        "model": "Michaelis-Menten",
+        "model":  {
+            "pt": "Michaelis-Menten",
+            "en": "Michaelis-Menten",
+            "es": "Michaelis-Menten",
+            "zh": "Michaelis-Menten"
+        },
         "reason": {
             "pt": "Modelo universal para reações enzimáticas. Vmax = velocidade máxima; Km = constante de afinidade.",
             "en": "Universal model for enzymatic reactions. Vmax = maximum velocity; Km = affinity constant.",
@@ -3991,7 +4556,12 @@ _DECISION_GUIDE = [
             "es": "Producción de metabolito (ácido láctico, antibiótico, etanol)",
             "zh": "代谢物生产（乳酸、抗生素、乙醇）",
         },
-        "model": "Luedeking-Piret",
+        "model": {
+            "pt": "Luediking-Piret",
+            "en": "Luediking-Piret",
+            "es": "Luediking-Piret",
+            "zh": "Luediking-Piret"
+        },
         "reason": {
             "pt": "Distingue produção associada ao crescimento (α) e não associada (β). "
                   "Fundamental para otimização de bioprodução.",
@@ -4011,7 +4581,12 @@ _DECISION_GUIDE = [
             "es": "Ajuste empírico rápido sin interpretación mecanística",
             "zh": "无需机理解释的快速经验拟合",
         },
-        "model": "Regressão Polinomial / Gaussiana",
+        "model": {
+            "pt": "Regressão Polinomial / Gaussiana",
+            "en": "Polynomial / Gaussian Regression",
+            "es": "Regresión Polinómica / Gaussiana",
+            "zh": "多项式 / 高斯回归 (Polynomial / Gaussian Regression)"
+        },
         "reason": {
             "pt": "Flexível e rápido. Use quando precisar de uma curva suave para interpolação "
                   "ou quando os dados não se adequam a nenhum modelo cinético.",
@@ -4031,7 +4606,12 @@ _DECISION_GUIDE = [
             "es": "Curva completa con todas las fases (forma S generalizada)",
             "zh": "含所有生长阶段的完整生长曲线（广义 S 形）",
         },
-        "model": "Richards",
+        "model": {
+            "pt": "Richards",
+            "en": "Richards",
+            "es": "Richards",
+            "zh": "Richards"
+        },
         "reason": {
             "pt": "4 parâmetros: Xm, ν (assimetria), k, λ. Generaliza o Gompertz e o Logístico. "
                   "Máxima flexibilidade para curvas não simétricas.",
@@ -4047,7 +4627,12 @@ _DECISION_GUIDE = [
 ]
 
 _REFERENCES = [
-    {"category": "Modelos Exponencial e Logístico",
+    {"category": {
+        "pt": "📂 Modelos Exponencial e Logístico",
+        "en": "📂 Exponential and Logistic Models",
+        "es": "📂 Modelos Sigmoides",
+        "zh": "📂 指数与逻辑增长模型 (Exponential and Logistic Models)",
+     },
      "refs": [
         "Malthus, T.R. (1798). An Essay on the Principle of Population. J. Johnson, London.",
         "Verhulst, P.F. (1845). Recherches mathématiques sur la loi d'accroissement de la population. Nouv. Mém. Acad. Roy. Sci. B.-Arts Belg., 18, 1–41.",
@@ -4055,14 +4640,24 @@ _REFERENCES = [
         "Zwietering, M.H., Jongenburger, I., Rombouts, F.M., & van't Riet, K. (1990). Modeling of the Bacterial Growth Curve. Appl. Environ. Microbiol., 56(6), 1875–1881.",
         "Gibson, A.M., Bratchell, N., & Roberts, T.A. (1987). The effect of NaCl and temperature on the rate and extent of growth of Clostridium botulinum. J. Appl. Bacteriol., 62(6), 479–490.",
      ]},
-    {"category": "Modelos Sigmoides",
+    {"category":{
+        "pt": "📂 Modelos Sigmoides",
+        "en": "📂 Sigmoid Models",
+        "es": "📂 Modelos Sigmoides",
+        "zh": "📂 S型曲线模型 (Sigmoid Models)",
+     },
      "refs": [
         "Richards, F.J. (1959). A flexible growth function for empirical use. J. Exp. Bot., 10(29), 290–301.",
         "Von Bertalanffy, L. (1957). Quantitative laws in metabolism and growth. Q. Rev. Biol., 32(3), 217–231.",
         "Baranyi, J. & Roberts, T.A. (1994). A dynamic approach to predicting bacterial growth in food. Int. J. Food Microbiol., 23(3–4), 277–294.",
         "Buchanan, R.L., Whiting, R.C., & Damert, W.C. (1997). When is simple good enough: a comparison of the Gompertz, Baranyi, and three-phase linear models for fitting bacterial growth curves. Food Microbiol., 14(4), 313–326.",
      ]},
-    {"category": "Modelos Cinéticos Clássicos (Monod e variantes)",
+    {"category":{
+        "pt": "📂 Modelos Cinéticos Clássicos (Monod e variantes)",
+        "en": "📂 Classical Kinetic Models (Monod and variants)",
+        "es": "📂 Modelos Cinéticos Clásicos (Monod y variantes)",
+        "zh": "📂 经典动力学模型（Monod及变体",
+     },
      "refs": [
         "Monod, J. (1949). The growth of bacterial cultures. Annu. Rev. Microbiol., 3(1), 371–394.",
         "Tessier, G. (1942). Croissance des populations bactériennes et quantité d'aliment disponible. Rev. Sci., 80, 209–214.",
@@ -4072,22 +4667,42 @@ _REFERENCES = [
         "Haldane, J.B.S. (1930). Enzymes. Longmans, Green and Co., London.",
         "Aiba, S., Humphrey, A.E., & Millis, N.F. (1965). Biochemical Engineering. Academic Press, New York.",
      ]},
-    {"category": "Modelos Mecanísticos e com Manutenção",
+    {"category":{
+        "pt": "📂 Modelos Mecanísticos e com Manutenção",
+        "en": "📂 Mechanistic and Maintenance Models",
+        "es": "📂 Modelos Mecanísticos y con Mantenimiento",
+        "zh": "📂 机理与维持模型 (Mechanistic and Maintenance Models)",
+     },
      "refs": [
         "Herbert, D., Elsworth, R., & Telling, R.C. (1956). The continuous culture of bacteria: a theoretical and experimental study. J. Gen. Microbiol., 14(3), 601–622.",
         "Pirt, S.J. (1965). The maintenance energy of bacteria in growing cultures. Proc. R. Soc. Lond. B, 163(991), 224–231.",
      ]},
-    {"category": "Cinética Enzimática e Inibição",
+    {"category":{
+        "pt": "📂 Cinética Enzimática e Inibição",
+        "en": "📂 Enzyme Kinetics and Inhibition",
+        "es": "📂 Cinética Enzimática e Inhibición",
+        "zh": "📂 酶动力学与 inhibiton (酶动力学与抑制)",
+     },
      "refs": [
         "Michaelis, L. & Menten, M.L. (1913). Die Kinetik der Invertinwirkung. Biochem. Z., 49, 333–369.",
         "Briggs, G.E. & Haldane, J.B.S. (1925). A Note on the Kinetics of Enzyme Action. Biochem. J., 19(2), 338–339.",
      ]},
-    {"category": "Formação de Produto",
+    {"category":{
+        "pt": "📂 Formação de Produto",
+        "en": "📂 Product Formation",
+        "es": "📂 Formación de Producto",
+        "zh": "📂 产物形成 (Product Formation)",
+     },
      "refs": [
         "Luedeking, R. & Piret, E.L. (1959). A kinetic study of the lactic acid fermentation. Batch process at controlled pH. J. Biochem. Microbiol. Technol. Eng., 1(4), 393–412.",
         "Chick, H. (1908). An investigation of the laws of disinfection. J. Hyg. (Lond.), 8(1), 92–158.",
      ]},
-    {"category": "Livros de Referência em Engenharia de Bioprocessos",
+    {"category":{
+        "pt": "📂 Livros de Referência em Engenharia de Bioprocessos",
+        "en": "📂 Reference Books in Bioprocess Engineering",
+        "es": "📂 Libros de Referencia en Ingeniería de Bioprocesos",
+        "zh": "📂 生物过程工程参考书目",
+     },
      "refs": [
         "Bailey, J.E. & Ollis, D.F. (1986). Biochemical Engineering Fundamentals (2nd ed.). McGraw-Hill, New York.",
         "Shuler, M.L. & Kargi, F. (2002). Bioprocess Engineering: Basic Concepts (2nd ed.). Prentice Hall, Upper Saddle River.",
@@ -4098,34 +4713,242 @@ _REFERENCES = [
 ]
 
 _PARAMS_INFO = [
-    ("μmax  (h⁻¹)",  "Velocidade específica máxima de crescimento",
-     "Faixa típica: 0,05 – 2,5 h⁻¹ para bactérias; 0,01 – 0,5 para leveduras",
-     "Quanto maior, mais rápido o organismo cresce na fase exponencial."),
-    ("Xm  (g/L)",    "Concentração máxima de biomassa atingida na cultura",
-     "Depende do meio e da capacidade de suporte do sistema",
-     "Representa o limite superior da curva S (capacidade de carga)."),
-    ("λ  (h)",       "Fase lag — tempo de adaptação antes do crescimento ativo",
-     "0 (sem lag) a dezenas de horas em condições de estresse",
-     "Parâmetro crítico em microbiologia preditiva; afeta tempo de processo."),
-    ("Ks  (g/L)",    "Constante de meia saturação (Monod e variantes)",
-     "0,001 – 10 g/L dependendo do substrato e organismo",
-     "Concentração de substrato na qual μ = μmax/2. Mede afinidade pelo substrato."),
-    ("Ki  (g/L)",    "Constante de inibição por substrato (Haldane, Aiba)",
-     "Geralmente > Ks; quanto menor, mais tóxico o substrato",
-     "Acima de Ki, o crescimento é inibido. Parâmetro chave para processos com fenol, etanol etc."),
-    ("Y  (g·g⁻¹)",   "Coeficiente de rendimento celular (biomassa por substrato consumido)",
-     "0,01 – 0,8 g/g dependendo da fonte de carbono e condições",
-     "Y = ΔX / (-ΔS). Fundamental para balanço de massa e dimensionamento de biorreatores."),
-    ("kd  (h⁻¹)",    "Coeficiente de decaimento / morte celular endógena",
-     "0,001 – 0,1 h⁻¹ em condições normais",
-     "Relevante em culturas prolongadas ou em condições limitantes."),
-    ("α, β",         "Parâmetros do modelo de Luedeking-Piret",
-     "α ≥ 0 (associado ao crescimento); β ≥ 0 (não associado)",
-     "α > 0, β ≈ 0: produto primário. α ≈ 0, β > 0: produto secundário."),
-    ("td  (h)",      "Tempo de duplicação (doubling time)",
-     "td = ln(2) / μmax  ≈  0,693 / μmax",
-     "Tempo necessário para a biomassa duplicar na fase exponencial."),
+    {
+    "variable": {
+      "pt": "μmax (h⁻¹)",
+      "en": "μmax (h⁻¹)",
+      "es": "μmax (h⁻¹)",
+      "zh": "μmax (h⁻¹)"
+        },
+    "category": {
+      "pt": "Velocidade específica máxima de crescimento",
+      "en": "Maximum specific growth rate",
+      "es": "Velocidad específica máxima de crecimiento",
+      "zh": "最大比生长速率"
+        },
+    "value": {
+      "pt": "Faixa típica: 0,05 - 2,5 h⁻¹ para bactérias; 0,01 - 0,5 para leveduras",
+      "en": "Typical range: 0.05 - 2.5 h⁻¹ for bacteria; 0.01 - 0.5 for yeasts",
+      "es": "Rango típico: 0,05 - 2,5 h⁻¹ para bacterias; 0,01 - 0,5 para levaduras",
+      "zh": "典型范围：细菌为 0.05 - 2.5 h⁻¹；酵母为 0.01 - 0.5 h⁻¹"
+        },
+    "interpretation": {
+      "pt": "Quanto maior, mais rápido o organismo cresce na fase exponencial.",
+      "en": "The higher it is, the faster the organism grows in the exponential phase.",
+      "es": "Cuanto mayor sea, más rápido crecerá el organismo en la fase exponencial.",
+      "zh": "该值越大，生物体在对数生长期的生长速度就越快。"
+        }
+    },
+    {
+    "variable": {
+      "pt": "Xm (g/L)",
+      "en": "Xm (g/L)",
+      "es": "Xm (g/L)",
+      "zh": "Xm (g/L)"
+        },
+    "category": {
+      "pt": "Concentração máxima de biomassa atingida na cultura",
+      "en": "Maximum biomass concentration achieved in the culture",
+      "es": "Concentración máxima de biomasa alcanzada en el cultivo",
+      "zh": "培养物达到的最大生物量浓度"
+        },
+    "value": {
+      "pt": "Depende do meio e da capacidade de suporte do sistema",
+      "en": "Depends on the medium and the system's carrying capacity",
+      "es": "Depende del medio y de la capacidad de soporte del sistema",
+      "zh": "取决于培养基和系统的环境容纳量"
+        },
+    "interpretation": {
+      "pt": "Representa o limite superior da curva S (capacidade de carga).",
+      "en": "Represents the upper limit of the S-curve (carrying capacity).",
+      "es": "Representa el límite superior de la curva S (capacidad de carga).",
+      "zh": "代表S型曲线的上限（环境承载力）。"
+        }
+    },
+    {
+    "variable": {
+      "pt": "λ (h)",
+      "en": "λ (h)",
+      "es": "λ (h)",
+      "zh": "λ (h)"
+        },
+    "category": {
+      "pt": "Fase lag — tempo de adaptação antes do crescimento ativo",
+      "en": "Lag phase — adaptation time before active growth",
+      "es": "Fase lag — tiempo de adaptación antes del crecimiento activo",
+      "zh": "延滞期（Lag phase）— 活跃生长前的适应时间"
+        },
+    "value": {
+      "pt": "0 (sem lag) a dezenas de horas em condições de estresse",
+      "en": "0 (no lag) to dozens of hours under stress conditions",
+      "es": "0 (sin lag) a decenas de horas en condiciones de estrés",
+      "zh": "从 0（无延滞期）到应激条件下的数十小时不等"
+        },
+    "interpretation": {
+      "pt": "Parâmetro crítico em microbiologia preditiva; afeta tempo de processo.",
+      "en": "Critical parameter in predictive microbiology; affects process time.",
+      "es": "Parámetro crítico en microbiología predictiva; afecta el tiempo de proceso.",
+      "zh": "预测微生物学中的关键参数；直接影响工艺时间。"
+        }
+    },
+    {
+    "variable": {
+      "pt": "Ks (g/L)",
+      "en": "Ks (g/L)",
+      "es": "Ks (g/L)",
+      "zh": "Ks (g/L)"
+        },
+    "category": {
+      "pt": "Constante de meia saturação (Monod e variantes)",
+      "en": "Half-saturation constant (Monod and variants)",
+      "es": "Constante de media saturación (Monod y variantes)",
+      "zh": "半饱和常数（Monod及变体）"
+        },
+    "value": {
+      "pt": "0,001 – 10 g/L dependendo do substrato e organismo",
+      "en": "0.001 – 10 g/L depending on substrate and organism",
+      "es": "0,001 – 10 g/L dependiendo del sustrato y organismo",
+      "zh": "0.001 – 10 g/L，取决于底物和生物体"
+        },
+    "interpretation": {
+      "pt": "Concentração de substrato na qual μ = μmax/2. Mede afinidade pelo substrato.",
+      "en": "Substrate concentration at which μ = μmax/2. Measures substrate affinity.",
+      "es": "Concentración de sustrato en la cual μ = μmax/2. Mide la afinidad por el sustrato.",
+      "zh": "μ = μmax/2 时的底物浓度。用于衡量对底物的亲和力。"
+        }
+    },
+    {
+    "variable": {
+      "pt": "Ki (g/L)",
+      "en": "Ki (g/L)",
+      "es": "Ki (g/L)",
+      "zh": "Ki (g/L)"
+        },
+    "category": {
+      "pt": "Constante de inibição por substrato (Haldane, Aiba)",
+      "en": "Substrate inhibition constant (Haldane, Aiba)",
+      "es": "Constante de inhibición por sustrato (Haldane, Aiba)",
+      "zh": "底物抑制常数（Haldane, Aiba）"
+        },
+    "value": {
+      "pt": "Geralmente > Ks; quanto menor, mais tóxico o substrato",
+      "en": "Usually > Ks; the lower it is, the more toxic the substrate",
+      "es": "Generalmente > Ks; cuanto menor sea, más tóxico es el sustrato",
+      "zh": "通常 > Ks；该值越小，底物毒性越强"
+        },
+    "interpretation": {
+      "pt": "Acima de Ki, o crescimento é inibido. Parâmetro chave para processos com fenol, etanol etc.",
+      "en": "Above Ki, growth is inhibited. Key parameter for processes with phenol, ethanol, etc.",
+      "es": "Por encima de Ki, el crecimiento se inhibe. Parámetro clave para procesos con fenol, etanol, etc.",
+      "zh": "高于 Ki 时生长受阻。是处理苯酚、乙醇等工艺的关键参数。"
+        }
+    },
+    {
+    "variable": {
+      "pt": "Y (g·g⁻¹)",
+      "en": "Y (g·g⁻¹)",
+      "es": "Y (g·g⁻¹)",
+      "zh": "Y (g·g⁻¹)"
+        },
+    "category": {
+      "pt": "Coeficiente de rendimento celular (biomassa por substrato consumido)",
+      "en": "Cell yield coefficient (biomass produced per substrate consumed)",
+      "es": "Coeficiente de rendimiento celular (biomasa por sustrato consumido)",
+      "zh": "细胞得率系数（消耗每克底物生成的生物量）"
+        },
+    "value": {
+      "pt": "0,01 – 0,8 g/g dependendo da fonte de carbono e condições",
+      "en": "0.01 – 0.8 g/g depending on carbon source and conditions",
+      "es": "0,01 – 0,8 g/g dependiendo de la fuente de carbono y condiciones",
+      "zh": "0.01 – 0.8 g/g，取决于碳源和培养条件"
+        },
+    "interpretation": {
+      "pt": "Y = ΔX / (-ΔS). Fundamental para balanço de massa e dimensionamento de biorreatores.",
+      "en": "Y = ΔX / (-ΔS). Fundamental for mass balance and bioreactor sizing.",
+      "es": "Y = ΔX / (-ΔS). Fundamental para el balance de masa y dimensionamiento de biorreactores.",
+      "zh": "Y = ΔX / (-ΔS)。是物料衡算和生物反应器选型设计的基石。"
+        }
+    },
+    {
+    "variable": {
+      "pt": "kd (h⁻¹)",
+      "en": "kd (h⁻¹)",
+      "es": "kd (h⁻¹)",
+      "zh": "kd (h⁻¹)"
+        },
+    "category": {
+      "pt": "Coeficiente de decaimento / morte celular endógena",
+      "en": "Endogenous decay / cell death coefficient",
+      "es": "Coeficiente de decaimiento / muerte celular endógena",
+      "zh": "内源衰减 / 细胞死亡系数"
+        },
+    "value": {
+      "pt": "0,001 – 0,1 h⁻¹ em condições normais",
+      "en": "0.001 – 0.1 h⁻¹ under normal conditions",
+      "es": "0,001 – 0,1 h⁻¹ en condiciones normales",
+      "zh": "正常条件下为 0.001 – 0.1 h⁻¹"
+        },
+    "interpretation": {
+      "pt": "Relevante em culturas prolongadas ou em condições limitantes.",
+      "en": "Relevant in prolonged cultures or under limiting conditions.",
+      "es": "Relevante en cultivos prolongados o en condiciones limitantes.",
+      "zh": "在延长培养或限制性条件下尤为重要。"
+        }
+    },
+    {
+    "variable": {
+      "pt": "α, β",
+      "en": "α, β",
+      "es": "α, β",
+      "zh": "α, β"
+        },
+    "category": {
+      "pt": "Parâmetros do modelo de Luedeking-Piret",
+      "en": "Luedeking-Piret model parameters",
+      "es": "Parámetros del modelo de Luedeking-Piret",
+      "zh": "Luedeking-Piret 模型参数"
+        },
+    "value": {
+      "pt": "α ≥ 0 (associado ao crescimento); β ≥ 0 (não associado)",
+      "en": "α ≥ 0 (growth-associated); β ≥ 0 (non-growth-associated)",
+      "es": "α ≥ 0 (asociado al crecimiento); β ≥ 0 (no asociado)",
+      "zh": "α ≥ 0（与生长偶联）；β ≥ 0（与生长非偶联）"
+        },
+    "interpretation": {
+      "pt": "α > 0, β ≈ 0: produto primário. α ≈ 0, β > 0: produto secundário.",
+      "en": "α > 0, β ≈ 0: primary product. α ≈ 0, β > 0: secondary product.",
+      "es": "α > 0, β ≈ 0: producto primario. α ≈ 0, β > 0: producto secundario.",
+      "zh": "α > 0, β ≈ 0：初级代谢产物。α ≈ 0, β > 0：次级代谢产物。"
+        }
+    },
+    {
+    "variable": {
+      "pt": "td (h)",
+      "en": "td (h)",
+      "es": "td (h)",
+      "zh": "td (h)"
+        },
+    "category": {
+      "pt": "Tempo de duplicação (doubling time)",
+      "en": "Doubling time",
+      "es": "Tiempo de duplicación (doubling time)",
+      "zh": "加倍时间 (Doubling time)"
+        },
+    "value": {
+      "pt": "td = ln(2) / μmax ≈ 0,693 / μmax",
+      "en": "td = ln(2) / μmax ≈ 0.693 / μmax",
+      "es": "td = ln(2) / μmax ≈ 0,693 / μmax",
+      "zh": "td = ln(2) / μmax ≈ 0.693 / μmax"
+        },
+    "interpretation": {
+      "pt": "Tempo necessário para a biomassa duplicar na fase exponencial.",
+      "en": "Time required for biomass to double in the exponential phase.",
+      "es": "Tiempo necesario para que la biomasa se duplique en la fase exponencial.",
+      "zh": "在对数生长期内生物量翻倍所需的时间。"
+        }
+    }
 ]
+
 
 
 def tab_guide():
@@ -4140,7 +4963,7 @@ def tab_guide():
         with c1:
             st.markdown(LOGO_HTML + """
 <div style="text-align:center;margin-top:8px">
-  <span style="font-size:.75rem;color:var(--fg2)">v 1.1</span>
+  <span style="font-size:.75rem;color:var(--fg2)">v 1.2</span>
 </div>
 """, unsafe_allow_html=True)
         with c2:
@@ -4149,10 +4972,10 @@ def tab_guide():
   <h4 style="font-size:1rem">{t('gd_intro_title')}</h4>
   <p style="color:var(--fg);font-size:.88rem;line-height:1.6">{t('gd_intro_body')}</p>
   <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
-    <span style="background:var(--bg2);border:1px solid var(--brd);border-radius:20px;padding:3px 12px;font-size:.72rem;color:var(--acc)">🔬 {len(ALL_MODELS)} Modelos Cinéticos</span>
-    <span style="background:var(--bg2);border:1px solid var(--brd);border-radius:20px;padding:3px 12px;font-size:.72rem;color:var(--acc)">🌐 4 Idiomas</span>
-    <span style="background:var(--bg2);border:1px solid var(--brd);border-radius:20px;padding:3px 12px;font-size:.72rem;color:var(--acc)">📊 Exportação PDF & Excel</span>
-    <span style="background:var(--bg2);border:1px solid var(--brd);border-radius:20px;padding:3px 12px;font-size:.72rem;color:var(--acc)">♿ Acessibilidade</span>
+    <span style="background:var(--bg2);border:1px solid var(--brd);border-radius:20px;padding:3px 12px;font-size:.72rem;color:var(--acc)">🔬 {len(ALL_MODELS)} {t("gd_intro_background1")}</span>
+    <span style="background:var(--bg2);border:1px solid var(--brd);border-radius:20px;padding:3px 12px;font-size:.72rem;color:var(--acc)">🌐 {t("gd_intro_background2")}</span>
+    <span style="background:var(--bg2);border:1px solid var(--brd);border-radius:20px;padding:3px 12px;font-size:.72rem;color:var(--acc)">📊 {t("gd_intro_background3")}</span>
+    <span style="background:var(--bg2);border:1px solid var(--brd);border-radius:20px;padding:3px 12px;font-size:.72rem;color:var(--acc)">♿ {t("gd_intro_background4")}</span>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -4180,8 +5003,8 @@ def tab_guide():
     <div style="flex:1;min-width:150px;text-align:right">
       <div style="background:{tc}22;border:1px solid {tc};border-radius:8px;
            padding:6px 12px;display:inline-block">
-        <div style="font-size:.7rem;color:var(--fg2)">Modelo recomendado</div>
-        <div style="font-weight:800;color:{tc};font-size:.85rem">{entry['model']}</div>
+        <div style="font-size:.7rem;color:var(--fg2)">{t("gd_label")}</div>
+        <div style="font-weight:800;color:{tc};font-size:.85rem">{entry['model'].get(lang, entry["model"]["en"])}</div>
         <div style="font-size:.65rem;color:var(--fg2);margin-top:3px">📋 {entry['data_needed']}</div>
       </div>
     </div>
@@ -4196,19 +5019,20 @@ def tab_guide():
     st.caption(t("gd_param_note"))
     st.markdown("<br>", unsafe_allow_html=True)
 
-    for param, desc, range_txt, interp in _PARAMS_INFO:
-        with st.expander(f"**{param}** — {desc}"):
+    for param in _PARAMS_INFO:
+        lang = st.session_state.get("lang", "pt")
+        with st.expander(f"**{param['variable'].get(lang, param['variable']['en'])}** — {param['category'].get(lang, param['category']['en'])}", expanded= False):
             pc1, pc2 = st.columns(2)
             pc1.markdown(f"""
 <div style="background:var(--bg2);border:1px solid var(--brd);border-radius:8px;padding:10px 14px">
-  <div style="font-size:.73rem;color:var(--fg2);margin-bottom:4px">📏 FAIXA TÍPICA</div>
-  <div style="font-size:.85rem;color:var(--fg)">{range_txt}</div>
+  <div style="font-size:.73rem;color:var(--fg2);margin-bottom:4px">📏 {t("gd_param_descript1")}</div>
+  <div style="font-size:.85rem;color:var(--fg)">{param['value'].get(lang, param['value']['en'])}</div>
 </div>
 """, unsafe_allow_html=True)
             pc2.markdown(f"""
 <div style="background:var(--bg2);border:1px solid var(--brd);border-radius:8px;padding:10px 14px">
-  <div style="font-size:.73rem;color:var(--fg2);margin-bottom:4px">💡 INTERPRETAÇÃO</div>
-  <div style="font-size:.85rem;color:var(--fg)">{interp}</div>
+  <div style="font-size:.73rem;color:var(--fg2);margin-bottom:4px">💡 {t("gd_param_descript2")}</div>
+  <div style="font-size:.85rem;color:var(--fg)">{param['interpretation'].get(lang, param['interpretation']['en'])}</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -4219,7 +5043,8 @@ def tab_guide():
     st.markdown("<br>", unsafe_allow_html=True)
 
     for cat in _REFERENCES:
-        with st.expander(f"📂 {cat['category']}", expanded=False):
+        lang = st.session_state.get("lang", "pt")
+        with st.expander(f" {cat['category'].get(lang, cat['category']['en'])}", expanded=False):
             for i, ref in enumerate(cat["refs"], 1):
                 st.markdown(f"""
 <div style="background:var(--bg2);border-left:3px solid var(--acc);
@@ -4230,15 +5055,8 @@ def tab_guide():
 
     st.divider()
     # Quick usage tips
-    st.markdown("### 🚀 Fluxo de trabalho recomendado")
-    st.markdown("""
-1. **📊 Dados** → Faça upload do arquivo ou insira manualmente → Mapeie as variáveis → Visualize a curva  
-2. **🔬 Modelos Cinéticos** → Explore os modelos disponíveis → Selecione o mais adequado para seus dados  
-3. **📈 Resultados** → Configure a otimização → Execute a análise → Interprete os parâmetros e métricas → Exporte  
-
-> 💡 **Dica:** Use escala logarítmica na prévia dos dados para identificar visualmente a fase exponencial e estimar o λ.  
-> Se R² < 0,95 ou RMSE > 10% do Xm, tente outro modelo ou revise os dados.
-""")
+    st.markdown(t("gd_data"))
+    st.markdown(t("gd_flux_recommended"))
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
