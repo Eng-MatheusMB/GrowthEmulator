@@ -32,8 +32,8 @@ pesquisadores, engenheiros de bioprocessos e estudantes.
 
 ### 1. Clonar o repositório
 ```bash
-git clone https://github.com/matheusmonteirobatista/biogrowth.git
-cd biogrowth
+git clone https://github.com/Eng-MatheusMB/GrowthEmulator.git
+cd GrowthEmulator
 ```
 
 ### 2. Instalar dependências
