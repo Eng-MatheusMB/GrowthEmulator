@@ -2936,12 +2936,12 @@ div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"]
 """, unsafe_allow_html=True)
 
             var_defs = [
-                ("time",      "⏱",  "dt_time_lbl",      True,  False),
-                ("biomass",   "🦠",  "dt_biomass_lbl",   True,  True),
-                ("substrate", "🍬",  "dt_substrate_lbl", False, True),
-                ("ph",        "⚗️",  "dt_ph_lbl",        False, False),
-                ("product",   "🧪",  "dt_product_lbl",   False, True),
-                ("drymass",   "⚖️",  "dt_drymass_lbl",   False, False),
+                ("time",      "⏱",  f'{t("dt_time_lbl")}',      True,  False),
+                ("biomass",   "🦠", f'{t("dt_biomass_lbl")}',   True,  True),
+                ("substrate", "🍬",  f'{t("dt_substrate_lbl")}', False, True),
+                ("ph",        "⚗️",  f'{t("dt_ph_lbl")}',        False, False),
+                ("product",   "🧪",  f'{t("dt_product_lbl")}',   False, True),
+                ("drymass",   "⚖️",  f'{t("dt_drymass_lbl")}',   False, False),
             ]
 
             col_opts  = list(df.columns.astype(str))
