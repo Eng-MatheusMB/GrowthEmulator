@@ -2934,7 +2934,7 @@ div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"]
 }
 </style>
 """, unsafe_allow_html=True)
-
+            lang = st.session_state.get("lang", "pt")
             var_defs = [
                 ("time",      "⏱",  f'{t("dt_time_lbl")}',      True,  False),
                 ("biomass",   "🦠", f'{t("dt_biomass_lbl")}',   True,  True),
