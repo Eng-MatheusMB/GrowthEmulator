@@ -135,6 +135,6 @@ Para uso comercial, entre em contato: matheus@example.com
 
 ## 📧 Contato
 
-- **E-mail**: matheus@example.com
+- **E-mail**: eng.matheusmbatista@gmail.com
 - **LinkedIn**: [linkedin.com/in/matheusmonteirobatista](https://www.linkedin.com/in/matheusmonteirobatista/)
 - **GitHub**: [github.com/matheusmonteirobatista/biogrowth](https://github.com/matheusmonteirobatista/biogrowth)
