@@ -17,7 +17,7 @@ from scipy.optimize import curve_fit, minimize, differential_evolution
 from scipy.integrate import solve_ivp
 from io import BytesIO
 from pathlib import Path
-import base64, os, warnings, re, copy
+import base64, os, warnings, re, copy, threading, time
 warnings.filterwarnings("ignore")
 
 st.set_page_config(
@@ -177,6 +177,14 @@ _T = {
         "rs_error_adjust": " Erro de Ajuste",
         "rs_named_col1": " Parâmetro",
         "rs_named_col2": " Valor",
+        "rs_excel_named_fases":" Fase(s)",
+        "rs_excel_named_data":" Dados",
+        "rs_excel_named_res":" Residual",
+        "rs_excel_named_param":" Parâmetros",
+        "rs_excel_named_value":" Valor",
+        "rs_excel_named_unit":" Unidade",
+        "rs_excel_named_metric":" Métrica",
+
         # --- About Tab ---
         "ab_title": "Sobre o GrowthEmulator",
         "ab_version": "Versão",
@@ -441,6 +449,13 @@ _T = {
         "rs_error_adjust": " Adjustment error",
         "rs_named_col1": " Parameter",
         "rs_named_col2": " Value",
+        "rs_excel_named_fases":" Phase(s)",
+        "rs_excel_named_data":" Data",
+        "rs_excel_named_res":" Residual",
+        "rs_excel_named_param":" Parameter",
+        "rs_excel_named_value":" Value",
+        "rs_excel_named_unit":" Unit",
+        "rs_excel_named_metric":" Metric",
         "ab_title": "About GrowthEmulator",
         "ab_version": "Version",
         "ab_desc": (
@@ -696,6 +711,13 @@ _T = {
         "rs_error_adjust": " Error de ajuste",
         "rs_named_col1": " Parámetro",
         "rs_named_col2": " Valor",
+        "rs_excel_named_fases":" Fase(s)",
+        "rs_excel_named_data":" Datos",
+        "rs_excel_named_res":" Residual",
+        "rs_excel_named_param":" Parámetros",
+        "rs_excel_named_value":" Valor",
+        "rs_excel_named_unit":" Unidad",
+        "rs_excel_named_metric":" Métrica",
         "ab_title": "Acerca de GrowthEmulator",
         "ab_version": "Versión",
         "ab_desc": (
@@ -950,6 +972,13 @@ _T = {
         "rs_error_adjust": " 调整误差",
         "rs_named_col1": " 范围",
         "rs_named_col2": " 价值",
+        "rs_excel_named_fases":" 阶段_",
+        "rs_excel_named_data":" 数据",
+        "rs_excel_named_res":" 残差",
+        "rs_excel_named_param":" 参数",
+        "rs_excel_named_value":" 数值",
+        "rs_excel_named_unit":" 单位",
+        "rs_excel_named_metric":" 指标",
         "ab_title": "关于 GrowthEmulator",
         "ab_version": "版本",
         "ab_desc": (
@@ -2636,6 +2665,14 @@ def _model_name(model_or_meta: dict) -> str:
     return str(name_val)  # legacy plain string
 
 
+def _model_author(model_or_meta: dict) -> str:
+    lang = st.session_state.get("lang", "pt")
+    a = model_or_meta.get("author", "")
+    if isinstance(a, dict):
+        return a.get(lang) or a.get("en") or next(iter(a.values()), "")
+    return str(a)
+
+
 def _extract_sorted_series(df_src, t_col: str, x_col: str, s_col=None):
     """
     Extract time, biomass (and optional substrate) from df_src,
@@ -3404,7 +3441,7 @@ def _render_single_result(fr, model_key, t_col, x_col):
                 dur = t1 - t0
                 pills += f'<span class="phase-pill {pcls}">{t(pk_key)}: {t0:.1f}–{t1:.1f} h</span>'
                 phase_rows.append({
-                    "Fase": t(pk_key),
+                    f"{t('rs_excel_named_fases')}": t(pk_key),
                     t("rs_interval"): f"{t0:.2f} – {t1:.2f}",
                     t("rs_points"):   len(pts),
                     t("rs_duration"): f"{dur:.2f}",
@@ -3698,7 +3735,7 @@ def tab_results():
             if st.button(t("rs_export_xlsx"), use_container_width=True, type="secondary"):
                 buf = BytesIO()
                 with pd.ExcelWriter(buf, engine="openpyxl") as writer:
-                    df_src.to_excel(writer, sheet_name="Dados", index=False)
+                    df_src.to_excel(writer, sheet_name=f"{t('rs_excel_named_data')}", index=False)
                     for rkey, ed in all_export_data.items():
                         fr      = ed["fr"]
                         mk_disp = rkey.split("__")[0] if "__" in rkey else rkey
@@ -3706,25 +3743,25 @@ def tab_results():
                         # Compose a safe sheet-name prefix (≤31 chars)
                         pfx = (mk_disp[:8] + ("_" + series[:6] if series else ""))[:12]
                         pd.DataFrame({
-                            "Parâmetro": [t("rs_mu_max"), t("rs_mu_avg"), t("rs_td"),
+                            f"{t('rs_excel_named_param')}": [t("rs_mu_max"), t("rs_mu_avg"), t("rs_td"),
                                           t("rs_x0"), t("rs_xm")],
-                            "Valor": [ed["mu_max"], ed["mu_avg"], ed["td"],
+                            f"{t('rs_excel_named_value')}": [ed["mu_max"], ed["mu_avg"], ed["td"],
                                       ed["X0"], ed["Xm"]],
-                            "Unidade": ["h⁻¹","h⁻¹","h","g/L","g/L"],
-                        }).to_excel(writer, sheet_name=f"Params_{pfx}", index=False)
+                            f"{t('rs_excel_named_unit')}": ["h⁻¹","h⁻¹","h","g/L","g/L"],
+                        }).to_excel(writer, sheet_name=f"{t('rs_excel_named_param')}_{pfx}", index=False)
                         pd.DataFrame({
-                            "Métrica": [t("rs_rmse"), t("rs_r2adj"),
+                            f"{t('rs_excel_named_metric')}": [t("rs_rmse"), t("rs_r2adj"),
                                         t("rs_aic"),  t("rs_bic")],
-                            "Valor":   [fr["rmse"], fr["r2adj"],
+                            f"{t('rs_excel_named_value')}":   [fr["rmse"], fr["r2adj"],
                                         fr["aic"],  fr["bic"]],
-                        }).to_excel(writer, sheet_name=f"Metrics_{pfx}", index=False)
+                        }).to_excel(writer, sheet_name=f"{t('rs_excel_named_metric')}_{pfx}", index=False)
                         pd.DataFrame({
                             "t": ed["t_d"], "X_obs": ed["X_d"],
-                            "X_pred": ed["y_p"], "Residual": ed["resid"],
+                            "X_pred": ed["y_p"], f"{t('rs_excel_named_res')}": ed["resid"],
                         }).to_excel(writer, sheet_name=f"Fit_{pfx}", index=False)
                         if ed.get("phase_rows"):
                             pd.DataFrame(ed["phase_rows"]).to_excel(
-                                writer, sheet_name=f"Fases_{pfx}", index=False)
+                                writer, sheet_name=f"{t('rs_excel_named_fases')})_{pfx}", index=False)
                 st.download_button(
                     f"⬇ {t('rs_download_excel')}", data=buf.getvalue(),
                     file_name="GrowthEmulator_results.xlsx",
@@ -3778,8 +3815,8 @@ def tab_results():
                         pdf.cell(0, 8, _safe(f"{m_name}{suffix}"), ln= True)
                         pdf.set_font(FONT, "", 10)
                         pdf.cell(0, 5, _safe(
-                            f"  {t('ab_author')}: "
-                            f"{ALL_MODELS.get(mk_disp,{}).get('author','')}"),
+                        f"  {t('ab_author')}: "
+                            f"{_model_author(ALL_MODELS.get(mk_disp, {}))}"),
                             ln=True)
                         for label, val in [
                             (t("rs_rmse"),   fr["rmse"]),
@@ -5062,8 +5099,79 @@ def tab_guide():
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # 23. MAIN ROUTER
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# KEEPALIVE — prevents Streamlit Cloud free-tier hibernation
+# Two complementary mechanisms:
+#   1. Client-side JS ping (every 45 s) — keeps the WebSocket /
+#      browser session alive while a tab is open.
+#   2. Server-side background thread (every 5 min) — writes a
+#      harmless timestamp to session state, which nudges the
+#      Streamlit runtime and delays infrastructure-level sleep.
+# For full 24/7 uptime without a browser open, also configure
+# an external pinger (e.g. UptimeRobot free plan → HTTP monitor
+# pointing to your app URL, interval 5 min).
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+_PING_INTERVAL_JS  = 45        # seconds between browser-side pings
+_PING_INTERVAL_SRV = 300       # seconds between server-side heartbeats
+
+_keepalive_thread: threading.Thread | None = None
+
+
+def _server_heartbeat():
+    """Background daemon thread — touches a session-state key
+    periodically so the Python process stays warm."""
+    while True:
+        time.sleep(_PING_INTERVAL_SRV)
+        try:
+            # st.session_state is accessible from any thread in
+            # Streamlit >= 1.18; the write is ignored if the
+            # session has already closed, so it never raises.
+            st.session_state["_keepalive_ts"] = time.time()
+        except Exception:
+            pass
+
+
+def _inject_js_ping():
+    """Inject a tiny self-contained JS snippet that sends a HEAD
+    request to the app URL every _PING_INTERVAL_JS seconds.
+    This prevents the browser WebSocket from being torn down by
+    Streamlit Cloud's idle-session timeout (~15 min)."""
+    st.markdown(
+        f"""
+<script>
+(function growthEmulatorKeepalive() {{
+    var _interval = {_PING_INTERVAL_JS * 1000};
+    function ping() {{
+        try {{
+            fetch(window.location.href, {{
+                method: 'HEAD',
+                cache: 'no-store',
+                headers: {{'X-Keepalive': '1'}}
+            }}).catch(function(){{}});
+        }} catch(e) {{}}
+    }}
+    setInterval(ping, _interval);
+    console.log('[GrowthEmulator] keepalive ping armed (' +
+                (_interval / 1000) + 's interval).');
+}})();
+</script>
+""",
+        unsafe_allow_html=True,
+    )
+
+
 def main():
     inject_css()
+
+    # ── Keepalive: start server thread once + inject JS ping ──
+    global _keepalive_thread
+    if _keepalive_thread is None or not _keepalive_thread.is_alive():
+        _keepalive_thread = threading.Thread(
+            target=_server_heartbeat, daemon=True, name="ge-keepalive")
+        _keepalive_thread.start()
+    _inject_js_ping()
+    # ──────────────────────────────────────────────────────────
+
     render_sidebar()
     with st.container():
         render_header()
