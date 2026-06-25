@@ -129,7 +129,7 @@ Lista completa de referências disponível na aba **📖 Guia & Referências** d
 [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 Uso acadêmico e pessoal permitido com atribuição.
-Para uso comercial, entre em contato: matheus@example.com
+Para uso comercial, entre em contato: eng.matheusmbatista@gmail.com
 
 ---
 
@@ -137,4 +137,4 @@ Para uso comercial, entre em contato: matheus@example.com
 
 - **E-mail**: eng.matheusmbatista@gmail.com
 - **LinkedIn**: [linkedin.com/in/matheusmonteirobatista](https://www.linkedin.com/in/matheusmonteirobatista/)
-- **GitHub**: [github.com/matheusmonteirobatista/biogrowth](https://github.com/matheusmonteirobatista/biogrowth)
+- **GitHub**: [https://github.com/Eng-MatheusMB/GrowthEmulator.git](https://github.com/Eng-MatheusMB/GrowthEmulator.git)
